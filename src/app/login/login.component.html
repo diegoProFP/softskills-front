@@ -1,0 +1,26 @@
+<div class="login-container">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <h2>Iniciar sesión</h2>
+    <div>
+      <label for="email">Email:</label>
+      <input id="email" type="email" formControlName="email" required />
+      <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="error">
+        Email inválido
+      </div>
+    </div>
+    <div>
+      <label for="password">Contraseña:</label>
+      <input id="password" type="password" formControlName="password" required />
+      <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="error">
+        Contraseña requerida
+      </div>
+    </div>
+    <button type="submit" [disabled]="loginForm.invalid">Entrar</button>
+    <div *ngIf="loginError" class="error">{{ loginError }}</div>
+  </form>
+
+  <div *ngIf="jwtPayload" class="jwt-info">
+    <h3>Información del usuario (JWT):</h3>
+    <pre>{{ jwtPayload | json }}</pre>
+  </div>
+</div>

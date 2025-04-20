@@ -1,0 +1,29 @@
+<mat-sidenav-container class="dashboard-container">
+  <mat-sidenav [opened]="isSidenavOpen" mode="side" class="dark-sidenav">
+    <div class="user-info">
+      <img *ngIf="user?.userPictureUrl" [src]="user.userPictureUrl" class="avatar" alt="Avatar" />
+      <div class="fullname">{{ user?.fullname }}</div>
+      <div class="sitename">{{ user?.sitename }}</div>
+
+    </div>
+    <mat-divider></mat-divider>
+    <mat-nav-list>
+      <mat-list-item><mat-icon>person</mat-icon> Mi perfil</mat-list-item>
+      <mat-list-item><mat-icon>school</mat-icon> Cursos</mat-list-item>
+      <mat-list-item><mat-icon>star</mat-icon> Catálogo de Soft Skills</mat-list-item>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button mat-icon-button (click)="toggleSidenav()">
+        <mat-icon>{{ isSidenavOpen ? 'chevron_left' : 'menu' }}</mat-icon>
+      </button>
+      <span>Soft Skills Dashboard</span>
+    </mat-toolbar>
+    <div class="dashboard-content">
+      <h2>Bienvenido, {{ user?.fullname }}</h2>
+      <p>Selecciona una opción del menú para comenzar.</p>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

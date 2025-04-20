@@ -1,0 +1,65 @@
+/* Estilos modernos y sencillos para el dashboard, menú lateral, avatar y contenido principal. */
+
+.dashboard-container {
+  height: 100vh;
+}
+
+.dark-sidenav {
+  width: 260px;
+  background: #23272f;
+  color: #fff;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.10);
+  transition: background 0.3s;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 0 1rem 0;
+}
+
+.avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 2px solid #9c27b0;
+  margin-bottom: 0.5rem;
+}
+
+.fullname {
+  font-weight: 600;
+  text-align: center;
+  font-size: 1.1rem;
+  color: #fff;
+  margin-bottom: 0.7rem;
+}
+
+mat-list-item {
+  cursor: pointer;
+  border-radius: 4px;
+  margin-bottom: 0.2rem;
+}
+
+mat-list-item:hover {
+  background: #3d4150;
+}
+
+mat-icon {
+  color: #b39ddb;
+  margin-right: 10px;
+}
+
+mat-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.dashboard-content {
+  padding: 2.5rem 2rem;
+}
+
+button[mat-icon-button] {
+  margin-right: 1rem;
+}
