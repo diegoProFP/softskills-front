@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { UserService } from '../user.service';
 import { UserInfo } from '../user-info';
 import { AuthService } from '../auth.service';
+import { LoadingService } from '../loading.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,11 +13,13 @@ import { AuthService } from '../auth.service';
 export class DashboardComponent {
   user: UserInfo | null = null;
   isSidenavOpen = true;
+  isLoading$ = this.loadingService.isLoading$;
 
   constructor(
     private userService: UserService,
     private authService: AuthService,
-    public router: Router
+    public router: Router,
+    public loadingService: LoadingService
   ) {
     this.user = this.userService.getUserInfo();
   }

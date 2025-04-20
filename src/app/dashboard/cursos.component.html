@@ -1,6 +1,6 @@
 <div class="cursos-grid">
   <h2>Cursos</h2>
-  <div *ngIf="loading" class="loading">Cargando cursos...</div>
+  <mat-progress-bar *ngIf="loading" color="accent" mode="indeterminate"></mat-progress-bar>
   <div *ngIf="!loading && cursos.length === 0" class="no-cursos">
     No hay cursos asociados al usuario.
   </div>

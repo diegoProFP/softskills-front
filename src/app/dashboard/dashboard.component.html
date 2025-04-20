@@ -25,6 +25,7 @@
       </button>
       <span>Soft Skills Dashboard</span>
     </mat-toolbar>
+    <mat-progress-bar *ngIf="isLoading$ | async" color="accent" mode="indeterminate" class="global-loading-bar"></mat-progress-bar>
     <div class="dashboard-content">
       <router-outlet></router-outlet>
       <ng-container *ngIf="!router.url.includes('/dashboard/cursos')">
