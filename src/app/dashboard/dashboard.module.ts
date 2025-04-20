@@ -5,6 +5,7 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
 import { CursosComponent } from './cursos/cursos.component';
 import { BienvenidaComponent } from './bienvenida/bienvenida.component';
+import { MiPerfilComponent } from './mi-perfil/mi-perfil.component';
 
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
@@ -19,7 +20,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
   declarations: [
     DashboardComponent,
     CursosComponent,
-    BienvenidaComponent
+    BienvenidaComponent,
+    MiPerfilComponent
   ],
   imports: [
     CommonModule,

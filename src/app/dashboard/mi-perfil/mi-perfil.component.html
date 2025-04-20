@@ -1,0 +1,17 @@
+<div *ngIf="user as u; else noUser">
+  <h2>Mi Perfil</h2>
+  <div class="perfil-container">
+    <img *ngIf="u.userPictureUrl" [src]="u.userPictureUrl" alt="Avatar" class="avatar" />
+    <ul>
+      <li><strong>Nombre completo:</strong> {{ u.fullname }}</li>
+      <li><strong>Nombre de usuario:</strong> {{ u.username }}</li>
+      <li><strong>Email:</strong> {{ u.email }}</li>
+      <li><strong>Sitio:</strong> {{ u.sitename }}</li>
+      <li><strong>Rol:</strong> {{ u.role }}</li>
+      <!-- Agrega aquí más campos según lo que tenga UserInfo -->
+    </ul>
+  </div>
+</div>
+<ng-template #noUser>
+  <p>No hay información de usuario disponible.</p>
+</ng-template>

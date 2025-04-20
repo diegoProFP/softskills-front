@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
 import { CursosComponent } from './cursos/cursos.component';
 import { BienvenidaComponent } from './bienvenida/bienvenida.component';
+import { MiPerfilComponent } from './mi-perfil/mi-perfil.component';
 
 const routes: Routes = [
   {
@@ -11,7 +12,8 @@ const routes: Routes = [
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'bienvenida' },
       { path: 'bienvenida', component: BienvenidaComponent },
-      { path: 'cursos', component: CursosComponent }
+      { path: 'cursos', component: CursosComponent },
+      { path: 'mi-perfil', component: MiPerfilComponent }
     ]
   }
 ];
