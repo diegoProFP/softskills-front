@@ -1,0 +1,16 @@
+<div class="cursos-wrapper">
+  <h2>Cursos</h2>
+  <div *ngIf="loading" class="loading">Cargando cursos...</div>
+  <div *ngIf="!loading && cursos.length === 0" class="no-cursos">
+    No hay cursos asociados al usuario.
+  </div>
+  <mat-list *ngIf="!loading && cursos.length > 0">
+    <mat-list-item *ngFor="let curso of cursos">
+      <div class="curso-info">
+        <div class="curso-nombre">{{ curso.displayname }}</div>
+        <div class="curso-short">{{ curso.shortname }}</div>
+        <div class="curso-full">{{ curso.fullname }}</div>
+      </div>
+    </mat-list-item>
+  </mat-list>
+</div>

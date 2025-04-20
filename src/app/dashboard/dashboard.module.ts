@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
+import { CursosComponent } from './cursos.component';
+import { BienvenidaComponent } from './bienvenida.component';
 
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
@@ -14,7 +16,9 @@ import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [
-    DashboardComponent
+    DashboardComponent,
+    CursosComponent,
+    BienvenidaComponent
   ],
   imports: [
     CommonModule,

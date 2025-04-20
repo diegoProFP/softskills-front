@@ -16,4 +16,8 @@ export class UserService {
   clearUserInfo() {
     this.userInfo = null;
   }
+
+  isLoggedIn(): boolean {
+    return !!this.userInfo;
+  }
 }

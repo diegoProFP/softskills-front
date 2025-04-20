@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { UserService } from '../user.service';
 import { UserInfo } from '../user-info';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,11 +13,29 @@ export class DashboardComponent {
   user: UserInfo | null = null;
   isSidenavOpen = true;
 
-  constructor(private userService: UserService) {
+  constructor(
+    private userService: UserService,
+    private authService: AuthService,
+    public router: Router
+  ) {
     this.user = this.userService.getUserInfo();
   }
 
   toggleSidenav() {
     this.isSidenavOpen = !this.isSidenavOpen;
+  }
+
+  logout() {
+    this.authService.logout().subscribe({
+      next: () => {
+        this.userService.clearUserInfo();
+        this.router.navigate(['/login']);
+      },
+      error: () => {
+        // Incluso si falla el logout en backend, limpiar sesión local
+        this.userService.clearUserInfo();
+        this.router.navigate(['/login']);
+      }
+    });
   }
 }

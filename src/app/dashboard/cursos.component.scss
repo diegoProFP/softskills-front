@@ -1,0 +1,40 @@
+.cursos-wrapper {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(44, 62, 80, 0.07);
+}
+h2 {
+  margin-bottom: 1.5rem;
+  color: #512da8;
+}
+.loading {
+  text-align: center;
+  color: #888;
+  margin: 2rem 0;
+}
+.no-cursos {
+  text-align: center;
+  color: #e57373;
+  font-weight: 600;
+  margin: 2rem 0;
+}
+.curso-info {
+  display: flex;
+  flex-direction: column;
+}
+.curso-nombre {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #333;
+}
+.curso-short {
+  color: #7b1fa2;
+  font-size: 0.95rem;
+}
+.curso-full {
+  color: #757575;
+  font-size: 0.91rem;
+}

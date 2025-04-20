@@ -8,6 +8,7 @@ import { tap } from 'rxjs/operators';
 })
 export class AuthService {
   private apiUrl = 'http://localhost:8080/api/v1/auth/login';
+  private logoutUrl = 'http://localhost:8080/api/v1/auth/logout';
 
   constructor(private http: HttpClient) {}
 
@@ -29,7 +30,15 @@ export class AuthService {
     return sessionStorage.getItem('jwt_token');
   }
 
-  logout(): void {
-    sessionStorage.removeItem('jwt_token');
+  logout(): Observable<any> {
+    const token = this.getToken();
+    const headers = new HttpHeaders({
+      Authorization: token ? token : ''
+    });
+    return this.http.post<any>(this.logoutUrl, {}, { headers }).pipe(
+      tap(() => {
+        sessionStorage.removeItem('jwt_token');
+      })
+    );
   }
 }

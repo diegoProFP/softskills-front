@@ -9,8 +9,12 @@
     <mat-divider></mat-divider>
     <mat-nav-list>
       <mat-list-item><mat-icon>person</mat-icon> Mi perfil</mat-list-item>
-      <mat-list-item><mat-icon>school</mat-icon> Cursos</mat-list-item>
+      <mat-list-item routerLink="/dashboard/cursos" routerLinkActive="active"><mat-icon>school</mat-icon> Cursos</mat-list-item>
       <mat-list-item><mat-icon>star</mat-icon> Catálogo de Soft Skills</mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item (click)="logout()" style="color:#e57373;">
+        <mat-icon>logout</mat-icon> Cerrar sesión
+      </mat-list-item>
     </mat-nav-list>
   </mat-sidenav>
 
@@ -22,8 +26,11 @@
       <span>Soft Skills Dashboard</span>
     </mat-toolbar>
     <div class="dashboard-content">
-      <h2>Bienvenido, {{ user?.fullname }}</h2>
-      <p>Selecciona una opción del menú para comenzar.</p>
+      <router-outlet></router-outlet>
+      <ng-container *ngIf="!router.url.includes('/dashboard/cursos')">
+        <h2>Bienvenido, {{ user?.fullname }}</h2>
+        <p>Selecciona una opción del menú para comenzar.</p>
+      </ng-container>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
