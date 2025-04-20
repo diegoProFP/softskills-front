@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserService } from '../user.service';
-import { UserInfo } from '../user-info';
-import { AuthService } from '../auth.service';
-import { LoadingService } from '../loading.service';
+import { UserService } from '../services/user.service';
+import { UserInfo } from '../modelo/user-info';
+import { AuthService } from '../services/auth.service';
+import { LoadingService } from '../services/loading.service';
 
 @Component({
   selector: 'app-dashboard',

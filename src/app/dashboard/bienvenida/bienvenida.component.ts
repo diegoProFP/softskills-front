@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { UserService } from '../user.service';
-import { UserInfo } from '../user-info';
+import { UserService } from '../../services/user.service';
+import { UserInfo } from '../../modelo/user-info';
 
 @Component({
   selector: 'app-bienvenida',

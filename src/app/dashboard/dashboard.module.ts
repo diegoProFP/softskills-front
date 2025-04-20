@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
-import { CursosComponent } from './cursos.component';
-import { BienvenidaComponent } from './bienvenida.component';
+import { CursosComponent } from './cursos/cursos.component';
+import { BienvenidaComponent } from './bienvenida/bienvenida.component';
 
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';

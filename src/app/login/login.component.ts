@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { UserService } from '../user.service';
-import { UserInfo } from '../user-info';
+import { UserService } from '../services/user.service';
+import { UserInfo } from '../modelo/user-info';
 import { Router } from '@angular/router';
 
 @Component({
