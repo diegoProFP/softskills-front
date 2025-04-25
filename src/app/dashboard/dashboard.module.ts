@@ -6,6 +6,7 @@ import { DashboardComponent } from './dashboard.component';
 import { CursosComponent } from './cursos/cursos.component';
 import { BienvenidaComponent } from './bienvenida/bienvenida.component';
 import { MiPerfilComponent } from './mi-perfil/mi-perfil.component';
+import { CursoDetalleComponent } from './curso-detalle/curso-detalle.component';
 
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
@@ -21,7 +22,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     DashboardComponent,
     CursosComponent,
     BienvenidaComponent,
-    MiPerfilComponent
+    MiPerfilComponent,
+    CursoDetalleComponent
   ],
   imports: [
     CommonModule,

@@ -67,7 +67,15 @@ label {
   color: #7e57c2;
 }
 
+.password-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
 input[type="email"],
+input[type="text"],
 input[type="password"] {
   width: 100%;
   padding: 0.55rem;
@@ -80,9 +88,30 @@ input[type="password"] {
   transition: border 0.2s;
 }
 input[type="email"]:focus,
+input[type="text"],
 input[type="password"]:focus {
   border: 1.5px solid #512da8;
   outline: none;
+}
+
+.password-toggle-button {
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  color: #7e57c2;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.password-toggle-button:hover {
+  color: #512da8;
+}
+
+.password-toggle-button mat-icon {
+  font-size: 1.2rem;
 }
 
 button[type="submit"] {

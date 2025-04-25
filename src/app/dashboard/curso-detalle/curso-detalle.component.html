@@ -1,0 +1,14 @@
+<div class="curso-detalle-wrapper" *ngIf="!loading">
+  <ng-container *ngIf="curso; else noCurso">
+    <h2>{{ curso.displayname }}</h2>
+    <div class="curso-info">
+      <p><strong>Nombre corto:</strong> {{ curso.shortname }}</p>
+      <p><strong>ID:</strong> {{ curso.id }}</p>
+      <p><strong>Descripción:</strong> {{ curso.descripcion || 'No disponible' }}</p>
+      <!-- Agrega aquí más campos según tu modelo de Curso -->
+    </div>
+  </ng-container>
+  <ng-template #noCurso>
+    <p>No se encontró información del curso.</p>
+  </ng-template>
+</div>

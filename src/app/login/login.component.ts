@@ -15,7 +15,7 @@ export class LoginComponent {
   loginForm: FormGroup;
   loginError: string = '';
   jwtPayload: any = null;
-
+  showPassword: boolean = false;
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -28,6 +28,8 @@ export class LoginComponent {
       password: ['', Validators.required]
     });
   }
+
+  
 
   onSubmit(): void {
     if (this.loginForm.invalid) {
@@ -63,5 +65,9 @@ export class LoginComponent {
         this.jwtPayload = null;
       }
     });
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
   }
 }

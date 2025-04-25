@@ -2,23 +2,30 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { LoadingService } from './loading.service';
+import { environment } from '../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/api/v1/auth/login';
-  private logoutUrl = 'http://localhost:8080/api/v1/auth/logout';
 
-  constructor(private http: HttpClient) {}
+  private rootApiUrl = environment.apiUrl;
+  private loginApiUrl = this.rootApiUrl + '/auth/login';
+  private logoutUrl = this.rootApiUrl + '/auth/logout';
+
+  constructor(private http: HttpClient, private loadingService: LoadingService) { }
 
   login(email: string, password: string): Observable<any> {
+    // this.loadingService.show();
     const body = {
       username: email,
       password: password,
     };
-    return this.http.post<any>(this.apiUrl, body).pipe(
+    return this.http.post<any>(this.loginApiUrl, body).pipe(
       tap((response) => {
+        this.loadingService.hide();
         if (response && response.token) {
           sessionStorage.setItem('jwt_token', response.token);
         }

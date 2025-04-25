@@ -5,7 +5,7 @@
     No hay cursos asociados al usuario.
   </div>
   <div *ngIf="!loading && cursos.length > 0" class="card-list">
-    <mat-card class="curso-card" *ngFor="let curso of cursos">
+    <mat-card class="curso-card" *ngFor="let curso of cursos" [routerLink]="['/dashboard/cursos', curso.id]" style="cursor:pointer">
       <mat-card-title>{{ curso.shortname }}</mat-card-title>
       <mat-card-content>{{ curso.displayname }}</mat-card-content>
     </mat-card>
