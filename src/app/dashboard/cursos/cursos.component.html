@@ -4,10 +4,20 @@
   <div *ngIf="!loading && cursos.length === 0" class="no-cursos">
     No hay cursos asociados al usuario.
   </div>
-  <div *ngIf="!loading && cursos.length > 0" class="card-list">
-    <mat-card class="curso-card" *ngFor="let curso of cursos" [routerLink]="['/dashboard/cursos', curso.id]" style="cursor:pointer">
-      <mat-card-title>{{ curso.shortname }}</mat-card-title>
-      <mat-card-content>{{ curso.displayname }}</mat-card-content>
-    </mat-card>
+  <div *ngIf="!loading && (cursosRegistrados.length > 0 || cursosNoRegistrados.length > 0)" class="card-list">
+    <div *ngIf="cursosRegistrados.length > 0">
+      <h3>Cursos Registrados</h3>
+      <mat-card class="curso-card" *ngFor="let curso of cursosRegistrados" [routerLink]="['/dashboard/cursos', curso.id]" style="cursor:pointer">
+        <mat-card-title>{{ curso.nombreCorto }}</mat-card-title>
+        <mat-card-content>{{ curso.nombreLargo }}</mat-card-content>
+      </mat-card>
+    </div>
+    <div *ngIf="cursosNoRegistrados.length > 0">
+      <h3>Cursos No Registrados</h3>
+      <mat-card class="curso-card" *ngFor="let curso of cursosNoRegistrados" [routerLink]="['/dashboard/cursos', curso.id]" style="cursor:pointer">
+        <mat-card-title>{{ curso.nombreCorto }}</mat-card-title>
+        <mat-card-content>{{ curso.nombreLargo }}</mat-card-content>
+      </mat-card>
+    </div>
   </div>
 </div>

@@ -9,6 +9,8 @@ import { Curso } from '../../modelo/curso';
 })
 export class CursosComponent implements OnInit {
   cursos: Curso[] = [];
+  cursosRegistrados: Curso[] = [];
+  cursosNoRegistrados: Curso[] = [];
   loading = true;
 
   constructor(private cursoService: CursoService) {}
@@ -17,6 +19,8 @@ export class CursosComponent implements OnInit {
     this.cursoService.getCursos().subscribe({
       next: (data) => {
         this.cursos = data || [];
+        this.cursosRegistrados = this.cursos.filter(curso => curso.registradoSk);
+        this.cursosNoRegistrados = this.cursos.filter(curso => !curso.registradoSk);
         this.loading = false;
       },
       error: () => {

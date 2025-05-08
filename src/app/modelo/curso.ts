@@ -1,6 +1,7 @@
 export interface Curso {
   id: number;
-  shortname: string;
-  fullname: string;
-  displayname: string;
+  nombreCorto: string;
+  nombreLargo: string;
+  nombreVisible: string;
+  registradoSk: boolean;
 }
