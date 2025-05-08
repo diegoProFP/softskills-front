@@ -1,13 +1,48 @@
-<div class="curso-detalle-wrapper" *ngIf="!loading">
-  <ng-container *ngIf="curso; else noCurso">
-    <h2>{{ curso.displayname }}</h2>
-    <div class="curso-info">
-      <p><strong>Nombre corto:</strong> {{ curso.shortname }}</p>
-      <p><strong>ID:</strong> {{ curso.id }}</p>
-      <p><strong>Descripción:</strong> {{ curso.descripcion || 'No disponible' }}</p>
-      <!-- Agrega aquí más campos según tu modelo de Curso -->
+<div class="curso-detalle-container" *ngIf="!loading">
+  <div class="curso-info-wrapper">
+    <ng-container *ngIf="curso; else noCurso">
+      <h2>{{ curso.nombreVisible }}</h2>
+      <div class="curso-info">
+        <p><strong>Nombre corto:</strong> {{ curso.nombreCorto }}</p>
+        <p><strong>ID:</strong> {{ curso.id }}</p>
+        <p><strong>Descripción:</strong> {{ curso.nombreLargo || 'No disponible' }}</p>
+        <p><strong>Fecha Alta:</strong> {{ curso.fechaAlta || 'No disponible' }}</p>
+        <p><strong>Profesor:</strong> ID {{ curso.profesor.id }}</p>
+      </div>
+    </ng-container>
+  </div>
+
+  <div class="alumnos-wrapper">
+    <h3>Alumnos</h3>
+    <div class="alumnos-table">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let alumno of curso.alumnos">
+            <td>{{ alumno.id }}</td>
+            <td>{{ alumno.nombre }}</td>
+            <td>{{ alumno.email }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-  </ng-container>
+  </div>
+
+  <div class="soft-skills-wrapper">
+    <h3>Soft Skills</h3>
+    <div class="soft-skills-chips">
+      <mat-chip *ngFor="let softSkill of curso.softSkills" [color]="'accent'">
+        {{ softSkill.nombre }}
+      </mat-chip>
+    </div>
+  </div>
+
   <ng-template #noCurso>
     <p>No se encontró información del curso.</p>
   </ng-template>
