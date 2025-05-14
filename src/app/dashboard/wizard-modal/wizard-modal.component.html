@@ -4,18 +4,29 @@
 
       <mat-accordion>
         <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              Paso 1: Selección de curso
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <!-- Contenido del paso 1 -->
-          Esta es la selección del curso
-          <mat-action-row>
-            <button mat-button (click)="previousStep()" [disabled]="currentStep === 1">Anterior</button>
-            <button mat-button (click)="nextStep()">Siguiente</button>
-          </mat-action-row>
-        </mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Paso 1: Curso {{cursoSeleccionado?.nombreVisible}}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div *ngIf="cursoSeleccionado">
+              <p>Curso seleccionado: {{ cursoSeleccionado.nombreVisible }}</p>
+              <!-- Muestra más detalles del curso si es necesario -->
+            </div>
+            <div *ngIf="!cursoSeleccionado">
+              <p>Seleccione un curso:</p>
+              <ul>
+                <li *ngFor="let curso of cursos$ | async">
+                  {{ curso.nombreVisible }}
+                  <!-- Añadir lógica para seleccionar un curso -->
+                </li>
+              </ul>
+            </div>
+            <mat-action-row>
+              <button mat-button (click)="previousStep()" [disabled]="currentStep === 1">Anterior</button>
+              <button mat-button (click)="nextStep()">Siguiente</button>
+            </mat-action-row>
+          </mat-expansion-panel>
   
         <mat-expansion-panel>
           <mat-expansion-panel-header>

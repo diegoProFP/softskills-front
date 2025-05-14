@@ -53,5 +53,14 @@
 }
 
 .modal-content {
-  position: relative; // Asegura que el botón esté posicionado relativo a la modal
+  width: 80%; // Ancho por defecto
+  max-width: 600px; // Ancho máximo por defecto
+  position: relative;
+}
+
+@media (min-width: 1024px) { // Ajusta el ancho solo en pantallas de escritorio
+  .modal-content {
+    width: 90%; // Ancho más grande para escritorio
+    max-width: 900px; // Ancho máximo más grande para escritorio
+  }
 }
