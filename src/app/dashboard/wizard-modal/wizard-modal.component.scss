@@ -1,0 +1,57 @@
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  color: black;
+  padding: 20px;
+  border-radius: 5px;
+  width: 80%;
+  max-width: 600px;
+}
+
+.steps {
+  margin-bottom: 20px;
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+}
+
+.mat-expansion-panel-header {
+  background-color: #333; // Color oscuro para el encabezado
+  color: white; // Texto blanco para el encabezado
+}
+
+.mat-expansion-panel-body {
+  background-color: #f9f9f9; // Color claro para el contenido
+  color: black; // Texto negro para el contenido
+  padding: 16px; // Añadir un poco de padding al contenido
+}
+.close-button {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  background-color: #ff4d4d; // Color de fondo del botón
+  border: none;
+  border-radius: 50%; // Hace que el botón sea redondo
+  padding: 8px 12px; // Añade padding al botón
+  font-size: 18px;
+  cursor: pointer;
+  color: white; // Color del texto del botón
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); // Añade una sombra para darle profundidad
+}
+
+.modal-content {
+  position: relative; // Asegura que el botón esté posicionado relativo a la modal
+}

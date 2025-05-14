@@ -16,6 +16,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { FloatingButtonComponent } from './floating-button/floating-button.component';
+import { WizardModalComponent } from './wizard-modal/wizard-modal.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+
 
 @NgModule({
   declarations: [
@@ -23,7 +27,9 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     CursosComponent,
     BienvenidaComponent,
     MiPerfilComponent,
-    CursoDetalleComponent
+    CursoDetalleComponent,
+    FloatingButtonComponent,
+    WizardModalComponent
   ],
   imports: [
     CommonModule,
@@ -35,7 +41,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     MatButtonModule,
     MatDividerModule,
     MatMenuModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatExpansionModule
   ]
 })
 export class DashboardModule { }

@@ -1,0 +1,77 @@
+<div class="modal">
+    <div class="modal-content">
+        <button class="close-button" (click)="closeModal()">×</button>
+
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Paso 1: Selección de curso
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <!-- Contenido del paso 1 -->
+          Esta es la selección del curso
+          <mat-action-row>
+            <button mat-button (click)="previousStep()" [disabled]="currentStep === 1">Anterior</button>
+            <button mat-button (click)="nextStep()">Siguiente</button>
+          </mat-action-row>
+        </mat-expansion-panel>
+  
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Paso 2: Búsqueda por alumno
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <!-- Contenido del paso 2 -->
+          Esta es la selección del alumno
+          <mat-action-row>
+            <button mat-button (click)="previousStep()">Anterior</button>
+            <button mat-button (click)="nextStep()">Siguiente</button>
+          </mat-action-row>
+        </mat-expansion-panel>
+  
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Paso 3: Selección de Soft Skill
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <!-- Contenido del paso 3 -->
+          Esta es la selección de la soft skill
+          <mat-action-row>
+            <button mat-button (click)="previousStep()">Anterior</button>
+            <button mat-button (click)="nextStep()">Siguiente</button>
+          </mat-action-row>
+        </mat-expansion-panel>
+  
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Paso 4: Valoración positiva/negativa
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <!-- Contenido del paso 4 -->
+          Esta es la selección de la valoración
+          <mat-action-row>
+            <button mat-button (click)="previousStep()">Anterior</button>
+            <button mat-button (click)="nextStep()">Siguiente</button>
+          </mat-action-row>
+        </mat-expansion-panel>
+  
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Paso 5: Resumen y Confirmar
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <!-- Contenido del paso 5 -->
+          <p>Esta es la selección del resumen y confirmar</p>
+          <mat-action-row>
+            <button mat-button (click)="previousStep()">Anterior</button>
+            <button mat-button (click)="resetWizard()">Reiniciar</button>
+          </mat-action-row>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </div>
