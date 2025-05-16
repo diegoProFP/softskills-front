@@ -9,6 +9,9 @@ import { MatChipsModule } from '@angular/material/chips';
 import { SoftSkill } from 'src/app/modelo/softskill';
 import { SoftSkillService } from 'src/app/services/softskill.service';
 import { MuestraSK } from 'src/app/modelo/muestra-sk';
+import { LoadingService } from 'src/app/services/loading.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-wizard-modal',
@@ -45,7 +48,10 @@ valoracionSeleccionada: 'positiva' | 'negativa' | null = null;
 
 
   constructor(private cursoService: CursoService,
-    private softSkillService: SoftSkillService
+    private softSkillService: SoftSkillService,
+    private loadingService: LoadingService,
+    private snackBar: MatSnackBar ,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
@@ -156,7 +162,9 @@ handleValoracionSeleccionada(valoracion: 'positiva' | 'negativa') {
 enviarMuestra() {
   if (!this.cursoSeleccionado || !this.alumnoSeleccionado || 
       !this.softSkillSeleccionada || !this.valoracionSeleccionada) {
-    return;
+        this.notificationService.showError('Faltan datos necesarios para enviar la valoración');
+
+        return;
   }
 
   const muestra: MuestraSK = {
@@ -168,12 +176,15 @@ enviarMuestra() {
   };
 
   this.softSkillService.crearMuestra(muestra).subscribe({
-    next: () => {
-      this.closeModal(); // Cierra el modal después de enviar
+    next: (response) => {
+      this.notificationService.showSuccess('Valoración enviada correctamente');
+      this.closeModal();
     },
     error: (error) => {
-      console.error('Error al enviar la muestra:', error);
-      // Aquí podrías mostrar un mensaje de error al usuario
+      this.notificationService.showError('Error al enviar la valoración: ' + error.message);
+    },
+    complete: () => {
+      this.loadingService.hide();
     }
   });
 }

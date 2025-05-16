@@ -11,11 +11,15 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { JwtInterceptor } from './jwt.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NotificationSnackComponent } from './shared/notification-snack/notification-snack.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { NotificationService } from './services/notification.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    NotificationSnackComponent
   ],
   imports: [
     BrowserModule,
@@ -24,11 +28,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MatIconModule,
+    MatSnackBarModule,
     MatChipsModule
   ],
   providers: [
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     JwtHelperService,
+    NotificationService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
