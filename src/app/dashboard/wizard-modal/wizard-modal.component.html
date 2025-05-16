@@ -3,10 +3,10 @@
         <button class="close-button" (click)="closeModal()">×</button>
 
       <mat-accordion>
-        <mat-expansion-panel>
+        <mat-expansion-panel [expanded]="currentStep === 1">
             <mat-expansion-panel-header>
               <mat-panel-title>
-                Paso 1: Curso {{cursoSeleccionado?.nombreVisible}}
+                Curso {{cursoSeleccionado?.nombreVisible}}
               </mat-panel-title>
             </mat-expansion-panel-header>
             <div *ngIf="cursoSeleccionado">
@@ -28,38 +28,88 @@
             </mat-action-row>
           </mat-expansion-panel>
   
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              Paso 2: Búsqueda por alumno
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <!-- Contenido del paso 2 -->
-          Esta es la selección del alumno
-          <mat-action-row>
-            <button mat-button (click)="previousStep()">Anterior</button>
-            <button mat-button (click)="nextStep()">Siguiente</button>
-          </mat-action-row>
-        </mat-expansion-panel>
+          <mat-expansion-panel (opened)="onPanelOpened(2)">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Alumno: {{alumnoSeleccionado?.nombre}}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            
+          
+            <div class="custom-chips">
+             Por nombre: <button *ngFor="let grupo of letrasGrupos"
+                      [class.active]="letraSeleccionada === grupo.rango"
+                      (click)="filtrarAlumnos(grupo.rango)">
+                {{ grupo.letra }}
+              </button>
+            </div>
+          
+            <!-- Lista de alumnos filtrados -->
+            <div *ngIf="letraSeleccionada && alumnosFiltrados.length > 0" class="alumnos-grid">
+              <mat-card 
+                *ngFor="let alumno of alumnosFiltrados" 
+                class="alumno-card"
+                [class.selected]="alumnoSeleccionado?.id === alumno.id"
+                (click)="seleccionarAlumno(alumno)">
+                <mat-card-header>
+                  <mat-card-title>{{ alumno.nombre }}</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  {{ alumno.apellidos }}
+                </mat-card-content>
+              </mat-card>
+            </div>
+          
+            <div *ngIf="letraSeleccionada && alumnosFiltrados.length === 0">
+              No se encontraron alumnos para el rango seleccionado.
+            </div>
+          
+            <mat-action-row>
+              <button mat-button (click)="previousStep()">Anterior</button>
+              <button mat-button (click)="nextStep()" [disabled]="!alumnoSeleccionado">Siguiente</button>
+            </mat-action-row>
+          </mat-expansion-panel>
   
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              Paso 3: Selección de Soft Skill
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <!-- Contenido del paso 3 -->
-          Esta es la selección de la soft skill
-          <mat-action-row>
-            <button mat-button (click)="previousStep()">Anterior</button>
-            <button mat-button (click)="nextStep()">Siguiente</button>
-          </mat-action-row>
-        </mat-expansion-panel>
+          <mat-expansion-panel (opened)="onPanelOpened(3)" [expanded]="currentStep === 3">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Soft Skill
+                <span *ngIf="softSkillSeleccionada"> : {{ softSkillSeleccionada.nombre }}</span>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            
+            <div *ngIf="softSkills.length > 0" class="soft-skills-container">
+              <div class="custom-chips">
+                <button 
+                  *ngFor="let skill of softSkills" 
+                  [class.active]="softSkillSeleccionada?.id === skill.id"
+                  (click)="seleccionarSoftSkill(skill)"
+                  class="skill-button">
+                  {{ skill.nombre }}
+                </button>
+              </div>
+            </div>
+          
+            <div *ngIf="softSkills.length === 0">
+              No hay soft skills disponibles para este curso.
+            </div>
+          
+            <mat-action-row>
+              <button mat-button (click)="previousStep()">Anterior</button>
+              <button 
+                mat-button 
+                color="primary" 
+                (click)="nextStep()" 
+                [disabled]="!softSkillSeleccionada">
+                Siguiente
+              </button>
+            </mat-action-row>
+          </mat-expansion-panel>
   
-        <mat-expansion-panel>
+        <mat-expansion-panel  (opened)="onPanelOpened(4)">
           <mat-expansion-panel-header>
             <mat-panel-title>
-              Paso 4: Valoración positiva/negativa
+              Valoración positiva/negativa
             </mat-panel-title>
           </mat-expansion-panel-header>
           <!-- Contenido del paso 4 -->
@@ -70,7 +120,7 @@
           </mat-action-row>
         </mat-expansion-panel>
   
-        <mat-expansion-panel>
+        <mat-expansion-panel  (opened)="onPanelOpened(5)">
           <mat-expansion-panel-header>
             <mat-panel-title>
               Paso 5: Resumen y Confirmar

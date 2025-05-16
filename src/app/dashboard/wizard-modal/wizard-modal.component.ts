@@ -1,8 +1,12 @@
 import { Component, ViewChildren, QueryList, Output, EventEmitter, OnInit } from '@angular/core';
 import { MatExpansionPanel } from '@angular/material/expansion';
+import { MatCard } from '@angular/material/card';
+import { MatChip } from '@angular/material/chips';
 import { CursoService } from '../../services/curso.service';
-import { Curso } from '../../modelo/curso';
+import { Alumno, Curso } from '../../modelo/curso';
 import { Observable } from 'rxjs';
+import { MatChipsModule } from '@angular/material/chips';
+import { SoftSkill } from 'src/app/modelo/softskill';
 
 @Component({
   selector: 'app-wizard-modal',
@@ -17,6 +21,24 @@ export class WizardModalComponent implements OnInit {
 
   cursoSeleccionado: Curso | null = null;
   cursos$: Observable<Curso[]>;
+  alumnos: Alumno[] = [];
+  alumnoSeleccionado: Alumno | null = null;
+
+
+  letrasGrupos: { letra: string; rango: string }[] = [
+    { letra: 'A-D', rango: 'A-D' },
+    { letra: 'E-H', rango: 'E-H' },
+    { letra: 'I-L', rango: 'I-L' },
+    { letra: 'M-P', rango: 'M-P' },
+    { letra: 'Q-T', rango: 'Q-T' },
+    { letra: 'U-X', rango: 'U-X' },
+    { letra: 'Y-Z', rango: 'Y-Z' }
+  ];
+  letraSeleccionada: string | null = null;
+  alumnosFiltrados: Alumno[] = [];
+  softSkillSeleccionada: SoftSkill | null = null;
+softSkills: SoftSkill[] = [];
+
 
   constructor(private cursoService: CursoService) {}
 
@@ -25,6 +47,7 @@ export class WizardModalComponent implements OnInit {
     if (!this.cursoSeleccionado) {
       this.cursos$ = this.cursoService.getCursos();
     } else {
+      this.cargarSoftSkills();
       this.currentStep = 2; // Establece el paso inicial en el segundo panel
     }
   }
@@ -53,6 +76,10 @@ export class WizardModalComponent implements OnInit {
     }
   }
 
+  onPanelOpened(stepNumber: number) {
+    this.currentStep = stepNumber;
+  }
+
   resetWizard() {
     this.currentStep = 1;
     this.panels.forEach(panel => panel.close());
@@ -63,4 +90,52 @@ export class WizardModalComponent implements OnInit {
     console.log('Modal closed');
     this.close.emit();
   }
+
+  cargarAlumnos() {
+    if (this.cursoSeleccionado) {
+      this.alumnos = this.cursoSeleccionado.alumnos || [];
+    }
+  }
+
+  filtrarAlumnos(rango: string) {
+    this.letraSeleccionada = rango;
+    if (!this.cursoSeleccionado?.alumnos) {
+      this.alumnosFiltrados = [];
+      return;
+    }
+
+    const [inicio, fin] = rango.split('-');
+    this.alumnosFiltrados = this.cursoSeleccionado.alumnos.filter(alumno => {
+      const primeraLetra = alumno.nombre.charAt(0).toUpperCase();
+      return primeraLetra >= inicio && primeraLetra <= fin;
+    });
+  }
+
+  seleccionarAlumno(alumno: Alumno) {
+    this.alumnoSeleccionado = alumno;
+    this.nextStep();
+  }
+
+  // Método para seleccionar una soft skill
+seleccionarSoftSkill(softSkill: SoftSkill) {
+  this.softSkillSeleccionada = softSkill;
+  this.nextStep();
+}
+
+// En el método que se llama cuando se selecciona un curso
+cargarSoftSkills() {
+  if (this.cursoSeleccionado?.softSkills) {
+    this.softSkills = this.cursoSeleccionado.softSkills;
+  } else {
+    this.softSkills = [];
+  }
+  this.softSkillSeleccionada = null;
+}
+
+// Llama a cargarSoftSkills cuando se selecciona un curso
+seleccionarCurso(curso: Curso) {
+  this.cursoSeleccionado = curso;
+  this.cargarAlumnos();
+  this.cargarSoftSkills(); // Agrega esta línea
+}
 }

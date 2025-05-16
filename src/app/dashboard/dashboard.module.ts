@@ -19,6 +19,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { FloatingButtonComponent } from './floating-button/floating-button.component';
 import { WizardModalComponent } from './wizard-modal/wizard-modal.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatCardModule } from '@angular/material/card';
+import { ValoracionPositivaNegativaComponent } from './valoracion-positiva-negativa/valoracion-positiva-negativa.component';
 
 
 @NgModule({
@@ -29,7 +31,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MiPerfilComponent,
     CursoDetalleComponent,
     FloatingButtonComponent,
-    WizardModalComponent
+    WizardModalComponent,
+    ValoracionPositivaNegativaComponent
   ],
   imports: [
     CommonModule,
@@ -42,7 +45,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatDividerModule,
     MatMenuModule,
     MatProgressBarModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatCardModule,
   ]
 })
 export class DashboardModule { }

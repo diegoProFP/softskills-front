@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Curso } from '../modelo/curso';
+import { Alumno } from '../modelo/alumno';
 
 @Injectable({
   providedIn: 'root'
@@ -26,4 +27,6 @@ export class CursoService {
       tap(curso => this.cursoSeleccionado = curso)
     );
   }
+
+
 }
