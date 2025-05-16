@@ -139,19 +139,39 @@
             </mat-action-row>
           </mat-expansion-panel>
   
-        <mat-expansion-panel  (opened)="onPanelOpened(5)">
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              Paso 5: Resumen y Confirmar
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <!-- Contenido del paso 5 -->
-          <p>Esta es la selección del resumen y confirmar</p>
-          <mat-action-row>
-            <button mat-button (click)="previousStep()">Anterior</button>
-            <button mat-button (click)="resetWizard()">Reiniciar</button>
-          </mat-action-row>
-        </mat-expansion-panel>
+          <mat-expansion-panel (opened)="onPanelOpened(5)" [expanded]="currentStep === 5">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Paso 5: Resumen y Confirmar
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+          
+            <div class="resumen-container">
+              <mat-card>
+                <mat-card-header>
+                  <mat-card-title>Resumen de la valoración</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <p><strong>Curso:</strong> {{ cursoSeleccionado?.nombreVisible }}</p>
+                  <p><strong>Alumno:</strong> {{ alumnoSeleccionado?.nombre }}</p>
+                  <p><strong>Soft Skill:</strong> {{ softSkillSeleccionada?.nombre }}</p>
+                  <p><strong>Valoración:</strong> {{ valoracionSeleccionada === 'positiva' ? 'Positiva' : 'Negativa' }}</p>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          
+            <mat-action-row>
+              <button mat-button (click)="previousStep()">Anterior</button>
+              <button 
+                mat-button 
+                color="primary" 
+                (click)="enviarMuestra()"
+                [disabled]="!cursoSeleccionado || !alumnoSeleccionado || 
+                           !softSkillSeleccionada || !valoracionSeleccionada">
+                Enviar
+              </button>
+            </mat-action-row>
+          </mat-expansion-panel>
       </mat-accordion>
     </div>
   </div>

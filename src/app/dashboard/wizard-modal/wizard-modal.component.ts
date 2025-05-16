@@ -7,6 +7,8 @@ import { Alumno, Curso } from '../../modelo/curso';
 import { Observable } from 'rxjs';
 import { MatChipsModule } from '@angular/material/chips';
 import { SoftSkill } from 'src/app/modelo/softskill';
+import { SoftSkillService } from 'src/app/services/softskill.service';
+import { MuestraSK } from 'src/app/modelo/muestra-sk';
 
 @Component({
   selector: 'app-wizard-modal',
@@ -42,7 +44,9 @@ softSkills: SoftSkill[] = [];
 valoracionSeleccionada: 'positiva' | 'negativa' | null = null;
 
 
-  constructor(private cursoService: CursoService) {}
+  constructor(private cursoService: CursoService,
+    private softSkillService: SoftSkillService
+  ) {}
 
   ngOnInit() {
     this.cursoSeleccionado = this.cursoService['cursoSeleccionado'];
@@ -146,6 +150,32 @@ seleccionarCurso(curso: Curso) {
 handleValoracionSeleccionada(valoracion: 'positiva' | 'negativa') {
   this.valoracionSeleccionada = valoracion;
   this.nextStep();
+}
+
+// Agrega este método
+enviarMuestra() {
+  if (!this.cursoSeleccionado || !this.alumnoSeleccionado || 
+      !this.softSkillSeleccionada || !this.valoracionSeleccionada) {
+    return;
+  }
+
+  const muestra: MuestraSK = {
+    profesorId: this.cursoSeleccionado.profesor.id,
+    cursoId: this.cursoSeleccionado.id,
+    alumnoId: this.alumnoSeleccionado.id,
+    softSkillId: this.softSkillSeleccionada.id,
+    valor: this.valoracionSeleccionada === 'positiva' ? 1 : -1
+  };
+
+  this.softSkillService.crearMuestra(muestra).subscribe({
+    next: () => {
+      this.closeModal(); // Cierra el modal después de enviar
+    },
+    error: (error) => {
+      console.error('Error al enviar la muestra:', error);
+      // Aquí podrías mostrar un mensaje de error al usuario
+    }
+  });
 }
 
 }
