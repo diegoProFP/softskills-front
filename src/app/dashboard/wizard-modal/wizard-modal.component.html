@@ -106,19 +106,38 @@
             </mat-action-row>
           </mat-expansion-panel>
   
-        <mat-expansion-panel  (opened)="onPanelOpened(4)">
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              Valoración positiva/negativa
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <!-- Contenido del paso 4 -->
-          Esta es la selección de la valoración
-          <mat-action-row>
-            <button mat-button (click)="previousStep()">Anterior</button>
-            <button mat-button (click)="nextStep()">Siguiente</button>
-          </mat-action-row>
-        </mat-expansion-panel>
+          <mat-expansion-panel (opened)="onPanelOpened(4)" [expanded]="currentStep === 4">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Paso 4: Valoración
+                <span *ngIf="valoracionSeleccionada">
+                  - Valoración: {{ valoracionSeleccionada === 'positiva' ? 'Positiva' : 'Negativa' }}
+                </span>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+          
+            <div *ngIf="softSkillSeleccionada?.tipo === 0">
+              <app-valoracion-positiva-negativa 
+                (valoracionSeleccionada)="handleValoracionSeleccionada($event)">
+              </app-valoracion-positiva-negativa>
+            </div>
+          
+            <div *ngIf="softSkillSeleccionada?.tipo !== 0">
+              <!-- Aquí irían los otros tipos de valoración según el tipo -->
+              <p>Este tipo de valoración no está implementado aún.</p>
+            </div>
+          
+            <mat-action-row>
+              <button mat-button (click)="previousStep()">Anterior</button>
+              <button 
+                mat-button 
+                color="primary" 
+                (click)="nextStep()" 
+                [disabled]="!valoracionSeleccionada">
+                Siguiente
+              </button>
+            </mat-action-row>
+          </mat-expansion-panel>
   
         <mat-expansion-panel  (opened)="onPanelOpened(5)">
           <mat-expansion-panel-header>

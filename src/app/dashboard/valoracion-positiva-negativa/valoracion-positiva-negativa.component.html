@@ -1,1 +1,19 @@
-<p>valoracion-positiva-negativa works!</p>
+<div class="valoracion-container">
+    <button 
+      mat-raised-button 
+      color="primary" 
+      (click)="seleccionarValoracion('positiva')"
+      class="valoracion-button">
+      <mat-icon>thumb_up</mat-icon>
+      Positiva
+    </button>
+  
+    <button 
+      mat-raised-button 
+      color="warn" 
+      (click)="seleccionarValoracion('negativa')"
+      class="valoracion-button">
+      <mat-icon>thumb_down</mat-icon>
+      Negativa
+    </button>
+  </div>

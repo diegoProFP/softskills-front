@@ -39,6 +39,8 @@ export class WizardModalComponent implements OnInit {
   softSkillSeleccionada: SoftSkill | null = null;
 softSkills: SoftSkill[] = [];
 
+valoracionSeleccionada: 'positiva' | 'negativa' | null = null;
+
 
   constructor(private cursoService: CursoService) {}
 
@@ -138,4 +140,12 @@ seleccionarCurso(curso: Curso) {
   this.cargarAlumnos();
   this.cargarSoftSkills(); // Agrega esta línea
 }
+
+
+// Método para manejar la selección de valoración
+handleValoracionSeleccionada(valoracion: 'positiva' | 'negativa') {
+  this.valoracionSeleccionada = valoracion;
+  this.nextStep();
+}
+
 }
