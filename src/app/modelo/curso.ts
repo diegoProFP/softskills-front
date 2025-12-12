@@ -14,3 +14,5 @@ export interface Curso {
   alumnos: Alumno[];
   softSkills: SoftSkill[];
 }
+export { Alumno };
+

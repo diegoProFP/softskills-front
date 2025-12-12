@@ -1,0 +1,5 @@
+<button class="floating-button" (click)="toggleModal()">
+    +
+  </button>
+  
+  <app-wizard-modal *ngIf="isModalVisible" (close)="toggleModal()"></app-wizard-modal>

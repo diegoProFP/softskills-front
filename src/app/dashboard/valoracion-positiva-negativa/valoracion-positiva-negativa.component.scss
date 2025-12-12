@@ -1,0 +1,21 @@
+.valoracion-container {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin: 24px 0;
+  }
+  
+  .valoracion-button {
+    flex: 1;
+    min-width: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-weight: 500;
+    height: 48px;
+  }
+  
+  .valoracion-button mat-icon {
+    font-size: 24px;
+  }
