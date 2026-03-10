@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CursoService } from '../../services/curso.service';
 import { Curso } from '../../modelo/curso';
+import { NotificationService } from '../../services/notification.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cursos',
@@ -13,9 +15,25 @@ export class CursosComponent implements OnInit {
   cursosNoRegistrados: Curso[] = [];
   loading = true;
 
-  constructor(private cursoService: CursoService) {}
+  registrarCurso(id: string): void {
+    this.cursoService.registrarCurso(id).subscribe({
+      next: () => {
+        this.notificationService.showSuccess('Curso registrado exitosamente');
+        this.cargarCursos();
+      },
+      error: () => {
+        this.notificationService.showError('Error al registrar el curso');
+      }
+    });
+  }
 
-  ngOnInit(): void {
+  constructor(
+    private cursoService: CursoService,
+    private notificationService: NotificationService,
+    private router: Router
+  ) {}
+
+  cargarCursos(): void {
     this.cursoService.getCursos().subscribe({
       next: (data) => {
         this.cursos = data || [];
@@ -28,5 +46,9 @@ export class CursosComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  ngOnInit(): void {
+    this.cargarCursos();
   }
 }

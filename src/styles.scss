@@ -2,3 +2,47 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Estilos para el snackbar */
+.snack-success {
+  background-color: #4CAF50 !important;
+  color: white !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+  font-weight: 500 !important;
+}
+
+.snack-error {
+  background-color: #f44336 !important;
+  color: white !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+  font-weight: 500 !important;
+}
+
+.snack-info {
+  background-color: #2196F3 !important;
+  color: white !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+  font-weight: 500 !important;
+}
+
+.snack-warning {
+  background-color: #FFC107 !important;
+  color: black !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+  font-weight: 500 !important;
+}
+
+/* Posición del snackbar en la esquina superior derecha */
+::ng-deep .mat-snack-bar-container {
+  top: 20px !important;
+  right: 20px !important;
+  left: auto !important;
+  bottom: auto !important;
+  max-width: 350px !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+}
