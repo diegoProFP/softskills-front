@@ -117,10 +117,12 @@ valoracionSeleccionada: 'positiva' | 'negativa' | null = null;
     }
 
     const [inicio, fin] = rango.split('-');
-    this.alumnosFiltrados = this.cursoSeleccionado.alumnos.filter(alumno => {
-      const primeraLetra = alumno.nombre.charAt(0).toUpperCase();
-      return primeraLetra >= inicio && primeraLetra <= fin;
-    });
+    this.alumnosFiltrados = this.cursoSeleccionado.alumnos
+      .filter(alumno => {
+        const primeraLetra = alumno.nombre.charAt(0).toUpperCase();
+        return primeraLetra >= inicio && primeraLetra <= fin;
+      })
+      .sort((a, b) => a.nombre.localeCompare(b.nombre));
   }
 
   seleccionarAlumno(alumno: Alumno) {

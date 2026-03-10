@@ -28,5 +28,7 @@ export class CursoService {
     );
   }
 
-
+  registrarCurso(id: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${id}/registrar`, {});
+  }
 }

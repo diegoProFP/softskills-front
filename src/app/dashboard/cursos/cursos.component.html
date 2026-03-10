@@ -14,9 +14,12 @@
     </div>
     <div *ngIf="cursosNoRegistrados.length > 0">
       <h3>Cursos No Registrados</h3>
-      <mat-card class="curso-card" *ngFor="let curso of cursosNoRegistrados" [routerLink]="['/dashboard/cursos', curso.id]" style="cursor:pointer">
+      <mat-card class="curso-card" *ngFor="let curso of cursosNoRegistrados">
         <mat-card-title>{{ curso.nombreCorto }}</mat-card-title>
         <mat-card-content>{{ curso.nombreLargo }}</mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="primary" (click)="registrarCurso(curso.id)">Registrar Curso</button>
+        </mat-card-actions>
       </mat-card>
     </div>
   </div>
