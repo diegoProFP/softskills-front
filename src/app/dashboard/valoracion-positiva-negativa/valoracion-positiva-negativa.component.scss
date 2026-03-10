@@ -1,21 +1,30 @@
 .valoracion-container {
-    display: flex;
-    gap: 16px;
-    justify-content: center;
-    margin: 24px 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  justify-content: center;
+  margin: 24px 0;
+}
+
+.valoracion-button {
+  flex: 1;
+  min-width: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 700;
+  height: 58px;
+  border-radius: 18px;
+  box-shadow: var(--shadow-sm);
+}
+
+.valoracion-button mat-icon {
+  font-size: 24px;
+}
+
+@media (max-width: 640px) {
+  .valoracion-container {
+    grid-template-columns: 1fr;
   }
-  
-  .valoracion-button {
-    flex: 1;
-    min-width: 120px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    font-weight: 500;
-    height: 48px;
-  }
-  
-  .valoracion-button mat-icon {
-    font-size: 24px;
-  }
+}

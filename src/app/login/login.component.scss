@@ -1,70 +1,112 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  padding: 48px 20px;
+}
+
 .login-container {
-  max-width: 500px;
-  margin: 6vh auto 0 auto;
-  padding: 2.5rem 2.2rem 2rem 2.2rem;
-  background: #f8f6ff;
-  border-radius: 16px;
-  box-shadow: 0 6px 24px rgba(81,45,168,0.13), 0 1.5px 4px rgba(44,62,80,0.08);
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 2.75rem;
+  background:
+    linear-gradient(180deg, rgba(255, 250, 241, 0.94), rgba(255, 255, 255, 0.74));
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(18px);
+}
+
+.login-container::before,
+.login-container::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.login-container::before {
+  width: 220px;
+  height: 220px;
+  top: -90px;
+  right: -80px;
+  background: radial-gradient(circle, rgba(15, 139, 141, 0.18), transparent 70%);
+}
+
+.login-container::after {
+  width: 240px;
+  height: 240px;
+  bottom: -110px;
+  left: -100px;
+  background: radial-gradient(circle, rgba(255, 122, 89, 0.18), transparent 70%);
 }
 
 .logo-placeholder {
-  width: 175px;
-  height: 175px;
-  margin-bottom: 1.3rem;
-  border-radius: 22%;
-  border: 2.5px solid #ede7f6;
-  background: linear-gradient(135deg, #7e57c2 60%, #43e97b 100%);
+  width: 160px;
+  height: 160px;
+  margin-bottom: 1.5rem;
+  border-radius: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background: linear-gradient(135deg, rgba(15, 139, 141, 0.12), rgba(255, 122, 89, 0.2));
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.4rem;
   color: #fff;
-  box-shadow: 0 2px 10px rgba(81,45,168,0.08);
+  box-shadow: var(--shadow-md);
   overflow: hidden;
   position: relative;
 }
+
 .logo-placeholder img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 22%;
   display: block;
 }
+
 .logo-placeholder mat-icon {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  opacity: 0.15;
+  inset: 0;
+  margin: auto;
+  width: fit-content;
+  height: fit-content;
+  font-size: 3.5rem;
+  opacity: 0.16;
   pointer-events: none;
 }
 
 .app-title {
   text-align: center;
-  color: #512da8;
-  font-size: 2rem;
+  color: var(--text-main);
+  font-size: clamp(2rem, 4vw, 2.8rem);
   font-weight: 800;
-  margin-bottom: 1.6rem;
-  letter-spacing: 0.5px;
-  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+  margin-bottom: 1.75rem;
+}
+
+form {
+  width: 100%;
+  position: relative;
+  z-index: 1;
 }
 
 h2 {
   text-align: center;
-  color: #7e57c2;
-  margin-bottom: 2rem;
-  font-size: 1.25rem;
+  color: var(--accent-strong);
+  margin-bottom: 1.75rem;
+  font-size: 1.15rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
 }
 
 label {
   display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-  color: #7e57c2;
+  margin-bottom: 0.55rem;
+  font-weight: 700;
+  color: var(--text-main);
 }
 
 .password-input-container {
@@ -78,36 +120,36 @@ input[type="email"],
 input[type="text"],
 input[type="password"] {
   width: 100%;
-  padding: 0.55rem;
-  margin-bottom: 1.1rem;
-  border: 1.5px solid #b39ddb;
-  border-radius: 5px;
+  padding: 0.95rem 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(23, 48, 66, 0.12);
+  border-radius: 16px;
   font-size: 1rem;
-  background: #f3f0fa;
-  color: #333;
-  transition: border 0.2s;
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--text-main);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
+
 input[type="email"]:focus,
-input[type="text"],
+input[type="text"]:focus,
 input[type="password"]:focus {
-  border: 1.5px solid #512da8;
+  border-color: rgba(15, 139, 141, 0.55);
+  box-shadow: 0 0 0 4px rgba(15, 139, 141, 0.12);
   outline: none;
+  transform: translateY(-1px);
 }
 
 .password-toggle-button {
   position: absolute;
-  right: 0;
-  top: 0;
-  background: none;
-  border: none;
-  padding: 0.5rem;
-  color: #7e57c2;
-  cursor: pointer;
-  transition: color 0.2s;
+  right: 0.35rem;
+  top: 0.15rem;
+  color: var(--text-soft);
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .password-toggle-button:hover {
-  color: #512da8;
+  color: var(--accent-strong);
+  transform: scale(1.04);
 }
 
 .password-toggle-button mat-icon {
@@ -116,38 +158,71 @@ input[type="password"]:focus {
 
 button[type="submit"] {
   width: 100%;
-  padding: 0.9rem;
-  background: linear-gradient(90deg, #512da8 60%, #43e97b 100%);
+  padding: 1rem 1.2rem;
+  background: linear-gradient(135deg, var(--highlight), #ff9870);
   color: #fff;
   border: none;
-  border-radius: 5px;
-  font-size: 1.08rem;
-  font-weight: 700;
+  border-radius: 16px;
+  font-size: 1rem;
+  font-weight: 800;
   cursor: pointer;
-  margin-top: 0.5rem;
+  margin-top: 0.6rem;
   margin-bottom: 0.7rem;
-  transition: background 0.2s, box-shadow 0.2s;
-  box-shadow: 0 2px 8px rgba(81,45,168,0.10);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  box-shadow: 0 16px 30px rgba(255, 122, 89, 0.24);
 }
+
+button[type="submit"]:hover:not(:disabled) {
+  transform: translateY(-2px);
+  filter: saturate(1.05);
+}
+
 button[type="submit"]:disabled {
-  background: #bdbdbd;
-  color: #fff;
+  background: linear-gradient(135deg, #c8cfd4, #b8c0c8);
+  color: #eef1f3;
   cursor: not-allowed;
+  box-shadow: none;
 }
 
 .error {
-  color: #e57373;
-  font-size: 0.98rem;
-  margin-bottom: 0.7rem;
+  color: var(--danger);
+  font-size: 0.95rem;
+  margin-bottom: 0.75rem;
   text-align: center;
+  font-weight: 600;
 }
 
 .jwt-info {
-  background: #ede7f6;
-  color: #333;
-  border-radius: 8px;
-  margin-top: 2rem;
-  padding: 1.1rem 1rem 1rem 1rem;
-  font-size: 0.98rem;
-  box-shadow: 0 1px 6px rgba(81,45,168,0.07);
+  width: 100%;
+  background: rgba(221, 243, 241, 0.8);
+  color: var(--text-main);
+  border-radius: var(--radius-md);
+  margin-top: 1.6rem;
+  padding: 1.1rem 1rem 1rem;
+  font-size: 0.95rem;
+  border: 1px solid rgba(15, 139, 141, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+@media (max-width: 640px) {
+  :host {
+    padding: 24px 14px;
+  }
+
+  .login-container {
+    padding: 2rem 1.4rem;
+    border-radius: 24px;
+  }
+
+  .logo-placeholder {
+    width: 128px;
+    height: 128px;
+    border-radius: 24px;
+  }
 }
