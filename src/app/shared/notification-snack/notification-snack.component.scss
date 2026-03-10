@@ -1,26 +1,28 @@
 .snack-success {
-    background-color: #4caf50;
-    color: white;
-  }
-  
-  .snack-error {
-    background-color: #f44336;
-    color: white;
-  }
-  
-  .snack-info {
-    background-color: #2196f3;
-    color: white;
-  }
-  
-  .snack-warning {
-    background-color: #ff9800;
-    color: white;
-  }
-  
-  .snack-container {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
-  }
+  background: linear-gradient(135deg, #14956f, #1f9d77);
+  color: white;
+}
+
+.snack-error {
+  background: linear-gradient(135deg, #c84f45, #d95d52);
+  color: white;
+}
+
+.snack-info {
+  background: linear-gradient(135deg, #12757a, #0f8b8d);
+  color: white;
+}
+
+.snack-warning {
+  background: linear-gradient(135deg, #e8a228, #d9911a);
+  color: white;
+}
+
+.snack-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  border-radius: 18px;
+  box-shadow: var(--shadow-md);
+}

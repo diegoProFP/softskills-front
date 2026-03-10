@@ -1,5 +1,43 @@
 .bienvenida-wrapper {
-  text-align: center;
-  margin-top: 3rem;
-  color: #512da8;
+  text-align: left;
+  margin-top: 0;
+  padding: 2.5rem;
+  border-radius: var(--radius-xl);
+  background:
+    linear-gradient(135deg, rgba(15, 139, 141, 0.12), rgba(255, 122, 89, 0.14)),
+    rgba(255, 250, 241, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+}
+
+.bienvenida-wrapper::after {
+  content: "";
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  right: -100px;
+  top: -110px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.55), transparent 70%);
+}
+
+h2 {
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  color: var(--text-main);
+  margin-bottom: 0.7rem;
+}
+
+p {
+  max-width: 48ch;
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .bienvenida-wrapper {
+    padding: 1.6rem;
+    border-radius: 24px;
+  }
 }
