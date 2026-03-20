@@ -21,6 +21,7 @@ import { WizardModalComponent } from './wizard-modal/wizard-modal.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCardModule } from '@angular/material/card';
 import { ValoracionPositivaNegativaComponent } from './valoracion-positiva-negativa/valoracion-positiva-negativa.component';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -47,6 +48,7 @@ import { ValoracionPositivaNegativaComponent } from './valoracion-positiva-negat
     MatProgressBarModule,
     MatExpansionModule,
     MatCardModule,
+    SharedModule,
   ]
 })
 export class DashboardModule { }

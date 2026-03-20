@@ -85,6 +85,7 @@
                   [class.active]="softSkillSeleccionada?.id === skill.id"
                   (click)="seleccionarSoftSkill(skill)"
                   class="skill-button">
+                  <app-soft-skill-icon [code]="skill.codigo" [label]="skill.nombre" size="sm"></app-soft-skill-icon>
                   {{ skill.nombre }}
                 </button>
               </div>

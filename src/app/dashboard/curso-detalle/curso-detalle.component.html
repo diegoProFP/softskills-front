@@ -20,7 +20,16 @@
           <tr>
             <th>ID</th>
             <th>Nombre</th>
-            <th *ngFor="let skill of skillColumns">{{ skill }}</th>
+            <th *ngFor="let skill of skillColumns">
+              <span class="skill-header">
+                <app-soft-skill-icon
+                  [code]="getSoftSkillByName(skill)?.codigo"
+                  [label]="skill"
+                  size="sm">
+                </app-soft-skill-icon>
+                <span>{{ skill }}</span>
+              </span>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -40,6 +49,7 @@
     <h3>Soft Skills</h3>
     <div class="soft-skills-chips">
       <mat-chip *ngFor="let softSkill of curso.softSkills" [color]="'accent'">
+        <app-soft-skill-icon [code]="softSkill.codigo" [label]="softSkill.nombre" size="sm"></app-soft-skill-icon>
         {{ softSkill.nombre }}
       </mat-chip>
     </div>

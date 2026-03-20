@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CursoService } from '../../services/curso.service';
 import { Curso } from '../../modelo/curso';
 import { Alumno } from '../../modelo/alumno';
+import { SoftSkill } from '../../modelo/softskill';
 
 @Component({
   selector: 'app-curso-detalle',
@@ -48,5 +49,9 @@ export class CursoDetalleComponent implements OnInit {
     const total = alumno?.totalesPorSkill?.[skill];
 
     return typeof total === 'number' ? total : null;
+  }
+
+  getSoftSkillByName(skillName: string): SoftSkill | undefined {
+    return this.curso?.softSkills?.find((softSkill) => softSkill.nombre === skillName);
   }
 }

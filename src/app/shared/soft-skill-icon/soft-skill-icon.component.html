@@ -1,0 +1,9 @@
+<span class="soft-skill-icon" [ngClass]="size" [attr.title]="label || code || 'Soft skill'">
+  <img
+    class="soft-skill-icon-image"
+    [src]="imageSrc"
+    [attr.alt]="ariaLabel"
+    [attr.aria-label]="ariaLabel"
+    (error)="handleImageError()"
+  />
+</span>
