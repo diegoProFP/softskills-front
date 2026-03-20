@@ -1,8 +1,8 @@
 .curso-detalle-container {
   padding: 0;
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: none;
+  margin: 0;
   display: grid;
   gap: 1.4rem;
 }
@@ -101,6 +101,17 @@ h2 {
 
   .mat-chip {
     cursor: default;
+  }
+}
+
+@media (min-width: 1100px) {
+  .curso-detalle-container {
+    grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+    align-items: start;
+  }
+
+  .alumnos-wrapper {
+    grid-column: 1 / -1;
   }
 }
 

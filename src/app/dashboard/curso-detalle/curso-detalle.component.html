@@ -21,13 +21,17 @@
             <th>ID</th>
             <th>Nombre</th>
             <th>Email</th>
+            <th *ngFor="let skill of skillColumns">{{ skill }}</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let alumno of curso.alumnos">
+          <tr *ngFor="let alumno of curso?.alumnos">
             <td>{{ alumno.id }}</td>
             <td>{{ alumno.nombre }}</td>
             <td>{{ alumno.email }}</td>
+            <td *ngFor="let skill of skillColumns">
+              {{ getTotalPorSkill(alumno, skill) ?? '-' }}
+            </td>
           </tr>
         </tbody>
       </table>

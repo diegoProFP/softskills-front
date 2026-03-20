@@ -3,4 +3,5 @@ export interface Alumno {
   nombre: string;
   username: string | null;
   email: string;
+  totalesPorSkill?: Record<string, number>;
 }

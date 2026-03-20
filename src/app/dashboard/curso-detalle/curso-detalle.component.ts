@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CursoService } from '../../services/curso.service';
 import { Curso } from '../../modelo/curso';
+import { Alumno } from '../../modelo/alumno';
 
 @Component({
   selector: 'app-curso-detalle',
@@ -30,5 +31,22 @@ export class CursoDetalleComponent implements OnInit {
     } else {
       this.loading = false;
     }
+  }
+
+  get skillColumns(): string[] {
+    if (!this.curso) {
+      return [];
+    }
+
+    const nombresSoftSkills = this.curso.softSkills?.map((softSkill) => softSkill.nombre) ?? [];
+    const nombresTotales = this.curso.alumnos?.flatMap((alumno) => Object.keys(alumno.totalesPorSkill ?? {})) ?? [];
+
+    return Array.from(new Set([...nombresSoftSkills, ...nombresTotales]));
+  }
+
+  getTotalPorSkill(alumno: Alumno, skill: string): number | null {
+    const total = alumno?.totalesPorSkill?.[skill];
+
+    return typeof total === 'number' ? total : null;
   }
 }
