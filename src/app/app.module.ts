@@ -13,6 +13,7 @@ import { JwtInterceptor } from './jwt.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NotificationSnackComponent } from './shared/notification-snack/notification-snack.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NotificationService } from './services/notification.service';
 
 @NgModule({
@@ -29,7 +30,8 @@ import { NotificationService } from './services/notification.service';
     BrowserAnimationsModule,
     MatIconModule,
     MatSnackBarModule,
-    MatChipsModule
+    MatChipsModule,
+    MatProgressBarModule
   ],
   providers: [
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },

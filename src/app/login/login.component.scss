@@ -21,6 +21,22 @@
   backdrop-filter: blur(18px);
 }
 
+.login-loading-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.login-loading-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(2px);
+  pointer-events: none;
+  z-index: 0;
+}
+
 .login-container::before,
 .login-container::after {
   content: "";
@@ -130,6 +146,11 @@ input[type="password"] {
   transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
+input:disabled {
+  opacity: 0.72;
+  cursor: wait;
+}
+
 input[type="email"]:focus,
 input[type="text"]:focus,
 input[type="password"]:focus {
@@ -150,6 +171,11 @@ input[type="password"]:focus {
 .password-toggle-button:hover {
   color: var(--accent-strong);
   transform: scale(1.04);
+}
+
+.password-toggle-button:disabled {
+  opacity: 0.6;
+  cursor: wait;
 }
 
 .password-toggle-button mat-icon {
@@ -182,6 +208,14 @@ button[type="submit"]:disabled {
   color: #eef1f3;
   cursor: not-allowed;
   box-shadow: none;
+}
+
+.loading-message {
+  margin: 0.15rem 0 0.9rem;
+  text-align: center;
+  color: var(--accent-strong);
+  font-size: 0.94rem;
+  font-weight: 600;
 }
 
 .error {
