@@ -5,6 +5,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { UserService } from '../services/user.service';
 import { UserInfo } from '../modelo/user-info';
 import { Router } from '@angular/router';
+import { LoadingService } from '../services/loading.service';
 
 @Component({
   selector: 'app-login',
@@ -16,12 +17,14 @@ export class LoginComponent {
   loginError: string = '';
   jwtPayload: any = null;
   showPassword: boolean = false;
+  isLoading$ = this.loadingService.isLoading$;
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private jwtHelper: JwtHelperService,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private loadingService: LoadingService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -33,8 +36,10 @@ export class LoginComponent {
 
   onSubmit(): void {
     if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
       return;
     }
+    this.loginError = '';
     const { email, password } = this.loginForm.value;
     this.authService.login(email, password).subscribe({
       next: (response) => {
