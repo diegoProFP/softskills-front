@@ -13,6 +13,8 @@ import { SoftSkill } from '../../modelo/softskill';
 export class CursoDetalleComponent implements OnInit {
   curso: Curso | null = null;
   loading = true;
+  isWizardVisible = false;
+  alumnoWizardSeleccionado: Alumno | null = null;
 
   constructor(private route: ActivatedRoute, private cursoService: CursoService) {}
 
@@ -53,5 +55,19 @@ export class CursoDetalleComponent implements OnInit {
 
   getSoftSkillByName(skillName: string): SoftSkill | undefined {
     return this.curso?.softSkills?.find((softSkill) => softSkill.nombre === skillName);
+  }
+
+  abrirWizardNuevaMuestra(alumno: Alumno): void {
+    this.alumnoWizardSeleccionado = alumno;
+    this.isWizardVisible = true;
+  }
+
+  cerrarWizardNuevaMuestra(): void {
+    this.isWizardVisible = false;
+    this.alumnoWizardSeleccionado = null;
+  }
+
+  getNuevaMuestraTooltip(alumno: Alumno): string {
+    return `nueva muestra para el alumno ${alumno.nombre}`;
   }
 }

@@ -63,7 +63,7 @@ h2 {
 
   table {
     width: 100%;
-    min-width: max-content;
+    min-width: 100%;
     border-collapse: separate;
     border-spacing: 0;
     border-radius: 18px;
@@ -81,6 +81,7 @@ h2 {
   td {
     padding: 1rem 1.1rem;
     text-align: left;
+    vertical-align: middle;
     border-bottom: 1px solid rgba(23, 48, 66, 0.08);
     color: var(--text-main);
   }
@@ -123,7 +124,42 @@ h2 {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  min-width: max-content;
+  min-width: 0;
+  white-space: normal;
+}
+
+.accion-cell {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.nueva-muestra-button {
+  width: 2.2rem;
+  height: 2.2rem;
+  border: none;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--highlight), #ff9870);
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 10px 18px rgba(255, 122, 89, 0.22);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.nueva-muestra-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 22px rgba(255, 122, 89, 0.28);
+  filter: saturate(1.05);
+}
+
+.nueva-muestra-button .mat-icon {
+  margin: 0;
+  font-size: 1.1rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  line-height: 1.1rem;
 }
 
 @media (min-width: 1100px) {
@@ -153,6 +189,11 @@ h2 {
 
   table {
     min-width: 620px;
+  }
+
+  .skill-header {
+    min-width: max-content;
+    white-space: nowrap;
   }
 
   th,

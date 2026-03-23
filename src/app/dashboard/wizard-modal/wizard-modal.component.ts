@@ -1,4 +1,4 @@
-import { Component, ViewChildren, QueryList, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, ViewChildren, QueryList, Output, EventEmitter, OnInit, Input } from '@angular/core';
 import { MatExpansionPanel } from '@angular/material/expansion';
 import { MatCard } from '@angular/material/card';
 import { MatChip } from '@angular/material/chips';
@@ -19,6 +19,7 @@ import { NotificationService } from 'src/app/services/notification.service';
   styleUrls: ['./wizard-modal.component.scss']
 })
 export class WizardModalComponent implements OnInit {
+  @Input() initialAlumno: Alumno | null = null;
   @Output() close = new EventEmitter<void>();
   currentStep: number = 1;
   totalSteps: number = 5;
@@ -59,15 +60,23 @@ valoracionSeleccionada: 'positiva' | 'negativa' | null = null;
     if (!this.cursoSeleccionado) {
       this.cursos$ = this.cursoService.getCursos();
     } else {
+      this.cargarAlumnos();
       this.cargarSoftSkills();
-      this.currentStep = 2; // Establece el paso inicial en el segundo panel
+      if (this.initialAlumno) {
+        this.alumnoSeleccionado = this.initialAlumno;
+        this.currentStep = 3;
+      } else {
+        this.currentStep = 2;
+      }
     }
   }
 
   ngAfterViewInit() {
-    if (this.currentStep === 2) {
-      const panelArray = this.panels.toArray();
-      panelArray[1].open(); // Abre el segundo panel
+    const panelArray = this.panels.toArray();
+    const activePanel = panelArray[this.currentStep - 1];
+
+    if (activePanel) {
+      activePanel.open();
     }
   }
 
