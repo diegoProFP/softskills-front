@@ -16,11 +16,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { FloatingButtonComponent } from './floating-button/floating-button.component';
 import { WizardModalComponent } from './wizard-modal/wizard-modal.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCardModule } from '@angular/material/card';
 import { ValoracionPositivaNegativaComponent } from './valoracion-positiva-negativa/valoracion-positiva-negativa.component';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -45,8 +47,10 @@ import { ValoracionPositivaNegativaComponent } from './valoracion-positiva-negat
     MatDividerModule,
     MatMenuModule,
     MatProgressBarModule,
+    MatTooltipModule,
     MatExpansionModule,
     MatCardModule,
+    SharedModule,
   ]
 })
 export class DashboardModule { }

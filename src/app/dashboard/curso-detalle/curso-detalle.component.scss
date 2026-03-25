@@ -1,8 +1,8 @@
 .curso-detalle-container {
   padding: 0;
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: none;
+  margin: 0;
   display: grid;
   gap: 1.4rem;
 }
@@ -56,32 +56,48 @@ h2 {
 .alumnos-table {
   margin: 1.4rem 0 0;
   width: 100%;
+  overflow: auto;
+  max-height: min(70vh, 720px);
+  border-radius: 18px;
+  -webkit-overflow-scrolling: touch;
 
   table {
     width: 100%;
+    min-width: 100%;
     border-collapse: separate;
     border-spacing: 0;
-    overflow: hidden;
     border-radius: 18px;
     background: rgba(255, 255, 255, 0.62);
     border: 1px solid rgba(23, 48, 66, 0.08);
+  }
+
+  thead {
+    position: sticky;
+    top: 0;
+    z-index: 3;
   }
 
   th,
   td {
     padding: 1rem 1.1rem;
     text-align: left;
+    vertical-align: middle;
     border-bottom: 1px solid rgba(23, 48, 66, 0.08);
     color: var(--text-main);
   }
 
   th {
-    background: rgba(15, 139, 141, 0.08);
+    position: sticky;
+    top: 0;
+    z-index: 4;
+    background: rgba(244, 250, 249, 0.96);
     font-weight: 800;
     color: var(--accent-strong);
     text-transform: uppercase;
     letter-spacing: 0.08em;
     font-size: 0.8rem;
+    backdrop-filter: blur(10px);
+    box-shadow: inset 0 -1px 0 rgba(23, 48, 66, 0.08);
   }
 
   tr:hover td {
@@ -104,6 +120,59 @@ h2 {
   }
 }
 
+.skill-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  white-space: normal;
+}
+
+.accion-cell {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.nueva-muestra-button {
+  width: 2.2rem;
+  height: 2.2rem;
+  border: none;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--highlight), #ff9870);
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 10px 18px rgba(255, 122, 89, 0.22);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.nueva-muestra-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 22px rgba(255, 122, 89, 0.28);
+  filter: saturate(1.05);
+}
+
+.nueva-muestra-button .mat-icon {
+  margin: 0;
+  font-size: 1.1rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  line-height: 1.1rem;
+}
+
+@media (min-width: 1100px) {
+  .curso-detalle-container {
+    grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+    align-items: start;
+  }
+
+  .alumnos-wrapper {
+    grid-column: 1 / -1;
+  }
+}
+
 @media (max-width: 768px) {
   .curso-info-wrapper,
   .alumnos-wrapper,
@@ -113,10 +182,23 @@ h2 {
   }
 
   .alumnos-table {
-    overflow-x: auto;
+    margin-top: 1rem;
+    max-height: 60vh;
+    box-shadow: inset -18px 0 18px -18px rgba(23, 48, 66, 0.28);
   }
 
   table {
     min-width: 620px;
+  }
+
+  .skill-header {
+    min-width: max-content;
+    white-space: nowrap;
+  }
+
+  th,
+  td {
+    padding: 0.9rem 0.85rem;
+    white-space: nowrap;
   }
 }

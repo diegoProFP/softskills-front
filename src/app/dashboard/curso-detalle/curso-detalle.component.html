@@ -20,14 +20,37 @@
           <tr>
             <th>ID</th>
             <th>Nombre</th>
-            <th>Email</th>
+            <th>Accion</th>
+            <th *ngFor="let skill of skillColumns">
+              <span class="skill-header">
+                <app-soft-skill-icon
+                  [code]="getSoftSkillByName(skill)?.codigo"
+                  [label]="skill"
+                  size="sm">
+                </app-soft-skill-icon>
+                <span>{{ skill }}</span>
+              </span>
+            </th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let alumno of curso.alumnos">
+          <tr *ngFor="let alumno of curso?.alumnos">
             <td>{{ alumno.id }}</td>
             <td>{{ alumno.nombre }}</td>
-            <td>{{ alumno.email }}</td>
+            <td class="accion-cell">
+              <button
+                type="button"
+                class="nueva-muestra-button"
+                (click)="abrirWizardNuevaMuestra(alumno)"
+                [matTooltip]="getNuevaMuestraTooltip(alumno)"
+                matTooltipPosition="above"
+                [attr.aria-label]="getNuevaMuestraTooltip(alumno)">
+                <mat-icon>add</mat-icon>
+              </button>
+            </td>
+            <td *ngFor="let skill of skillColumns">
+              {{ getTotalPorSkill(alumno, skill) ?? '-' }}
+            </td>
           </tr>
         </tbody>
       </table>
@@ -38,6 +61,7 @@
     <h3>Soft Skills</h3>
     <div class="soft-skills-chips">
       <mat-chip *ngFor="let softSkill of curso.softSkills" [color]="'accent'">
+        <app-soft-skill-icon [code]="softSkill.codigo" [label]="softSkill.nombre" size="sm"></app-soft-skill-icon>
         {{ softSkill.nombre }}
       </mat-chip>
     </div>
@@ -47,4 +71,9 @@
     <p>No se encontró información del curso.</p>
   </ng-template>
 </div>
+<app-wizard-modal
+  *ngIf="isWizardVisible"
+  [initialAlumno]="alumnoWizardSeleccionado"
+  (close)="cerrarWizardNuevaMuestra()">
+</app-wizard-modal>
 <app-floating-button></app-floating-button>

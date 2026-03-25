@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CursoService } from '../../services/curso.service';
 import { Curso } from '../../modelo/curso';
+import { Alumno } from '../../modelo/alumno';
+import { SoftSkill } from '../../modelo/softskill';
 
 @Component({
   selector: 'app-curso-detalle',
@@ -11,6 +13,8 @@ import { Curso } from '../../modelo/curso';
 export class CursoDetalleComponent implements OnInit {
   curso: Curso | null = null;
   loading = true;
+  isWizardVisible = false;
+  alumnoWizardSeleccionado: Alumno | null = null;
 
   constructor(private route: ActivatedRoute, private cursoService: CursoService) {}
 
@@ -30,5 +34,40 @@ export class CursoDetalleComponent implements OnInit {
     } else {
       this.loading = false;
     }
+  }
+
+  get skillColumns(): string[] {
+    if (!this.curso) {
+      return [];
+    }
+
+    const nombresSoftSkills = this.curso.softSkills?.map((softSkill) => softSkill.nombre) ?? [];
+    const nombresTotales = this.curso.alumnos?.flatMap((alumno) => Object.keys(alumno.totalesPorSkill ?? {})) ?? [];
+
+    return Array.from(new Set([...nombresSoftSkills, ...nombresTotales]));
+  }
+
+  getTotalPorSkill(alumno: Alumno, skill: string): number | null {
+    const total = alumno?.totalesPorSkill?.[skill];
+
+    return typeof total === 'number' ? total : null;
+  }
+
+  getSoftSkillByName(skillName: string): SoftSkill | undefined {
+    return this.curso?.softSkills?.find((softSkill) => softSkill.nombre === skillName);
+  }
+
+  abrirWizardNuevaMuestra(alumno: Alumno): void {
+    this.alumnoWizardSeleccionado = alumno;
+    this.isWizardVisible = true;
+  }
+
+  cerrarWizardNuevaMuestra(): void {
+    this.isWizardVisible = false;
+    this.alumnoWizardSeleccionado = null;
+  }
+
+  getNuevaMuestraTooltip(alumno: Alumno): string {
+    return `nueva muestra para el alumno ${alumno.nombre}`;
   }
 }
