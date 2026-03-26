@@ -4,16 +4,28 @@
       <img *ngIf="user?.userPictureUrl" [src]="user.userPictureUrl" class="avatar" alt="Avatar" />
       <div class="fullname">{{ user?.fullname }}</div>
       <div class="sitename">{{ user?.sitename }}</div>
-
     </div>
+
     <mat-divider></mat-divider>
+
     <mat-nav-list>
-      <mat-list-item routerLink="/dashboard/mi-perfil" routerLinkActive="active"><mat-icon>person</mat-icon> Mi perfil</mat-list-item>
-      <mat-list-item routerLink="/dashboard/cursos" routerLinkActive="active"><mat-icon>school</mat-icon> Cursos</mat-list-item>
-      <mat-list-item><mat-icon>star</mat-icon> Catálogo de Soft Skills</mat-list-item>
+      <mat-list-item routerLink="/dashboard/mi-perfil" routerLinkActive="active">
+        <mat-icon>person</mat-icon> Mi perfil
+      </mat-list-item>
+      <mat-list-item routerLink="/dashboard/cursos" routerLinkActive="active">
+        <mat-icon>school</mat-icon> Cursos
+      </mat-list-item>
+      <mat-list-item routerLink="/dashboard/grupos" routerLinkActive="active">
+        <mat-icon>groups</mat-icon> Grupos
+      </mat-list-item>
+      <mat-list-item>
+        <mat-icon>star</mat-icon> Catalogo de Soft Skills
+      </mat-list-item>
+
       <mat-divider></mat-divider>
+
       <mat-list-item (click)="logout()" style="color:#e57373;">
-        <mat-icon>logout</mat-icon> Cerrar sesión
+        <mat-icon>logout</mat-icon> Cerrar sesion
       </mat-list-item>
     </mat-nav-list>
   </mat-sidenav>
@@ -25,13 +37,11 @@
       </button>
       <span>Soft Skills Dashboard</span>
     </mat-toolbar>
+
     <mat-progress-bar *ngIf="isLoading$ | async" color="accent" mode="indeterminate" class="global-loading-bar"></mat-progress-bar>
+
     <div class="dashboard-content">
       <router-outlet></router-outlet>
-      <ng-container *ngIf="!router.url.includes('/dashboard/cursos')">
-        <h2>Bienvenido, {{ user?.fullname }}</h2>
-        <p>Selecciona una opción del menú para comenzar.</p>
-      </ng-container>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

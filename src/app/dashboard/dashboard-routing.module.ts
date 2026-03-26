@@ -5,6 +5,7 @@ import { CursosComponent } from './cursos/cursos.component';
 import { BienvenidaComponent } from './bienvenida/bienvenida.component';
 import { MiPerfilComponent } from './mi-perfil/mi-perfil.component';
 import { CursoDetalleComponent } from './curso-detalle/curso-detalle.component';
+import { GruposComponent } from './grupos/grupos.component';
 
 const routes: Routes = [
   {
@@ -15,6 +16,7 @@ const routes: Routes = [
       { path: 'bienvenida', component: BienvenidaComponent },
       { path: 'cursos', component: CursosComponent },
       { path: 'cursos/:id', component: CursoDetalleComponent },
+      { path: 'grupos', component: GruposComponent },
       { path: 'mi-perfil', component: MiPerfilComponent }
     ]
   }

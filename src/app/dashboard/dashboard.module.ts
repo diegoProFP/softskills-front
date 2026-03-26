@@ -22,6 +22,7 @@ import { WizardModalComponent } from './wizard-modal/wizard-modal.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCardModule } from '@angular/material/card';
 import { ValoracionPositivaNegativaComponent } from './valoracion-positiva-negativa/valoracion-positiva-negativa.component';
+import { GruposComponent } from './grupos/grupos.component';
 import { SharedModule } from '../shared/shared.module';
 
 
@@ -32,6 +33,7 @@ import { SharedModule } from '../shared/shared.module';
     BienvenidaComponent,
     MiPerfilComponent,
     CursoDetalleComponent,
+    GruposComponent,
     FloatingButtonComponent,
     WizardModalComponent,
     ValoracionPositivaNegativaComponent
