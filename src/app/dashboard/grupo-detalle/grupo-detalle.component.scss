@@ -1,0 +1,134 @@
+.grupo-detalle-page {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.hero {
+  padding: 2rem;
+  border-radius: var(--radius-xl);
+  background:
+    linear-gradient(135deg, rgba(157, 226, 221, 0.24), rgba(255, 196, 163, 0.3)),
+    rgba(255, 250, 241, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  box-shadow: var(--shadow-md);
+}
+
+.back-link {
+  display: inline-flex;
+  margin-bottom: 1rem;
+  color: var(--accent-strong);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.back-link:hover,
+.back-link:focus-visible {
+  text-decoration: underline;
+  outline: none;
+}
+
+.eyebrow {
+  margin: 0 0 0.45rem;
+  color: var(--accent-strong);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+h2 {
+  margin: 0;
+  color: var(--text-main);
+  font-size: clamp(1.9rem, 3vw, 2.7rem);
+}
+
+.subtitle {
+  margin: 0.75rem 0 0;
+  color: var(--text-soft);
+}
+
+.state-card,
+.alumnos-wrapper {
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.74);
+  border: 1px solid rgba(23, 48, 66, 0.08);
+  color: var(--text-main);
+  box-shadow: var(--shadow-sm);
+}
+
+.state-card {
+  display: grid;
+  gap: 1rem;
+  justify-items: start;
+}
+
+.state-error {
+  color: var(--danger);
+}
+
+.state-card p,
+.alumnos-wrapper h3 {
+  margin: 0;
+}
+
+.alumnos-table {
+  margin-top: 1rem;
+  width: 100%;
+  overflow: auto;
+  border-radius: 18px;
+  -webkit-overflow-scrolling: touch;
+
+  table {
+    width: 100%;
+    min-width: 720px;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.62);
+    border: 1px solid rgba(23, 48, 66, 0.08);
+  }
+
+  th,
+  td {
+    padding: 1rem 1.1rem;
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: 1px solid rgba(23, 48, 66, 0.08);
+    color: var(--text-main);
+  }
+
+  th {
+    background: rgba(244, 250, 249, 0.96);
+    font-weight: 800;
+    color: var(--accent-strong);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.8rem;
+  }
+
+  tr:hover td {
+    background-color: rgba(255, 122, 89, 0.06);
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+}
+
+.alumno-name {
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .hero,
+  .state-card,
+  .alumnos-wrapper {
+    padding: 1.4rem;
+    border-radius: 24px;
+  }
+
+  .alumnos-table {
+    box-shadow: inset -18px 0 18px -18px rgba(23, 48, 66, 0.28);
+  }
+}

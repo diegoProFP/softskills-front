@@ -1,0 +1,32 @@
+<section class="grupos-page">
+  <div class="hero">
+    <p class="eyebrow">Organizacion academica</p>
+    <h2>Grupos</h2>
+    <p class="subtitle">Selecciona un grupo para consultar informacion.</p>
+  </div>
+
+  <mat-progress-bar *ngIf="loading" color="accent" mode="indeterminate"></mat-progress-bar>
+
+  <div *ngIf="!loading && errorMessage" class="state-card state-error">
+    <p>{{ errorMessage }}</p>
+  </div>
+
+  <div *ngIf="!loading && !errorMessage && grupos.length === 0" class="state-card">
+    <p>No hay grupos disponibles.</p>
+  </div>
+
+  <div *ngIf="!loading && !errorMessage && grupos.length > 0" class="grupos-list">
+    <button
+      type="button"
+      class="grupo-card"
+      *ngFor="let grupo of grupos"
+      (click)="goToDetalle(grupo)">
+      <div class="grupo-badge">{{ grupo.nivel }}º</div>
+      <div class="grupo-copy">
+        <h3>{{ formatGrupoTitle(grupo) }}</h3>
+        <p>Curso escolar: {{ grupo.cursoEscolar }}</p>
+      </div>
+      <span class="grupo-action" aria-hidden="true">Ver detalle</span>
+    </button>
+  </div>
+</section>
