@@ -20,13 +20,52 @@
   </div>
 
   <div *ngIf="!loading && !errorMessage && alumnos.length > 0" class="alumnos-wrapper">
-    <h3>Totales por soft skill</h3>
+    <div class="section-heading">
+      <div>
+        <p class="section-kicker">Ranking global</p>
+        <h3>Clasificaci&oacute;n del grupo</h3>
+      </div>
+      <p class="section-copy">
+        La posici&oacute;n y el score llegan ordenados desde backend. Las muestras muestran la evidencia acumulada de cada alumno.
+      </p>
+    </div>
+
+    <div class="ranking-podium" *ngIf="topRankingAlumnos.length > 0">
+      <article
+        class="podium-card"
+        *ngFor="let alumno of topRankingAlumnos; let index = index"
+        [class.is-first]="index === 0"
+        [class.is-second]="index === 1"
+        [class.is-third]="index === 2">
+        <div class="podium-rank">{{ getRankingPositionLabel(alumno) }}</div>
+        <div class="podium-body">
+          <p class="podium-name">{{ alumno.nombre }}</p>
+          <p class="podium-score">
+            <span>Score</span>
+            <strong>{{ getRankingScore(alumno) !== null ? (getRankingScore(alumno) | number:'1.2-2') : '-' }}</strong>
+          </p>
+          <p class="podium-evidence">
+            {{ getNumMuestras(alumno) !== null ? getNumMuestras(alumno) : '-' }} muestras
+          </p>
+        </div>
+      </article>
+    </div>
+
+    <div class="table-heading">
+      <div>
+        <p class="section-kicker">Detalle por alumno</p>
+        <h4>Ranking y totales por soft skill</h4>
+      </div>
+    </div>
 
     <div class="alumnos-table">
       <table>
         <thead>
           <tr>
+            <th>Ranking</th>
             <th>Alumno</th>
+            <th>Score</th>
+            <th>Muestras</th>
             <th *ngFor="let skill of skillColumns">
               <span class="skill-header">
                 <app-soft-skill-icon
@@ -41,7 +80,12 @@
         </thead>
         <tbody>
           <tr *ngFor="let alumno of alumnos">
+            <td class="ranking-cell">
+              <span class="ranking-badge">{{ getRankingPositionLabel(alumno) }}</span>
+            </td>
             <td class="alumno-name">{{ alumno.nombre }}</td>
+            <td>{{ getRankingScore(alumno) !== null ? (getRankingScore(alumno) | number:'1.2-2') : '-' }}</td>
+            <td>{{ getNumMuestras(alumno) !== null ? getNumMuestras(alumno) : '-' }}</td>
             <td *ngFor="let skill of skillColumns">
               {{ getTotalPorSkill(alumno, skill) ?? '-' }}
             </td>

@@ -23,6 +23,8 @@ interface SkillColumn {
   styleUrls: ['./grupo-detalle.component.scss']
 })
 export class GrupoDetalleComponent implements OnInit {
+  private readonly ordinalIndicator = '\u00BA';
+
   grupo: Grupo | null = null;
   alumnos: AlumnoConTotales[] = [];
   loading = true;
@@ -76,7 +78,11 @@ export class GrupoDetalleComponent implements OnInit {
       return 'Detalle del grupo';
     }
 
-    return `${this.grupo.nivel}Âº ${this.grupo.cicloFormativo} ${this.grupo.grupo}`;
+    return `${this.grupo.nivel}${this.ordinalIndicator} ${this.grupo.cicloFormativo} ${this.grupo.grupo}`;
+  }
+
+  get topRankingAlumnos(): AlumnoConTotales[] {
+    return this.alumnos.slice(0, 3);
   }
 
   getTotalPorSkill(alumno: AlumnoConTotales, skill: SkillColumn): number | null {
@@ -84,6 +90,20 @@ export class GrupoDetalleComponent implements OnInit {
     const total = totalByCodigo ?? getSoftSkillTotalByKey(alumno?.totalesPorSkill, skill.key);
 
     return typeof total?.puntuacionTotal === 'number' ? total.puntuacionTotal : null;
+  }
+
+  getRankingPositionLabel(alumno: AlumnoConTotales): string {
+    return typeof alumno.posicionRanking === 'number'
+      ? `${alumno.posicionRanking}${this.ordinalIndicator}`
+      : 'S/R';
+  }
+
+  getRankingScore(alumno: AlumnoConTotales): number | null {
+    return typeof alumno.rankingScore === 'number' ? alumno.rankingScore : null;
+  }
+
+  getNumMuestras(alumno: AlumnoConTotales): number | null {
+    return typeof alumno.numMuestrasTotales === 'number' ? alumno.numMuestrasTotales : null;
   }
 
   recargar(): void {
