@@ -61,6 +61,7 @@ h2 {
 .grupo-card {
   display: flex;
   align-items: center;
+  width: 100%;
   gap: 1rem;
   padding: 1.3rem 1.4rem;
   border-radius: var(--radius-lg);
@@ -68,6 +69,20 @@ h2 {
     linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(244, 250, 249, 0.9));
   border: 1px solid rgba(15, 139, 141, 0.14);
   box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  appearance: none;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.grupo-card:hover,
+.grupo-card:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(15, 139, 141, 0.26);
+  outline: none;
 }
 
 .grupo-badge {
@@ -96,6 +111,13 @@ h2 {
 .grupo-copy p {
   margin: 0;
   color: var(--text-soft);
+}
+
+.grupo-action {
+  margin-left: auto;
+  color: var(--accent-strong);
+  font-weight: 700;
+  white-space: nowrap;
 }
 
 @media (max-width: 900px) {

@@ -16,12 +16,17 @@
   </div>
 
   <div *ngIf="!loading && !errorMessage && grupos.length > 0" class="grupos-list">
-    <article class="grupo-card" *ngFor="let grupo of grupos">
+    <button
+      type="button"
+      class="grupo-card"
+      *ngFor="let grupo of grupos"
+      (click)="goToDetalle(grupo)">
       <div class="grupo-badge">{{ grupo.nivel }}º</div>
       <div class="grupo-copy">
         <h3>{{ formatGrupoTitle(grupo) }}</h3>
         <p>Curso escolar: {{ grupo.cursoEscolar }}</p>
       </div>
-    </article>
+      <span class="grupo-action" aria-hidden="true">Ver detalle</span>
+    </button>
   </div>
 </section>

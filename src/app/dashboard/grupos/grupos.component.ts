@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Grupo } from '../../modelo/grupo';
 import { GrupoService } from '../../services/grupo.service';
 
@@ -12,7 +13,7 @@ export class GruposComponent implements OnInit {
   loading = true;
   errorMessage = '';
 
-  constructor(private grupoService: GrupoService) {}
+  constructor(private grupoService: GrupoService, private router: Router) {}
 
   ngOnInit(): void {
     this.cargarGrupos();
@@ -37,5 +38,16 @@ export class GruposComponent implements OnInit {
 
   formatGrupoTitle(grupo: Grupo): string {
     return `${grupo.nivel}º ${grupo.cicloFormativo} ${grupo.grupo}`;
+  }
+
+  goToDetalle(grupo: Grupo): void {
+    void this.router.navigate([
+      '/dashboard',
+      'grupos',
+      grupo.nivel,
+      grupo.cicloFormativo,
+      grupo.grupo,
+      grupo.cursoEscolar
+    ]);
   }
 }

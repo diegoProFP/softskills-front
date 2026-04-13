@@ -1,0 +1,44 @@
+<section class="grupo-detalle-page">
+  <div class="hero">
+    <a class="back-link" routerLink="/dashboard/grupos">Volver al listado</a>
+    <p class="eyebrow">Detalle del grupo</p>
+    <h2>{{ tituloGrupo }}</h2>
+    <p class="subtitle" *ngIf="grupo">Curso escolar: {{ grupo.cursoEscolar }}</p>
+  </div>
+
+  <mat-progress-bar *ngIf="loading" color="accent" mode="indeterminate"></mat-progress-bar>
+
+  <div *ngIf="!loading && errorMessage" class="state-card state-error">
+    <p>{{ errorMessage }}</p>
+    <button type="button" mat-stroked-button color="accent" (click)="recargar()">
+      Reintentar
+    </button>
+  </div>
+
+  <div *ngIf="!loading && !errorMessage && alumnos.length === 0" class="state-card">
+    <p>No hay alumnos o totales disponibles para este grupo.</p>
+  </div>
+
+  <div *ngIf="!loading && !errorMessage && alumnos.length > 0" class="alumnos-wrapper">
+    <h3>Totales por soft skill</h3>
+
+    <div class="alumnos-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Alumno</th>
+            <th *ngFor="let skill of skillColumns">{{ skill }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let alumno of alumnos">
+            <td class="alumno-name">{{ alumno.nombre }}</td>
+            <td *ngFor="let skill of skillColumns">
+              {{ getTotalPorSkill(alumno, skill) ?? '-' }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
