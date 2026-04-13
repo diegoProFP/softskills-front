@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { UserService } from '../services/user.service';
 import { UserInfo } from '../modelo/user-info';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingService } from '../services/loading.service';
 
 @Component({
@@ -23,6 +23,7 @@ export class LoginComponent {
     private authService: AuthService,
     private jwtHelper: JwtHelperService,
     private userService: UserService,
+    private route: ActivatedRoute,
     private router: Router,
     private loadingService: LoadingService
   ) {
@@ -59,8 +60,21 @@ export class LoginComponent {
             userPictureUrl: payload.userPictureUrl
           };
           this.userService.setUserInfo(userInfo);
-          // Redirigir al dashboard
-          this.router.navigate(['/dashboard']);
+          const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+          if (returnUrl) {
+            if (returnUrl.startsWith('/alumnos/')) {
+              this.authService.setPortalMode('student');
+              this.authService.setStudentPortalUrl(returnUrl);
+            } else {
+              this.authService.setPortalMode('dashboard');
+            }
+
+            void this.router.navigateByUrl(returnUrl);
+            return;
+          }
+
+          this.authService.setPortalMode('dashboard');
+          void this.router.navigate(['/dashboard']);
         } else {
           this.loginError = 'Token no recibido.';
         }

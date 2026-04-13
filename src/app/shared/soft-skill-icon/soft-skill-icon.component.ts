@@ -10,7 +10,7 @@ import { SoftSkillCode, SoftSkillCodeValue } from '../../modelo/softskill';
 export class SoftSkillIconComponent implements OnChanges {
   @Input() code: SoftSkillCodeValue | null | undefined;
   @Input() label: string | null | undefined;
-  @Input() size: 'sm' | 'md' | 'lg' = 'md';
+  @Input() size: 'sm' | 'md' | 'lg' | 'xl' = 'md';
   imageLoadError = false;
 
   get imageSrc(): string {

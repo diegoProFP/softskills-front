@@ -1,0 +1,94 @@
+<section class="student-summary-page">
+  <div class="ambient ambient-left" aria-hidden="true"></div>
+  <div class="ambient ambient-right" aria-hidden="true"></div>
+
+  <header class="hero-card">
+    <div class="hero-copy">
+      <p class="eyebrow">Soft Skills Snapshot</p>
+      <h1>{{ alumnoNombre }}</h1>
+      <p class="hero-text">
+        Tu progreso personal en soft skills, con una vista pensada para entender rapido tu impacto, tu ranking y tus evidencias acumuladas.
+      </p>
+    </div>
+
+    <div class="hero-actions">
+      <button type="button" class="ghost-button" (click)="logout()">Cerrar sesion</button>
+    </div>
+  </header>
+
+  <mat-progress-bar *ngIf="loading" color="accent" mode="indeterminate"></mat-progress-bar>
+
+  <div *ngIf="!loading && errorMessage" class="state-panel state-error">
+    <p>{{ errorMessage }}</p>
+    <button type="button" class="primary-button" (click)="recargar()">Reintentar</button>
+  </div>
+
+  <ng-container *ngIf="!loading && !errorMessage && alumno">
+    <section class="metrics-grid">
+      <article *ngFor="let card of metricCards" class="metric-card" [ngClass]="card.accentClass">
+        <div class="metric-icon">
+          <mat-icon>{{ card.icon }}</mat-icon>
+        </div>
+        <p class="metric-label">{{ card.label }}</p>
+        <p class="metric-value">{{ card.value }}</p>
+      </article>
+    </section>
+
+    <section class="skills-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Desglose por skill</p>
+          <h2>Como se reparte tu puntuacion</h2>
+        </div>
+        <p class="section-copy">
+          Cada tarjeta muestra tu puntuacion total por soft skill. El anillo sirve como referencia visual respecto a tu skill con mayor puntuacion.
+        </p>
+      </div>
+
+      <div *ngIf="sortedSoftSkills.length === 0" class="state-panel">
+        <p>Todavia no hay soft skills valoradas para este alumno.</p>
+      </div>
+
+      <div *ngIf="sortedSoftSkills.length > 0" class="skills-grid">
+        <article
+          *ngFor="let skill of sortedSoftSkills; trackBy: trackBySkill"
+          class="skill-card"
+          [ngClass]="getSkillTone(skill)">
+          <div class="skill-card-top">
+            <app-soft-skill-icon
+              [code]="skill.codigo"
+              [label]="skill.nombre"
+              size="xl">
+            </app-soft-skill-icon>
+            <span class="skill-score">{{ skill.puntuacionTotal }}</span>
+          </div>
+
+          <div class="skill-body">
+            <div class="skill-copy">
+              <h3>{{ skill.nombre }}</h3>
+              <p>{{ skill.descripcion || 'Puntuacion acumulada en esta soft skill.' }}</p>
+            </div>
+
+            <div class="skill-visual" aria-hidden="true">
+              <svg viewBox="0 0 120 120">
+                <circle class="skill-ring-track" cx="60" cy="60" r="48"></circle>
+                <circle
+                  class="skill-ring-value"
+                  cx="60"
+                  cy="60"
+                  r="48"
+                  [style.stroke-dasharray]="getSkillCircumference()"
+                  [style.stroke-dashoffset]="getSkillStrokeOffset(skill)">
+                </circle>
+              </svg>
+              <div class="skill-visual-label">
+                <strong>{{ skill.puntuacionTotal }}</strong>
+                <span>puntos</span>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </ng-container>
+</section>

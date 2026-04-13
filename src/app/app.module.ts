@@ -15,12 +15,15 @@ import { NotificationSnackComponent } from './shared/notification-snack/notifica
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NotificationService } from './services/notification.service';
+import { AlumnoResumenComponent } from './alumno-resumen/alumno-resumen.component';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    NotificationSnackComponent
+    NotificationSnackComponent,
+    AlumnoResumenComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +34,8 @@ import { NotificationService } from './services/notification.service';
     MatIconModule,
     MatSnackBarModule,
     MatChipsModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    SharedModule
   ],
   providers: [
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },

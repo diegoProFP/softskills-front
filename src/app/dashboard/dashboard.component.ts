@@ -35,7 +35,7 @@ export class DashboardComponent {
         this.router.navigate(['/login']);
       },
       error: () => {
-        // Incluso si falla el logout en backend, limpiar sesión local
+        this.authService.clearSession();
         this.userService.clearUserInfo();
         this.router.navigate(['/login']);
       }
