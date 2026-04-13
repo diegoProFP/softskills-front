@@ -3,6 +3,19 @@ import { ActivatedRoute } from '@angular/router';
 import { AlumnoConTotales } from '../../modelo/alumno-con-totales';
 import { Grupo } from '../../modelo/grupo';
 import { GrupoService } from '../../services/grupo.service';
+import {
+  getSoftSkillLookupKey,
+  getSoftSkillTotalByCodigo,
+  getSoftSkillTotalByKey,
+  SoftSkillTotalDTO,
+  sortSoftSkillsByNombre
+} from '../../modelo/softskill-total';
+
+interface SkillColumn {
+  key: string;
+  codigo: string | null;
+  nombre: string;
+}
 
 @Component({
   selector: 'app-grupo-detalle',
@@ -40,9 +53,21 @@ export class GrupoDetalleComponent implements OnInit {
     this.cargarTotales();
   }
 
-  get skillColumns(): string[] {
-    return Array.from(
-      new Set(this.alumnos.flatMap((alumno) => Object.keys(alumno.totalesPorSkill ?? {})))
+  get skillColumns(): SkillColumn[] {
+    const columnsByKey = new Map<string, SkillColumn>();
+
+    this.alumnos.forEach((alumno) => {
+      sortSoftSkillsByNombre(alumno.totalesPorSkill).forEach((softSkillTotal) => {
+        const key = getSoftSkillLookupKey(softSkillTotal);
+
+        if (!columnsByKey.has(key)) {
+          columnsByKey.set(key, this.toSkillColumn(softSkillTotal));
+        }
+      });
+    });
+
+    return Array.from(columnsByKey.values()).sort((a, b) =>
+      a.nombre.localeCompare(b.nombre, 'es', { sensitivity: 'base' })
     );
   }
 
@@ -51,13 +76,14 @@ export class GrupoDetalleComponent implements OnInit {
       return 'Detalle del grupo';
     }
 
-    return `${this.grupo.nivel}º ${this.grupo.cicloFormativo} ${this.grupo.grupo}`;
+    return `${this.grupo.nivel}Âº ${this.grupo.cicloFormativo} ${this.grupo.grupo}`;
   }
 
-  getTotalPorSkill(alumno: AlumnoConTotales, skill: string): number | null {
-    const total = alumno?.totalesPorSkill?.[skill];
+  getTotalPorSkill(alumno: AlumnoConTotales, skill: SkillColumn): number | null {
+    const totalByCodigo = getSoftSkillTotalByCodigo(alumno?.totalesPorSkill, skill.codigo);
+    const total = totalByCodigo ?? getSoftSkillTotalByKey(alumno?.totalesPorSkill, skill.key);
 
-    return typeof total === 'number' ? total : null;
+    return typeof total?.puntuacionTotal === 'number' ? total.puntuacionTotal : null;
   }
 
   recargar(): void {
@@ -87,5 +113,13 @@ export class GrupoDetalleComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  private toSkillColumn(softSkill: SoftSkillTotalDTO): SkillColumn {
+    return {
+      key: getSoftSkillLookupKey(softSkill),
+      codigo: softSkill.codigo ?? null,
+      nombre: softSkill.nombre
+    };
   }
 }

@@ -11,10 +11,12 @@ export enum SoftSkillCode {
   RESPETO = 'RESPETO'
 }
 
+export type SoftSkillCodeValue = SoftSkillCode | string;
+
 export interface SoftSkill {
   id: number;
   nombre: string;
-  codigo?: SoftSkillCode | null;
+  codigo?: SoftSkillCodeValue | null;
   descripcion: string;
-  tipo: number; // 1 para valoración positiva/negativa
+  tipo: number; // 1 para valoraciÃ³n positiva/negativa
 }

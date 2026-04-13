@@ -27,7 +27,16 @@
         <thead>
           <tr>
             <th>Alumno</th>
-            <th *ngFor="let skill of skillColumns">{{ skill }}</th>
+            <th *ngFor="let skill of skillColumns">
+              <span class="skill-header">
+                <app-soft-skill-icon
+                  [code]="skill.codigo"
+                  [label]="skill.nombre"
+                  size="sm">
+                </app-soft-skill-icon>
+                <span>{{ skill.nombre }}</span>
+              </span>
+            </th>
           </tr>
         </thead>
         <tbody>

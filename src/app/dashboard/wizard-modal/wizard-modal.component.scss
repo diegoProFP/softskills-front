@@ -171,6 +171,14 @@ mat-accordion {
   }
 }
 
+.selected-soft-skill,
+.summary-soft-skill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
 .resumen-container mat-card {
   border-radius: 24px;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(230, 246, 244, 0.92)) !important;

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { SoftSkillCode } from '../../modelo/softskill';
+import { SoftSkillCode, SoftSkillCodeValue } from '../../modelo/softskill';
 
 @Component({
   selector: 'app-soft-skill-icon',
@@ -8,7 +8,7 @@ import { SoftSkillCode } from '../../modelo/softskill';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SoftSkillIconComponent implements OnChanges {
-  @Input() code: SoftSkillCode | null | undefined;
+  @Input() code: SoftSkillCodeValue | null | undefined;
   @Input() label: string | null | undefined;
   @Input() size: 'sm' | 'md' | 'lg' = 'md';
   imageLoadError = false;

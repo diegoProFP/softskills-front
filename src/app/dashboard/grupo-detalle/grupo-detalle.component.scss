@@ -120,6 +120,14 @@ h2 {
   font-weight: 700;
 }
 
+.skill-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  white-space: normal;
+}
+
 @media (max-width: 768px) {
   .hero,
   .state-card,
@@ -130,5 +138,10 @@ h2 {
 
   .alumnos-table {
     box-shadow: inset -18px 0 18px -18px rgba(23, 48, 66, 0.28);
+  }
+
+  .skill-header {
+    min-width: max-content;
+    white-space: nowrap;
   }
 }

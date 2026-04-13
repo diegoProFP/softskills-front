@@ -4,6 +4,20 @@ import { CursoService } from '../../services/curso.service';
 import { Curso } from '../../modelo/curso';
 import { Alumno } from '../../modelo/alumno';
 import { SoftSkill } from '../../modelo/softskill';
+import {
+  getSoftSkillLookupKey,
+  getSoftSkillTotalByCodigo,
+  getSoftSkillTotalByKey,
+  indexSoftSkillsByCodigo,
+  SoftSkillTotalDTO,
+  sortSoftSkillsByNombre
+} from '../../modelo/softskill-total';
+
+interface SkillColumn {
+  key: string;
+  codigo: string | null;
+  nombre: string;
+}
 
 @Component({
   selector: 'app-curso-detalle',
@@ -36,25 +50,42 @@ export class CursoDetalleComponent implements OnInit {
     }
   }
 
-  get skillColumns(): string[] {
+  get skillColumns(): SkillColumn[] {
     if (!this.curso) {
       return [];
     }
 
-    const nombresSoftSkills = this.curso.softSkills?.map((softSkill) => softSkill.nombre) ?? [];
-    const nombresTotales = this.curso.alumnos?.flatMap((alumno) => Object.keys(alumno.totalesPorSkill ?? {})) ?? [];
+    const columnsByKey = new Map<string, SkillColumn>();
+    const cursoSoftSkills = sortSoftSkillsByNombre(this.curso.softSkills);
+    const cursoSoftSkillsByCodigo = indexSoftSkillsByCodigo(cursoSoftSkills);
 
-    return Array.from(new Set([...nombresSoftSkills, ...nombresTotales]));
+    cursoSoftSkills.forEach((softSkill) => {
+      columnsByKey.set(getSoftSkillLookupKey(softSkill), this.toSkillColumn(softSkill));
+    });
+
+    this.curso.alumnos?.forEach((alumno) => {
+      sortSoftSkillsByNombre(alumno.totalesPorSkill).forEach((softSkillTotal) => {
+        const softSkill = softSkillTotal.codigo
+          ? cursoSoftSkillsByCodigo[softSkillTotal.codigo] ?? softSkillTotal
+          : softSkillTotal;
+        const key = getSoftSkillLookupKey(softSkillTotal);
+
+        if (!columnsByKey.has(key)) {
+          columnsByKey.set(key, this.toSkillColumn(softSkill));
+        }
+      });
+    });
+
+    return Array.from(columnsByKey.values()).sort((a, b) =>
+      a.nombre.localeCompare(b.nombre, 'es', { sensitivity: 'base' })
+    );
   }
 
-  getTotalPorSkill(alumno: Alumno, skill: string): number | null {
-    const total = alumno?.totalesPorSkill?.[skill];
+  getTotalPorSkill(alumno: Alumno, skill: SkillColumn): number | null {
+    const totalByCodigo = getSoftSkillTotalByCodigo(alumno?.totalesPorSkill, skill.codigo);
+    const total = totalByCodigo ?? getSoftSkillTotalByKey(alumno?.totalesPorSkill, skill.key);
 
-    return typeof total === 'number' ? total : null;
-  }
-
-  getSoftSkillByName(skillName: string): SoftSkill | undefined {
-    return this.curso?.softSkills?.find((softSkill) => softSkill.nombre === skillName);
+    return typeof total?.puntuacionTotal === 'number' ? total.puntuacionTotal : null;
   }
 
   abrirWizardNuevaMuestra(alumno: Alumno): void {
@@ -69,5 +100,13 @@ export class CursoDetalleComponent implements OnInit {
 
   getNuevaMuestraTooltip(alumno: Alumno): string {
     return `nueva muestra para el alumno ${alumno.nombre}`;
+  }
+
+  private toSkillColumn(softSkill: SoftSkill | SoftSkillTotalDTO): SkillColumn {
+    return {
+      key: getSoftSkillLookupKey(softSkill),
+      codigo: softSkill.codigo ?? null,
+      nombre: softSkill.nombre
+    };
   }
 }
