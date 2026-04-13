@@ -74,7 +74,15 @@
             <mat-expansion-panel-header>
               <mat-panel-title>
                 Soft Skill
-                <span *ngIf="softSkillSeleccionada"> : {{ softSkillSeleccionada.nombre }}</span>
+                <span *ngIf="softSkillSeleccionada" class="selected-soft-skill">
+                  :
+                  <app-soft-skill-icon
+                    [code]="softSkillSeleccionada.codigo"
+                    [label]="softSkillSeleccionada.nombre"
+                    size="sm">
+                  </app-soft-skill-icon>
+                  {{ softSkillSeleccionada.nombre }}
+                </span>
               </mat-panel-title>
             </mat-expansion-panel-header>
             
@@ -155,7 +163,17 @@
                 <mat-card-content>
                   <p><strong>Curso:</strong> {{ cursoSeleccionado?.nombreVisible }}</p>
                   <p><strong>Alumno:</strong> {{ alumnoSeleccionado?.nombre }}</p>
-                  <p><strong>Soft Skill:</strong> {{ softSkillSeleccionada?.nombre }}</p>
+                  <p class="summary-soft-skill">
+                    <strong>Soft Skill:</strong>
+                    <ng-container *ngIf="softSkillSeleccionada">
+                      <app-soft-skill-icon
+                        [code]="softSkillSeleccionada.codigo"
+                        [label]="softSkillSeleccionada.nombre"
+                        size="sm">
+                      </app-soft-skill-icon>
+                      {{ softSkillSeleccionada.nombre }}
+                    </ng-container>
+                  </p>
                   <p><strong>Valoración:</strong> {{ valoracionSeleccionada === 'positiva' ? 'Positiva' : 'Negativa' }}</p>
                 </mat-card-content>
               </mat-card>
