@@ -3,7 +3,7 @@ import { MatExpansionPanel } from '@angular/material/expansion';
 import { Observable } from 'rxjs';
 import { Alumno, Curso } from '../../modelo/curso';
 import { MuestraSK } from '../../modelo/muestra-sk';
-import { SoftSkill } from '../../modelo/softskill';
+import { NivelMuestraSoftSkill, SoftSkill, TipoMedicionSoftSkill } from '../../modelo/softskill';
 import { CursoService } from '../../services/curso.service';
 import { LoadingService } from '../../services/loading.service';
 import { NotificationService } from '../../services/notification.service';
@@ -30,6 +30,12 @@ export class WizardModalComponent implements OnInit {
   softSkillSeleccionada: SoftSkill | null = null;
   softSkills: SoftSkill[] = [];
   valoracionSeleccionada: 'positiva' | 'negativa' | null = null;
+  nivelSeleccionado: NivelMuestraSoftSkill = 'NORMAL';
+  readonly nivelesMuestra: { value: NivelMuestraSoftSkill; label: string }[] = [
+    { value: 'LEVE', label: 'Leve' },
+    { value: 'NORMAL', label: 'Normal' },
+    { value: 'SIGNIFICATIVA', label: 'Significativa' }
+  ];
 
   letrasGrupos: { letra: string; rango: string }[] = [
     { letra: 'A-D', rango: 'A-D' },
@@ -136,12 +142,16 @@ export class WizardModalComponent implements OnInit {
 
   seleccionarSoftSkill(softSkill: SoftSkill) {
     this.softSkillSeleccionada = softSkill;
+    this.valoracionSeleccionada = this.esAcumulacionSaturada ? 'positiva' : null;
+    this.nivelSeleccionado = 'NORMAL';
     this.nextStep();
   }
 
   cargarSoftSkills() {
     this.softSkills = this.cursoSeleccionado?.softSkills || [];
     this.softSkillSeleccionada = null;
+    this.valoracionSeleccionada = null;
+    this.nivelSeleccionado = 'NORMAL';
   }
 
   seleccionarCurso(curso: Curso) {
@@ -155,23 +165,54 @@ export class WizardModalComponent implements OnInit {
     this.nextStep();
   }
 
+  seleccionarNivel(nivel: NivelMuestraSoftSkill) {
+    this.nivelSeleccionado = nivel;
+    this.valoracionSeleccionada = 'positiva';
+  }
+
+  get tipoMedicionSeleccionada(): TipoMedicionSoftSkill {
+    return this.softSkillSeleccionada?.tipoMedicion ?? 'PENALIZACION_POR_TRAMOS';
+  }
+
+  get esAcumulacionSaturada(): boolean {
+    return this.tipoMedicionSeleccionada === 'ACUMULACION_SATURADA';
+  }
+
+  get puedeContinuarValoracion(): boolean {
+    return this.esAcumulacionSaturada || !!this.valoracionSeleccionada;
+  }
+
+  get resumenValoracion(): string {
+    if (this.esAcumulacionSaturada) {
+      return `Participacion positiva - ${this.getNivelLabel(this.nivelSeleccionado)}`;
+    }
+
+    return this.valoracionSeleccionada === 'positiva' ? 'Positiva' : 'Negativa';
+  }
+
+  private getNivelLabel(nivel: NivelMuestraSoftSkill): string {
+    return this.nivelesMuestra.find((item) => item.value === nivel)?.label ?? 'Normal';
+  }
+
   enviarMuestra() {
     if (
       !this.cursoSeleccionado ||
       !this.alumnoSeleccionado ||
       !this.softSkillSeleccionada ||
-      !this.valoracionSeleccionada
+      !this.puedeContinuarValoracion
     ) {
       this.notificationService.showError('Faltan datos necesarios para enviar la valoración');
       return;
     }
 
+    const esAcumulacionSaturada = this.esAcumulacionSaturada;
     const muestra: MuestraSK = {
       profesorId: this.cursoSeleccionado.profesor.id,
       cursoId: this.cursoSeleccionado.id,
       alumnoId: this.alumnoSeleccionado.id,
       softSkillId: this.softSkillSeleccionada.id,
-      valor: this.valoracionSeleccionada === 'positiva' ? 1 : -1
+      valor: esAcumulacionSaturada || this.valoracionSeleccionada === 'positiva' ? 1 : -1,
+      ...(esAcumulacionSaturada ? { nivel: this.nivelSeleccionado } : {})
     };
 
     this.softSkillService.crearMuestra(muestra).subscribe({

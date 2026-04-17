@@ -14,10 +14,20 @@ export enum SoftSkillCode {
 
 export type SoftSkillCodeValue = SoftSkillCode | string;
 
+export type TipoMedicionSoftSkill =
+  | 'PENALIZACION_POR_TRAMOS'
+  | 'ACUMULACION_SATURADA';
+
+export type NivelMuestraSoftSkill =
+  | 'LEVE'
+  | 'NORMAL'
+  | 'SIGNIFICATIVA';
+
 export interface SoftSkill {
   id: number;
   nombre: string;
   codigo?: SoftSkillCodeValue | null;
   descripcion: string;
-  tipo: number; // 1 para valoraciÃ³n positiva/negativa
+  tipo: number; // Legacy: no usar para decidir la medicion.
+  tipoMedicion?: TipoMedicionSoftSkill;
 }

@@ -1,4 +1,4 @@
-import { SoftSkill, SoftSkillCodeValue } from './softskill';
+import { SoftSkill, SoftSkillCodeValue, TipoMedicionSoftSkill } from './softskill';
 
 export interface SoftSkillTotalDTO {
   id: number;
@@ -6,6 +6,7 @@ export interface SoftSkillTotalDTO {
   nombre: string;
   descripcion: string | null;
   puntuacionTotal: number;
+  tipoMedicion?: TipoMedicionSoftSkill;
 }
 
 type SoftSkillIdentity = Pick<SoftSkillTotalDTO, 'id' | 'codigo' | 'nombre'>
