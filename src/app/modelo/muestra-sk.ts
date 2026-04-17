@@ -7,4 +7,5 @@ export interface MuestraSK {
     softSkillId: number;
     valor: number; // 1 para positivo, -1 para negativo
     nivel?: NivelMuestraSoftSkill;
+    motivo?: string | null;
   }

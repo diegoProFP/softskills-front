@@ -60,10 +60,10 @@
   <div class="soft-skills-wrapper">
     <h3>Soft Skills</h3>
     <div class="soft-skills-chips">
-      <mat-chip *ngFor="let softSkill of curso.softSkills" [color]="'accent'">
+      <span *ngFor="let softSkill of curso.softSkills" class="soft-skill-chip">
         <app-soft-skill-icon [code]="softSkill.codigo" [label]="softSkill.nombre" size="sm"></app-soft-skill-icon>
         {{ softSkill.nombre }}
-      </mat-chip>
+      </span>
     </div>
   </div>
 

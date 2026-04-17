@@ -179,6 +179,45 @@ mat-accordion {
   flex-wrap: wrap;
 }
 
+.motivo-section {
+  margin: 20px 0 4px;
+}
+
+.motivo-title {
+  margin: 0 0 8px;
+  color: var(--text-main);
+  font-weight: 800;
+}
+
+.motivo-options {
+  margin-top: 8px;
+}
+
+.motivo-field {
+  width: min(100%, 42rem);
+  margin-top: 4px;
+  --mdc-outlined-text-field-label-text-color: var(--text-soft);
+  --mdc-outlined-text-field-input-text-color: var(--text-main);
+  --mdc-outlined-text-field-outline-color: rgba(24, 52, 70, 0.24);
+  --mdc-outlined-text-field-hover-outline-color: var(--accent-strong);
+  --mdc-outlined-text-field-focus-outline-color: var(--accent);
+  --mdc-outlined-text-field-focus-label-text-color: var(--accent-strong);
+  --mdc-outlined-text-field-caret-color: var(--accent);
+}
+
+::ng-deep .motivo-field .mat-mdc-text-field-wrapper {
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: var(--radius-sm);
+}
+
+::ng-deep .motivo-field .mat-mdc-form-field-input-control {
+  color: var(--text-main) !important;
+}
+
+::ng-deep .motivo-field .mat-mdc-form-field-input-control::placeholder {
+  color: rgba(79, 100, 115, 0.72) !important;
+}
+
 .nivel-muestra {
   margin: 16px 0;
 }

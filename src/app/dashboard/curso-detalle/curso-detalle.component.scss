@@ -32,11 +32,11 @@
 }
 
 .soft-skills-wrapper {
-  background: rgba(221, 243, 241, 0.62);
+  background: rgba(244, 250, 249, 0.88);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-sm);
   padding: 2.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.76);
+  border: 1px solid rgba(15, 139, 141, 0.16);
 }
 
 h2 {
@@ -114,10 +114,21 @@ h2 {
   flex-wrap: wrap;
   gap: 0.75rem;
   margin-top: 1rem;
+}
 
-  .mat-chip {
-    cursor: default;
-  }
+.soft-skill-chip {
+  min-height: 2.35rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--text-main);
+  border: 1px solid rgba(15, 139, 141, 0.28);
+  box-shadow: 0 8px 18px rgba(23, 48, 66, 0.08);
+  font-weight: 800;
+  line-height: 1.2;
 }
 
 .skill-header {

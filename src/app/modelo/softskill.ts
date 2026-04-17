@@ -23,6 +23,10 @@ export type NivelMuestraSoftSkill =
   | 'NORMAL'
   | 'SIGNIFICATIVA';
 
+export interface MotivoSoftSkill {
+  motivo: string;
+}
+
 export interface SoftSkill {
   id: number;
   nombre: string;
@@ -30,4 +34,5 @@ export interface SoftSkill {
   descripcion: string;
   tipo: number; // Legacy: no usar para decidir la medicion.
   tipoMedicion?: TipoMedicionSoftSkill;
+  listaMotivos?: MotivoSoftSkill[] | null;
 }
