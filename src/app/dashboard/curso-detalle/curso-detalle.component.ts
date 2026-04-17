@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CursoService } from '../../services/curso.service';
+import { NotificationService } from '../../services/notification.service';
 import { Curso } from '../../modelo/curso';
 import { Alumno } from '../../modelo/alumno';
 import { SoftSkill } from '../../modelo/softskill';
@@ -30,7 +31,11 @@ export class CursoDetalleComponent implements OnInit {
   isWizardVisible = false;
   alumnoWizardSeleccionado: Alumno | null = null;
 
-  constructor(private route: ActivatedRoute, private cursoService: CursoService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private cursoService: CursoService,
+    private notificationService: NotificationService
+  ) {}
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -40,8 +45,9 @@ export class CursoDetalleComponent implements OnInit {
           this.curso = curso;
           this.loading = false;
         },
-        error: () => {
+        error: (error) => {
           this.curso = null;
+          this.notificationService.showHttpError(error, 'No se pudo cargar el detalle del curso.');
           this.loading = false;
         }
       });
