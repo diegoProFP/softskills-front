@@ -35,6 +35,63 @@ h3 {
   border: 1px solid rgba(23, 48, 66, 0.08);
 }
 
+.search-row {
+  display: flex;
+  justify-content: flex-start;
+  margin: 0 0 1.25rem;
+}
+
+.course-search {
+  width: min(100%, 34rem);
+  --mdc-outlined-text-field-label-text-color: var(--text-soft);
+  --mdc-outlined-text-field-input-text-color: var(--text-main);
+  --mdc-outlined-text-field-outline-color: rgba(24, 52, 70, 0.24);
+  --mdc-outlined-text-field-hover-outline-color: var(--accent-strong);
+  --mdc-outlined-text-field-focus-outline-color: var(--accent);
+  --mdc-outlined-text-field-focus-label-text-color: var(--accent-strong);
+  --mdc-outlined-text-field-caret-color: var(--accent);
+  --mat-form-field-leading-icon-color: var(--text-soft);
+  --mat-form-field-trailing-icon-color: var(--text-soft);
+}
+
+.course-search mat-icon {
+  color: var(--text-soft);
+}
+
+::ng-deep .course-search .mat-mdc-text-field-wrapper {
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: var(--radius-sm);
+}
+
+::ng-deep .course-search .mat-mdc-form-field-input-control {
+  color: var(--text-main) !important;
+}
+
+::ng-deep .course-search .mat-mdc-form-field-input-control::placeholder {
+  color: rgba(79, 100, 115, 0.72) !important;
+}
+
+::ng-deep .course-search .mat-mdc-floating-label,
+::ng-deep .course-search .mdc-floating-label {
+  color: var(--text-soft) !important;
+}
+
+::ng-deep .course-search.mat-focused .mat-mdc-floating-label,
+::ng-deep .course-search.mat-focused .mdc-floating-label {
+  color: var(--accent-strong) !important;
+}
+
+mat-option {
+  small {
+    display: block;
+    color: var(--text-soft);
+    font-size: 0.8rem;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
 .card-list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
