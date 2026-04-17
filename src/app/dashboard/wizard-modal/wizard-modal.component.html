@@ -1,6 +1,6 @@
 <div class="modal">
     <div class="modal-content">
-        <button class="close-button" (click)="closeModal()">×</button>
+        <button class="close-button" (click)="closeModal()">&times;</button>
 
       <mat-accordion>
         <mat-expansion-panel [expanded]="currentStep === 1">
@@ -11,14 +11,12 @@
             </mat-expansion-panel-header>
             <div *ngIf="cursoSeleccionado">
               <p>Curso seleccionado: {{ cursoSeleccionado.nombreVisible }}</p>
-              <!-- Muestra más detalles del curso si es necesario -->
             </div>
             <div *ngIf="!cursoSeleccionado">
               <p>Seleccione un curso:</p>
               <ul>
                 <li *ngFor="let curso of cursos$ | async">
                   {{ curso.nombreVisible }}
-                  <!-- Añadir lógica para seleccionar un curso -->
                 </li>
               </ul>
             </div>
@@ -27,15 +25,14 @@
               <button mat-button (click)="nextStep()">Siguiente</button>
             </mat-action-row>
           </mat-expansion-panel>
-  
+
           <mat-expansion-panel (opened)="onPanelOpened(2)">
             <mat-expansion-panel-header>
               <mat-panel-title>
                 Alumno: {{alumnoSeleccionado?.nombre}}
               </mat-panel-title>
             </mat-expansion-panel-header>
-            
-          
+
             <div class="custom-chips">
              Por nombre: <button *ngFor="let grupo of letrasGrupos"
                       [class.active]="letraSeleccionada === grupo.rango"
@@ -43,11 +40,10 @@
                 {{ grupo.letra }}
               </button>
             </div>
-          
-            <!-- Lista de alumnos filtrados -->
+
             <div *ngIf="letraSeleccionada && alumnosFiltrados.length > 0" class="alumnos-grid">
-              <mat-card 
-                *ngFor="let alumno of alumnosFiltrados" 
+              <mat-card
+                *ngFor="let alumno of alumnosFiltrados"
                 class="alumno-card"
                 [class.selected]="alumnoSeleccionado?.id === alumno.id"
                 (click)="seleccionarAlumno(alumno)">
@@ -59,17 +55,17 @@
                 </mat-card-content>
               </mat-card>
             </div>
-          
+
             <div *ngIf="letraSeleccionada && alumnosFiltrados.length === 0">
               No se encontraron alumnos para el rango seleccionado.
             </div>
-          
+
             <mat-action-row>
               <button mat-button (click)="previousStep()">Anterior</button>
               <button mat-button (click)="nextStep()" [disabled]="!alumnoSeleccionado">Siguiente</button>
             </mat-action-row>
           </mat-expansion-panel>
-  
+
           <mat-expansion-panel (opened)="onPanelOpened(3)" [expanded]="currentStep === 3">
             <mat-expansion-panel-header>
               <mat-panel-title>
@@ -85,11 +81,11 @@
                 </span>
               </mat-panel-title>
             </mat-expansion-panel-header>
-            
+
             <div *ngIf="softSkills.length > 0" class="soft-skills-container">
               <div class="custom-chips">
-                <button 
-                  *ngFor="let skill of softSkills" 
+                <button
+                  *ngFor="let skill of softSkills"
                   [class.active]="softSkillSeleccionada?.id === skill.id"
                   (click)="seleccionarSoftSkill(skill)"
                   class="skill-button">
@@ -98,67 +94,75 @@
                 </button>
               </div>
             </div>
-          
+
             <div *ngIf="softSkills.length === 0">
               No hay soft skills disponibles para este curso.
             </div>
-          
+
             <mat-action-row>
               <button mat-button (click)="previousStep()">Anterior</button>
-              <button 
-                mat-button 
-                color="primary" 
-                (click)="nextStep()" 
+              <button
+                mat-button
+                color="primary"
+                (click)="nextStep()"
                 [disabled]="!softSkillSeleccionada">
                 Siguiente
               </button>
             </mat-action-row>
           </mat-expansion-panel>
-  
+
           <mat-expansion-panel (opened)="onPanelOpened(4)" [expanded]="currentStep === 4">
             <mat-expansion-panel-header>
               <mat-panel-title>
-                Paso 4: Valoración
+                Paso 4: Valoracion
                 <span *ngIf="valoracionSeleccionada">
-                  - Valoración: {{ valoracionSeleccionada === 'positiva' ? 'Positiva' : 'Negativa' }}
+                  - {{ resumenValoracion }}
                 </span>
               </mat-panel-title>
             </mat-expansion-panel-header>
-          
-            <div *ngIf="softSkillSeleccionada?.tipo === 0">
-              <app-valoracion-positiva-negativa 
+
+            <div *ngIf="!esAcumulacionSaturada">
+              <app-valoracion-positiva-negativa
                 (valoracionSeleccionada)="handleValoracionSeleccionada($event)">
               </app-valoracion-positiva-negativa>
             </div>
-          
-            <div *ngIf="softSkillSeleccionada?.tipo !== 0">
-              <!-- Aquí irían los otros tipos de valoración según el tipo -->
-              <p>Este tipo de valoración no está implementado aún.</p>
+
+            <div *ngIf="esAcumulacionSaturada" class="nivel-muestra">
+              <p class="nivel-title">Participacion positiva</p>
+              <div class="custom-chips nivel-options">
+                <button
+                  *ngFor="let nivel of nivelesMuestra"
+                  type="button"
+                  [class.active]="nivelSeleccionado === nivel.value"
+                  (click)="seleccionarNivel(nivel.value)">
+                  {{ nivel.label }}
+                </button>
+              </div>
             </div>
-          
+
             <mat-action-row>
               <button mat-button (click)="previousStep()">Anterior</button>
-              <button 
-                mat-button 
-                color="primary" 
-                (click)="nextStep()" 
-                [disabled]="!valoracionSeleccionada">
+              <button
+                mat-button
+                color="primary"
+                (click)="nextStep()"
+                [disabled]="!puedeContinuarValoracion">
                 Siguiente
               </button>
             </mat-action-row>
           </mat-expansion-panel>
-  
+
           <mat-expansion-panel (opened)="onPanelOpened(5)" [expanded]="currentStep === 5">
             <mat-expansion-panel-header>
               <mat-panel-title>
                 Paso 5: Resumen y Confirmar
               </mat-panel-title>
             </mat-expansion-panel-header>
-          
+
             <div class="resumen-container">
               <mat-card>
                 <mat-card-header>
-                  <mat-card-title>Resumen de la valoración</mat-card-title>
+                  <mat-card-title>Resumen de la valoracion</mat-card-title>
                 </mat-card-header>
                 <mat-card-content>
                   <p><strong>Curso:</strong> {{ cursoSeleccionado?.nombreVisible }}</p>
@@ -174,19 +178,19 @@
                       {{ softSkillSeleccionada.nombre }}
                     </ng-container>
                   </p>
-                  <p><strong>Valoración:</strong> {{ valoracionSeleccionada === 'positiva' ? 'Positiva' : 'Negativa' }}</p>
+                  <p><strong>Valoracion:</strong> {{ resumenValoracion }}</p>
                 </mat-card-content>
               </mat-card>
             </div>
-          
+
             <mat-action-row>
               <button mat-button (click)="previousStep()">Anterior</button>
-              <button 
-                mat-button 
-                color="primary" 
+              <button
+                mat-button
+                color="primary"
                 (click)="enviarMuestra()"
-                [disabled]="!cursoSeleccionado || !alumnoSeleccionado || 
-                           !softSkillSeleccionada || !valoracionSeleccionada">
+                [disabled]="!cursoSeleccionado || !alumnoSeleccionado ||
+                           !softSkillSeleccionada || !puedeContinuarValoracion">
                 Enviar
               </button>
             </mat-action-row>
