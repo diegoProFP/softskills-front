@@ -4,12 +4,26 @@ import { AlumnoConTotales } from '../modelo/alumno-con-totales';
 import { SoftSkillTotalDTO, sortSoftSkillsByNombre } from '../modelo/softskill-total';
 import { AlumnoService } from '../services/alumno.service';
 import { AuthService } from '../services/auth.service';
+import { NotificationService } from '../services/notification.service';
 
 interface MetricCard {
   label: string;
   value: string;
   accentClass: string;
   icon: string;
+}
+
+interface RadarPoint {
+  x: number;
+  y: number;
+}
+
+interface RadarLabelPoint extends RadarPoint {
+  anchor: 'start' | 'middle' | 'end';
+}
+
+interface RadarLabel extends RadarLabelPoint {
+  lines: string[];
 }
 
 @Component({
@@ -27,8 +41,9 @@ export class AlumnoResumenComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private alumnoService: AlumnoService,
-    private authService: AuthService
-  ) {}
+    private authService: AuthService,
+    private notificationService: NotificationService
+  ) { }
 
   ngOnInit(): void {
     this.alumnoId = this.route.snapshot.paramMap.get('alumnoId');
@@ -47,7 +62,7 @@ export class AlumnoResumenComponent implements OnInit {
   get metricCards(): MetricCard[] {
     return [
       {
-        label: 'Posicion en ranking',
+        label: 'Posicion en ranking de grupo',
         value: typeof this.alumno?.posicionRanking === 'number' ? `${this.alumno.posicionRanking}${this.ordinalIndicator}` : 'S/R',
         accentClass: 'accent-sun',
         icon: 'workspace_premium'
@@ -77,6 +92,77 @@ export class AlumnoResumenComponent implements OnInit {
 
   get maxSkillValue(): number {
     return this.sortedSoftSkills.reduce((max, skill) => Math.max(max, skill.puntuacionTotal ?? 0), 0);
+  }
+
+  get radarScaleMax(): number {
+    const maxValue = this.maxSkillValue;
+
+    if (maxValue <= 0) {
+      return 10;
+    }
+
+    if (maxValue <= 10) {
+      return 10;
+    }
+
+    const magnitude = Math.pow(10, Math.floor(Math.log10(maxValue)));
+    return Math.ceil(maxValue / magnitude) * magnitude;
+  }
+
+  get radarLevels(): number[] {
+    const levels = 4;
+    return Array.from({ length: levels }, (_, index) => index + 1);
+  }
+
+  get radarScaleLabels(): number[] {
+    return this.radarLevels.map((level) => Math.round((this.radarScaleMax * level) / this.radarLevels.length));
+  }
+
+  get radarAxisPoints(): RadarPoint[] {
+    return this.sortedSoftSkills.map((_, index) => this.getRadarPoint(index, 1));
+  }
+
+  get radarGridPolygons(): string[] {
+    return this.radarLevels.map((level) =>
+      this.sortedSoftSkills
+        .map((_, index) => {
+          const point = this.getRadarPoint(index, level / this.radarLevels.length);
+          return `${point.x},${point.y}`;
+        })
+        .join(' ')
+    );
+  }
+
+  get radarDataPolygon(): string {
+    if (this.sortedSoftSkills.length === 0) {
+      return '';
+    }
+
+    return this.sortedSoftSkills
+      .map((skill, index) => {
+        const ratio = this.radarScaleMax > 0 ? skill.puntuacionTotal / this.radarScaleMax : 0;
+        const point = this.getRadarPoint(index, ratio);
+        return `${point.x},${point.y}`;
+      })
+      .join(' ');
+  }
+
+  get radarDataPoints(): RadarPoint[] {
+    return this.sortedSoftSkills.map((skill, index) => {
+      const ratio = this.radarScaleMax > 0 ? skill.puntuacionTotal / this.radarScaleMax : 0;
+      return this.getRadarPoint(index, ratio);
+    });
+  }
+
+  get radarLabels(): RadarLabel[] {
+    return this.sortedSoftSkills.map((_, index) => {
+      const point = this.getRadarPoint(index, 1.22);
+      return {
+        ...point,
+        anchor: this.getRadarLabelAnchor(point.x),
+        lines: this.getRadarLabelLines(this.sortedSoftSkills[index].nombre)
+      };
+    });
   }
 
   recargar(): void {
@@ -143,8 +229,34 @@ export class AlumnoResumenComponent implements OnInit {
     }
   }
 
+  getRadarLabelLines(label: string): string[] {
+    const words = label.split(' ');
+    const lines: string[] = [];
+    let currentLine = '';
+
+    words.forEach((word) => {
+      const candidate = currentLine ? `${currentLine} ${word}` : word;
+
+      if (candidate.length > 16 && currentLine) {
+        lines.push(currentLine);
+        currentLine = word;
+        return;
+      }
+
+      currentLine = candidate;
+    });
+
+    if (currentLine) {
+      lines.push(currentLine);
+    }
+
+    return lines.slice(0, 3);
+  }
+
   private readonly ordinalIndicator = '\u00BA';
   private readonly skillRadius = 48;
+  private readonly radarCenter = 260;
+  private readonly radarRadius = 150;
 
   private cargarResumen(): void {
     if (!this.alumnoId) {
@@ -161,11 +273,36 @@ export class AlumnoResumenComponent implements OnInit {
       },
       error: (error) => {
         this.alumno = null;
-        this.errorMessage = error?.status === 404
-          ? 'No se encontro el resumen del alumno.'
-          : 'No se pudo cargar el resumen del alumno.';
+        this.errorMessage = this.notificationService.showHttpError(
+          error,
+          error?.status === 404
+            ? 'No se encontro el resumen del alumno.'
+            : 'No se pudo cargar el resumen del alumno.'
+        );
         this.loading = false;
       }
     });
+  }
+
+  private getRadarPoint(index: number, ratio: number): RadarPoint {
+    const total = Math.max(this.sortedSoftSkills.length, 1);
+    const angle = (-Math.PI / 2) + ((Math.PI * 2 * index) / total);
+    const clampedRatio = Math.max(0, Math.min(ratio, 1));
+    const distance = this.radarRadius * clampedRatio;
+
+    return {
+      x: this.radarCenter + Math.cos(angle) * distance,
+      y: this.radarCenter + Math.sin(angle) * distance
+    };
+  }
+
+  private getRadarLabelAnchor(x: number): 'start' | 'middle' | 'end' {
+    const delta = x - this.radarCenter;
+
+    if (Math.abs(delta) < 16) {
+      return 'middle';
+    }
+
+    return delta > 0 ? 'start' : 'end';
   }
 }

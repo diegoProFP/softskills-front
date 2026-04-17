@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Grupo } from '../../modelo/grupo';
 import { GrupoService } from '../../services/grupo.service';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-grupos',
@@ -13,7 +14,11 @@ export class GruposComponent implements OnInit {
   loading = true;
   errorMessage = '';
 
-  constructor(private grupoService: GrupoService, private router: Router) {}
+  constructor(
+    private grupoService: GrupoService,
+    private router: Router,
+    private notificationService: NotificationService
+  ) {}
 
   ngOnInit(): void {
     this.cargarGrupos();
@@ -28,9 +33,9 @@ export class GruposComponent implements OnInit {
         this.grupos = grupos || [];
         this.loading = false;
       },
-      error: () => {
+      error: (error) => {
         this.grupos = [];
-        this.errorMessage = 'No se pudieron cargar los grupos.';
+        this.errorMessage = this.notificationService.showHttpError(error, 'No se pudieron cargar los grupos.');
         this.loading = false;
       }
     });

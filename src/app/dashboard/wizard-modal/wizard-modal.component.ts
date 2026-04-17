@@ -1,17 +1,13 @@
-import { Component, ViewChildren, QueryList, Output, EventEmitter, OnInit, Input } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
 import { MatExpansionPanel } from '@angular/material/expansion';
-import { MatCard } from '@angular/material/card';
-import { MatChip } from '@angular/material/chips';
-import { CursoService } from '../../services/curso.service';
-import { Alumno, Curso } from '../../modelo/curso';
 import { Observable } from 'rxjs';
-import { MatChipsModule } from '@angular/material/chips';
-import { SoftSkill } from 'src/app/modelo/softskill';
-import { SoftSkillService } from 'src/app/services/softskill.service';
-import { MuestraSK } from 'src/app/modelo/muestra-sk';
-import { LoadingService } from 'src/app/services/loading.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { NotificationService } from 'src/app/services/notification.service';
+import { Alumno, Curso } from '../../modelo/curso';
+import { MuestraSK } from '../../modelo/muestra-sk';
+import { SoftSkill } from '../../modelo/softskill';
+import { CursoService } from '../../services/curso.service';
+import { LoadingService } from '../../services/loading.service';
+import { NotificationService } from '../../services/notification.service';
+import { SoftSkillService } from '../../services/softskill.service';
 
 @Component({
   selector: 'app-wizard-modal',
@@ -21,15 +17,19 @@ import { NotificationService } from 'src/app/services/notification.service';
 export class WizardModalComponent implements OnInit {
   @Input() initialAlumno: Alumno | null = null;
   @Output() close = new EventEmitter<void>();
-  currentStep: number = 1;
-  totalSteps: number = 5;
   @ViewChildren(MatExpansionPanel) panels: QueryList<MatExpansionPanel>;
 
+  currentStep = 1;
+  totalSteps = 5;
   cursoSeleccionado: Curso | null = null;
   cursos$: Observable<Curso[]>;
   alumnos: Alumno[] = [];
   alumnoSeleccionado: Alumno | null = null;
-
+  letraSeleccionada: string | null = null;
+  alumnosFiltrados: Alumno[] = [];
+  softSkillSeleccionada: SoftSkill | null = null;
+  softSkills: SoftSkill[] = [];
+  valoracionSeleccionada: 'positiva' | 'negativa' | null = null;
 
   letrasGrupos: { letra: string; rango: string }[] = [
     { letra: 'A-D', rango: 'A-D' },
@@ -40,35 +40,32 @@ export class WizardModalComponent implements OnInit {
     { letra: 'U-X', rango: 'U-X' },
     { letra: 'Y-Z', rango: 'Y-Z' }
   ];
-  letraSeleccionada: string | null = null;
-  alumnosFiltrados: Alumno[] = [];
-  softSkillSeleccionada: SoftSkill | null = null;
-softSkills: SoftSkill[] = [];
 
-valoracionSeleccionada: 'positiva' | 'negativa' | null = null;
-
-
-  constructor(private cursoService: CursoService,
+  constructor(
+    private cursoService: CursoService,
     private softSkillService: SoftSkillService,
     private loadingService: LoadingService,
-    private snackBar: MatSnackBar ,
     private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
     this.cursoSeleccionado = this.cursoService['cursoSeleccionado'];
+
     if (!this.cursoSeleccionado) {
       this.cursos$ = this.cursoService.getCursos();
-    } else {
-      this.cargarAlumnos();
-      this.cargarSoftSkills();
-      if (this.initialAlumno) {
-        this.alumnoSeleccionado = this.initialAlumno;
-        this.currentStep = 3;
-      } else {
-        this.currentStep = 2;
-      }
+      return;
     }
+
+    this.cargarAlumnos();
+    this.cargarSoftSkills();
+
+    if (this.initialAlumno) {
+      this.alumnoSeleccionado = this.initialAlumno;
+      this.currentStep = 3;
+      return;
+    }
+
+    this.currentStep = 2;
   }
 
   ngAfterViewInit() {
@@ -83,8 +80,7 @@ valoracionSeleccionada: 'positiva' | 'negativa' | null = null;
   nextStep() {
     if (this.currentStep < this.totalSteps) {
       this.currentStep++;
-      const panelArray = this.panels.toArray();
-      panelArray[this.currentStep - 1].open();
+      this.panels.toArray()[this.currentStep - 1].open();
     }
   }
 
@@ -103,12 +99,11 @@ valoracionSeleccionada: 'positiva' | 'negativa' | null = null;
 
   resetWizard() {
     this.currentStep = 1;
-    this.panels.forEach(panel => panel.close());
+    this.panels.forEach((panel) => panel.close());
     this.panels.first.open();
   }
 
   closeModal() {
-    console.log('Modal closed');
     this.close.emit();
   }
 
@@ -127,7 +122,7 @@ valoracionSeleccionada: 'positiva' | 'negativa' | null = null;
 
     const [inicio, fin] = rango.split('-');
     this.alumnosFiltrados = this.cursoSeleccionado.alumnos
-      .filter(alumno => {
+      .filter((alumno) => {
         const primeraLetra = alumno.nombre.charAt(0).toUpperCase();
         return primeraLetra >= inicio && primeraLetra <= fin;
       })
@@ -139,65 +134,57 @@ valoracionSeleccionada: 'positiva' | 'negativa' | null = null;
     this.nextStep();
   }
 
-  // Método para seleccionar una soft skill
-seleccionarSoftSkill(softSkill: SoftSkill) {
-  this.softSkillSeleccionada = softSkill;
-  this.nextStep();
-}
-
-// En el método que se llama cuando se selecciona un curso
-cargarSoftSkills() {
-  if (this.cursoSeleccionado?.softSkills) {
-    this.softSkills = this.cursoSeleccionado.softSkills;
-  } else {
-    this.softSkills = [];
-  }
-  this.softSkillSeleccionada = null;
-}
-
-// Llama a cargarSoftSkills cuando se selecciona un curso
-seleccionarCurso(curso: Curso) {
-  this.cursoSeleccionado = curso;
-  this.cargarAlumnos();
-  this.cargarSoftSkills(); // Agrega esta línea
-}
-
-
-// Método para manejar la selección de valoración
-handleValoracionSeleccionada(valoracion: 'positiva' | 'negativa') {
-  this.valoracionSeleccionada = valoracion;
-  this.nextStep();
-}
-
-// Agrega este método
-enviarMuestra() {
-  if (!this.cursoSeleccionado || !this.alumnoSeleccionado || 
-      !this.softSkillSeleccionada || !this.valoracionSeleccionada) {
-        this.notificationService.showError('Faltan datos necesarios para enviar la valoración');
-
-        return;
+  seleccionarSoftSkill(softSkill: SoftSkill) {
+    this.softSkillSeleccionada = softSkill;
+    this.nextStep();
   }
 
-  const muestra: MuestraSK = {
-    profesorId: this.cursoSeleccionado.profesor.id,
-    cursoId: this.cursoSeleccionado.id,
-    alumnoId: this.alumnoSeleccionado.id,
-    softSkillId: this.softSkillSeleccionada.id,
-    valor: this.valoracionSeleccionada === 'positiva' ? 1 : -1
-  };
+  cargarSoftSkills() {
+    this.softSkills = this.cursoSeleccionado?.softSkills || [];
+    this.softSkillSeleccionada = null;
+  }
 
-  this.softSkillService.crearMuestra(muestra).subscribe({
-    next: (response) => {
-      this.notificationService.showSuccess('Valoración enviada correctamente');
-      this.closeModal();
-    },
-    error: (error) => {
-      this.notificationService.showError('Error al enviar la valoración: ' + error.message);
-    },
-    complete: () => {
-      this.loadingService.hide();
+  seleccionarCurso(curso: Curso) {
+    this.cursoSeleccionado = curso;
+    this.cargarAlumnos();
+    this.cargarSoftSkills();
+  }
+
+  handleValoracionSeleccionada(valoracion: 'positiva' | 'negativa') {
+    this.valoracionSeleccionada = valoracion;
+    this.nextStep();
+  }
+
+  enviarMuestra() {
+    if (
+      !this.cursoSeleccionado ||
+      !this.alumnoSeleccionado ||
+      !this.softSkillSeleccionada ||
+      !this.valoracionSeleccionada
+    ) {
+      this.notificationService.showError('Faltan datos necesarios para enviar la valoración');
+      return;
     }
-  });
-}
 
+    const muestra: MuestraSK = {
+      profesorId: this.cursoSeleccionado.profesor.id,
+      cursoId: this.cursoSeleccionado.id,
+      alumnoId: this.alumnoSeleccionado.id,
+      softSkillId: this.softSkillSeleccionada.id,
+      valor: this.valoracionSeleccionada === 'positiva' ? 1 : -1
+    };
+
+    this.softSkillService.crearMuestra(muestra).subscribe({
+      next: () => {
+        this.notificationService.showSuccess('Valoración enviada correctamente');
+        this.closeModal();
+      },
+      error: (error) => {
+        this.notificationService.showHttpError(error, 'Error al enviar la valoración.');
+      },
+      complete: () => {
+        this.loadingService.hide();
+      }
+    });
+  }
 }

@@ -45,6 +45,73 @@
         </p>
       </div>
 
+      <section *ngIf="sortedSoftSkills.length >= 3" class="radar-panel">
+        <div class="radar-copy">
+          <p class="eyebrow">Radar personal</p>
+          <h3>Mapa de tus soft skills</h3>
+          <p>
+            El radar representa todas tus skills en una sola figura. Cuanto mas se expande una punta, mayor es tu puntuacion en esa dimension.
+          </p>
+          <div class="radar-scale-pill">
+            Escala maxima actual: {{ radarScaleMax }} puntos
+          </div>
+        </div>
+
+        <div class="radar-chart-shell">
+          <svg class="radar-chart" viewBox="0 0 520 520" role="img" aria-label="Grafico radar de soft skills">
+            <g class="radar-grid">
+              <polygon
+                *ngFor="let polygon of radarGridPolygons"
+                [attr.points]="polygon">
+              </polygon>
+
+              <line
+                *ngFor="let axisPoint of radarAxisPoints"
+                [attr.x1]="260"
+                [attr.y1]="260"
+                [attr.x2]="axisPoint.x"
+                [attr.y2]="axisPoint.y">
+              </line>
+            </g>
+
+            <g class="radar-scale">
+              <text
+                *ngFor="let label of radarScaleLabels; let index = index"
+                x="260"
+                [attr.y]="260 - ((150 * (index + 1)) / radarScaleLabels.length) + 16">
+                {{ label }}
+              </text>
+            </g>
+
+            <polygon class="radar-area" [attr.points]="radarDataPolygon"></polygon>
+
+            <g class="radar-points">
+              <circle
+                *ngFor="let point of radarDataPoints"
+                [attr.cx]="point.x"
+                [attr.cy]="point.y"
+                r="5">
+              </circle>
+            </g>
+
+            <g class="radar-labels">
+              <text
+                *ngFor="let label of radarLabels"
+                [attr.x]="label.x"
+                [attr.y]="label.y"
+                [attr.text-anchor]="label.anchor">
+                <tspan
+                  *ngFor="let line of label.lines; let lineIndex = index"
+                  [attr.x]="label.x"
+                  [attr.dy]="lineIndex === 0 ? 0 : 18">
+                  {{ line }}
+                </tspan>
+              </text>
+            </g>
+          </svg>
+        </div>
+      </section>
+
       <div *ngIf="sortedSoftSkills.length === 0" class="state-panel">
         <p>Todavia no hay soft skills valoradas para este alumno.</p>
       </div>

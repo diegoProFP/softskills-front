@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AlumnoConTotales } from '../../modelo/alumno-con-totales';
 import { Grupo } from '../../modelo/grupo';
 import { GrupoService } from '../../services/grupo.service';
+import { NotificationService } from '../../services/notification.service';
 import {
   getSoftSkillLookupKey,
   getSoftSkillTotalByCodigo,
@@ -30,7 +31,11 @@ export class GrupoDetalleComponent implements OnInit {
   loading = true;
   errorMessage = '';
 
-  constructor(private route: ActivatedRoute, private grupoService: GrupoService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private grupoService: GrupoService,
+    private notificationService: NotificationService
+  ) {}
 
   ngOnInit(): void {
     const nivel = this.route.snapshot.paramMap.get('nivel');
@@ -127,9 +132,9 @@ export class GrupoDetalleComponent implements OnInit {
         this.alumnos = alumnos || [];
         this.loading = false;
       },
-      error: () => {
+      error: (error) => {
         this.alumnos = [];
-        this.errorMessage = 'No se pudieron cargar los totales del grupo.';
+        this.errorMessage = this.notificationService.showHttpError(error, 'No se pudieron cargar los totales del grupo.');
         this.loading = false;
       }
     });

@@ -21,8 +21,8 @@ export class CursosComponent implements OnInit {
         this.notificationService.showSuccess('Curso registrado exitosamente');
         this.cargarCursos();
       },
-      error: () => {
-        this.notificationService.showError('Error al registrar el curso');
+      error: (error) => {
+        this.notificationService.showHttpError(error, 'Error al registrar el curso.');
       }
     });
   }
@@ -41,8 +41,9 @@ export class CursosComponent implements OnInit {
         this.cursosNoRegistrados = this.cursos.filter(curso => !curso.registradoSk);
         this.loading = false;
       },
-      error: () => {
+      error: (error) => {
         this.cursos = [];
+        this.notificationService.showHttpError(error, 'No se pudieron cargar los cursos.');
         this.loading = false;
       }
     });
