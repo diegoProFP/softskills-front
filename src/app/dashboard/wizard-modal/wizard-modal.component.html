@@ -140,6 +140,30 @@
               </div>
             </div>
 
+            <div *ngIf="softSkillSeleccionada" class="motivo-section">
+              <p class="motivo-title">Motivo</p>
+
+              <div *ngIf="motivosSoftSkillSeleccionada.length > 0" class="custom-chips motivo-options">
+                <button
+                  *ngFor="let motivo of motivosSoftSkillSeleccionada"
+                  type="button"
+                  [class.active]="motivoControl.value === motivo.motivo"
+                  (click)="seleccionarMotivo(motivo)">
+                  {{ motivo.motivo }}
+                </button>
+              </div>
+
+              <mat-form-field appearance="outline" class="motivo-field">
+                <mat-label>Motivo de la muestra</mat-label>
+                <textarea
+                  matInput
+                  rows="3"
+                  [formControl]="motivoControl"
+                  placeholder="Escribe un motivo o ajusta el motivo seleccionado">
+                </textarea>
+              </mat-form-field>
+            </div>
+
             <mat-action-row>
               <button mat-button (click)="previousStep()">Anterior</button>
               <button
@@ -179,6 +203,7 @@
                     </ng-container>
                   </p>
                   <p><strong>Valoracion:</strong> {{ resumenValoracion }}</p>
+                  <p *ngIf="motivoResumen"><strong>Motivo:</strong> {{ motivoResumen }}</p>
                 </mat-card-content>
               </mat-card>
             </div>

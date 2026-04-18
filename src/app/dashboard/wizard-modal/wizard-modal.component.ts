@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MatExpansionPanel } from '@angular/material/expansion';
 import { Observable } from 'rxjs';
 import { Alumno, Curso } from '../../modelo/curso';
 import { MuestraSK } from '../../modelo/muestra-sk';
-import { NivelMuestraSoftSkill, SoftSkill, TipoMedicionSoftSkill } from '../../modelo/softskill';
+import { MotivoSoftSkill, NivelMuestraSoftSkill, SoftSkill, TipoMedicionSoftSkill } from '../../modelo/softskill';
 import { CursoService } from '../../services/curso.service';
 import { LoadingService } from '../../services/loading.service';
 import { NotificationService } from '../../services/notification.service';
@@ -29,6 +30,7 @@ export class WizardModalComponent implements OnInit {
   alumnosFiltrados: Alumno[] = [];
   softSkillSeleccionada: SoftSkill | null = null;
   softSkills: SoftSkill[] = [];
+  motivoControl = new FormControl<string>('', { nonNullable: true });
   valoracionSeleccionada: 'positiva' | 'negativa' | null = null;
   nivelSeleccionado: NivelMuestraSoftSkill = 'NORMAL';
   readonly nivelesMuestra: { value: NivelMuestraSoftSkill; label: string }[] = [
@@ -144,6 +146,7 @@ export class WizardModalComponent implements OnInit {
     this.softSkillSeleccionada = softSkill;
     this.valoracionSeleccionada = this.esAcumulacionSaturada ? 'positiva' : null;
     this.nivelSeleccionado = 'NORMAL';
+    this.motivoControl.setValue('');
     this.nextStep();
   }
 
@@ -152,6 +155,7 @@ export class WizardModalComponent implements OnInit {
     this.softSkillSeleccionada = null;
     this.valoracionSeleccionada = null;
     this.nivelSeleccionado = 'NORMAL';
+    this.motivoControl.setValue('');
   }
 
   seleccionarCurso(curso: Curso) {
@@ -162,12 +166,25 @@ export class WizardModalComponent implements OnInit {
 
   handleValoracionSeleccionada(valoracion: 'positiva' | 'negativa') {
     this.valoracionSeleccionada = valoracion;
-    this.nextStep();
   }
 
   seleccionarNivel(nivel: NivelMuestraSoftSkill) {
     this.nivelSeleccionado = nivel;
     this.valoracionSeleccionada = 'positiva';
+  }
+
+  seleccionarMotivo(motivo: MotivoSoftSkill) {
+    this.motivoControl.setValue(motivo.motivo);
+  }
+
+  get motivosSoftSkillSeleccionada(): MotivoSoftSkill[] {
+    return (this.softSkillSeleccionada?.listaMotivos ?? [])
+      .filter((motivo) => typeof motivo?.motivo === 'string' && motivo.motivo.trim().length > 0);
+  }
+
+  get motivoResumen(): string | null {
+    const motivo = this.motivoControl.value.trim();
+    return motivo.length > 0 ? motivo : null;
   }
 
   get tipoMedicionSeleccionada(): TipoMedicionSoftSkill {
@@ -206,12 +223,14 @@ export class WizardModalComponent implements OnInit {
     }
 
     const esAcumulacionSaturada = this.esAcumulacionSaturada;
+    const motivo = this.motivoControl.value.trim();
     const muestra: MuestraSK = {
       profesorId: this.cursoSeleccionado.profesor.id,
       cursoId: this.cursoSeleccionado.id,
       alumnoId: this.alumnoSeleccionado.id,
       softSkillId: this.softSkillSeleccionada.id,
       valor: esAcumulacionSaturada || this.valoracionSeleccionada === 'positiva' ? 1 : -1,
+      motivo: motivo.length > 0 ? motivo : null,
       ...(esAcumulacionSaturada ? { nivel: this.nivelSeleccionado } : {})
     };
 
