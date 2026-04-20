@@ -34,6 +34,16 @@
   object-fit: cover;
 }
 
+.avatar-fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.08);
+  color: #9de2dd;
+  font-size: 88px;
+  line-height: 1;
+}
+
 .fullname {
   font-weight: 800;
   text-align: center;

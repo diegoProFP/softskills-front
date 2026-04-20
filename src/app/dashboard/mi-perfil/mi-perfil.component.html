@@ -5,15 +5,14 @@
     <ul>
       <li><strong>Nombre completo:</strong> {{ u.fullname }}</li>
       <li><strong>Nombre de usuario:</strong> {{ u.username }}</li>
-      <li><strong>Email:</strong> {{ u.email }}</li>
-      <li><strong>Sitio:</strong> {{ u.sitename }}</li>
-      <li><strong>Rol:</strong> {{ u.role }}</li>
+      <li *ngIf="u.lang"><strong>Idioma:</strong> {{ u.lang }}</li>
+      <li *ngIf="u.sitename"><strong>Sitio:</strong> {{ u.sitename }}</li>
+      <li *ngIf="u.siteurl"><strong>URL del sitio:</strong> {{ u.siteurl }}</li>
+      <li><strong>Roles:</strong> {{ roles.join(', ') }}</li>
       <li><strong>Usuario ID:</strong> {{ u.userid }}</li>
-      
-      <!-- Agrega aquí más campos según lo que tenga UserInfo -->
     </ul>
   </div>
 </div>
 <ng-template #noUser>
-  <p>No hay información de usuario disponible.</p>
+  <p>No hay informacion de usuario disponible.</p>
 </ng-template>

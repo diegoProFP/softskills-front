@@ -1,9 +1,17 @@
 export interface UserInfo {
-  fullname: string;
-  username: string;
+  moodleToken?: string;
   userid: number;
-  lastname: string;
+  username: string;
   firstname: string;
-  sitename: string;
-  userPictureUrl: string;
+  lastname: string;
+  fullname: string;
+  lang?: string;
+  sitename?: string;
+  siteurl?: string;
+  userPictureUrl?: string;
+}
+
+export interface LoginUserInfo extends Omit<UserInfo, 'userPictureUrl'> {
+  userPictureUrl?: string;
+  userpictureurl?: string;
 }

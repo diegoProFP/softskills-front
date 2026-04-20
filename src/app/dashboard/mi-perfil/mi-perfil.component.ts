@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../services/user.service';
 import { UserInfo } from '../../modelo/user-info';
+import { AuthService } from '../../services/auth.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-mi-perfil',
@@ -9,10 +10,15 @@ import { UserInfo } from '../../modelo/user-info';
 })
 export class MiPerfilComponent implements OnInit {
   user: UserInfo | null = null;
+  roles: string[] = [];
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.user = this.userService.getUserInfo();
+    this.roles = this.authService.getRoles();
   }
 }
