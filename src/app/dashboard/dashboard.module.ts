@@ -21,6 +21,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSelectModule } from '@angular/material/select';
 import { FloatingButtonComponent } from './floating-button/floating-button.component';
 import { WizardModalComponent } from './wizard-modal/wizard-modal.component';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -66,6 +68,8 @@ import { SoftSkillsAdminComponent } from './administracion/soft-skills-admin.com
     MatFormFieldModule,
     MatInputModule,
     MatAutocompleteModule,
+    MatSlideToggleModule,
+    MatSelectModule,
     MatExpansionModule,
     MatCardModule,
     SharedModule,
