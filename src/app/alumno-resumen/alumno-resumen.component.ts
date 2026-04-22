@@ -46,7 +46,8 @@ export class AlumnoResumenComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.alumnoId = this.route.snapshot.paramMap.get('alumnoId');
+    this.alumnoId = this.route.snapshot.queryParamMap.get('idalumno')
+      || this.route.snapshot.paramMap.get('alumnoId');
 
     if (!this.alumnoId) {
       this.errorMessage = 'No se pudo identificar al alumno.';
