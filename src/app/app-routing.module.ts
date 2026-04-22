@@ -9,6 +9,7 @@ import { AlumnoResumenComponent } from './alumno-resumen/alumno-resumen.componen
 const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'alumnos/resumen', component: AlumnoResumenComponent, canActivate: [AuthGuard] },
   { path: 'alumnos/:alumnoId/resumen', component: AlumnoResumenComponent, canActivate: [AuthGuard] },
   {
     path: 'dashboard',
