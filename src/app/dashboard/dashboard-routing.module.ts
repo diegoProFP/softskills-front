@@ -8,7 +8,6 @@ import { CursoDetalleComponent } from './curso-detalle/curso-detalle.component';
 import { GruposComponent } from './grupos/grupos.component';
 import { GrupoDetalleComponent } from './grupo-detalle/grupo-detalle.component';
 import { AdminGuard } from '../admin.guard';
-import { AdministracionComponent } from './administracion/administracion.component';
 import { ProfesoresAdminComponent } from './administracion/profesores-admin.component';
 import { SoftSkillsAdminComponent } from './administracion/soft-skills-admin.component';
 
@@ -24,7 +23,7 @@ const routes: Routes = [
       { path: 'grupos', component: GruposComponent },
       { path: 'grupos/:nivel/:cicloFormativo/:grupo/:cursoEscolar', component: GrupoDetalleComponent },
       { path: 'mi-perfil', component: MiPerfilComponent },
-      { path: 'administracion', component: AdministracionComponent, canActivate: [AdminGuard] },
+      { path: 'administracion', pathMatch: 'full', redirectTo: 'administracion/profesores' },
       { path: 'administracion/profesores', component: ProfesoresAdminComponent, canActivate: [AdminGuard] },
       { path: 'administracion/soft-skills', component: SoftSkillsAdminComponent, canActivate: [AdminGuard] }
     ]

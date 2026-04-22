@@ -51,8 +51,11 @@
           *ngFor="let softSkill of filteredSoftSkills"
           [class.active]="selectedSoftSkill?.id === softSkill.id"
           (click)="seleccionarSoftSkill(softSkill.id)">
-          <span class="skill-name">{{ softSkill.nombre }}</span>
-          <span class="skill-code">{{ softSkill.codigo }}</span>
+          <app-soft-skill-icon [code]="softSkill.codigo" [label]="softSkill.nombre" size="sm"></app-soft-skill-icon>
+          <span>
+            <span class="skill-name">{{ softSkill.nombre }}</span>
+            <span class="skill-code">{{ softSkill.codigo }}</span>
+          </span>
         </button>
       </div>
 
@@ -65,9 +68,13 @@
     <section class="editor-panel" *ngIf="selectedSoftSkill; else noSelection">
       <form [formGroup]="softSkillForm" (ngSubmit)="guardarSoftSkill()" class="editor-form">
         <div class="editor-header">
-          <div>
-            <p class="eyebrow">Editando</p>
-            <h3>{{ selectedSoftSkill.nombre }}</h3>
+          <div class="editor-title">
+            <app-soft-skill-icon [code]="softSkillForm.value.codigo" [label]="softSkillForm.value.nombre" size="xl"></app-soft-skill-icon>
+            <div>
+              <p class="eyebrow">Editando</p>
+              <h3>{{ selectedSoftSkill.nombre }}</h3>
+              <span class="editor-code">{{ softSkillForm.value.codigo }}</span>
+            </div>
           </div>
           <div class="header-actions">
             <span class="id-pill">ID {{ selectedSoftSkill.id }}</span>

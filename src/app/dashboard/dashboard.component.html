@@ -25,9 +25,18 @@
         <mat-icon>star</mat-icon> Catalogo de Soft Skills
       </mat-list-item>
 
-      <mat-list-item *ngIf="isAdmin" routerLink="/dashboard/administracion" routerLinkActive="active">
-        <mat-icon>admin_panel_settings</mat-icon> Administracion
-      </mat-list-item>
+      <div *ngIf="isAdmin" class="admin-menu-group">
+        <div class="menu-section-title">
+          <mat-icon>admin_panel_settings</mat-icon>
+          <span>Administracion</span>
+        </div>
+        <mat-list-item class="submenu-item" routerLink="/dashboard/administracion/profesores" routerLinkActive="active">
+          <mat-icon>person_add</mat-icon> Profesores
+        </mat-list-item>
+        <mat-list-item class="submenu-item" routerLink="/dashboard/administracion/soft-skills" routerLinkActive="active">
+          <mat-icon>tune</mat-icon> Soft Skills
+        </mat-list-item>
+      </div>
 
       <mat-divider></mat-divider>
 
