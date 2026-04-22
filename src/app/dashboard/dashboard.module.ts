@@ -21,6 +21,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSelectModule } from '@angular/material/select';
 import { FloatingButtonComponent } from './floating-button/floating-button.component';
 import { WizardModalComponent } from './wizard-modal/wizard-modal.component';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -29,6 +31,9 @@ import { ValoracionPositivaNegativaComponent } from './valoracion-positiva-negat
 import { GruposComponent } from './grupos/grupos.component';
 import { GrupoDetalleComponent } from './grupo-detalle/grupo-detalle.component';
 import { SharedModule } from '../shared/shared.module';
+import { AdministracionComponent } from './administracion/administracion.component';
+import { ProfesoresAdminComponent } from './administracion/profesores-admin.component';
+import { SoftSkillsAdminComponent } from './administracion/soft-skills-admin.component';
 
 
 @NgModule({
@@ -42,7 +47,10 @@ import { SharedModule } from '../shared/shared.module';
     GrupoDetalleComponent,
     FloatingButtonComponent,
     WizardModalComponent,
-    ValoracionPositivaNegativaComponent
+    ValoracionPositivaNegativaComponent,
+    AdministracionComponent,
+    ProfesoresAdminComponent,
+    SoftSkillsAdminComponent
   ],
   imports: [
     CommonModule,
@@ -60,6 +68,8 @@ import { SharedModule } from '../shared/shared.module';
     MatFormFieldModule,
     MatInputModule,
     MatAutocompleteModule,
+    MatSlideToggleModule,
+    MatSelectModule,
     MatExpansionModule,
     MatCardModule,
     SharedModule,

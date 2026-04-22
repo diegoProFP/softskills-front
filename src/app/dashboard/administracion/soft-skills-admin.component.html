@@ -1,0 +1,171 @@
+<section class="soft-skills-admin-page">
+  <button mat-button routerLink="/dashboard/administracion" class="back-button">
+    <mat-icon>arrow_back</mat-icon>
+    Administracion
+  </button>
+
+  <div class="page-header">
+    <div>
+      <p class="eyebrow">Administracion</p>
+      <h2>Gestion de soft skills</h2>
+    </div>
+    <button mat-button type="button" (click)="cargarDatos()" [disabled]="loading || saving">
+      <mat-icon>refresh</mat-icon>
+      Actualizar
+    </button>
+  </div>
+
+  <mat-progress-bar *ngIf="loading" color="accent" mode="indeterminate"></mat-progress-bar>
+
+  <div *ngIf="errorCarga && !loading" class="state-message error-state">
+    <mat-icon>error_outline</mat-icon>
+    <span>{{ errorCarga }}</span>
+  </div>
+
+  <div *ngIf="!loading && !errorCarga && softSkills.length === 0" class="state-message empty-state">
+    <mat-icon>category</mat-icon>
+    <span>No hay soft skills administrables.</span>
+  </div>
+
+  <div *ngIf="!loading && !errorCarga && softSkills.length > 0" class="admin-layout">
+    <aside class="soft-skill-list">
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Buscar soft skill</mat-label>
+        <mat-icon matPrefix>search</mat-icon>
+        <input matInput type="text" [formControl]="filtroControl" placeholder="Nombre, codigo o ID" />
+        <button
+          *ngIf="filtroControl.value"
+          mat-icon-button
+          matSuffix
+          type="button"
+          aria-label="Limpiar filtro"
+          (click)="limpiarFiltro()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <div class="list-items">
+        <button
+          type="button"
+          class="skill-list-item"
+          *ngFor="let softSkill of filteredSoftSkills"
+          [class.active]="selectedSoftSkill?.id === softSkill.id"
+          (click)="seleccionarSoftSkill(softSkill.id)">
+          <span class="skill-name">{{ softSkill.nombre }}</span>
+          <span class="skill-code">{{ softSkill.codigo }}</span>
+        </button>
+      </div>
+
+      <div *ngIf="filteredSoftSkills.length === 0" class="state-message empty-state compact">
+        <mat-icon>search_off</mat-icon>
+        <span>No hay coincidencias.</span>
+      </div>
+    </aside>
+
+    <section class="editor-panel" *ngIf="selectedSoftSkill; else noSelection">
+      <form [formGroup]="softSkillForm" (ngSubmit)="guardarSoftSkill()" class="editor-form">
+        <div class="editor-header">
+          <div>
+            <p class="eyebrow">Editando</p>
+            <h3>{{ selectedSoftSkill.nombre }}</h3>
+          </div>
+          <div class="header-actions">
+            <span class="id-pill">ID {{ selectedSoftSkill.id }}</span>
+            <button class="secondary-action" mat-button type="button" (click)="seleccionarSoftSkill(selectedSoftSkill.id)" [disabled]="saving">
+              Deshacer cambios
+            </button>
+            <button class="save-action" mat-raised-button color="primary" type="submit" [disabled]="saving">
+              <mat-icon>save</mat-icon>
+              {{ saving ? 'Guardando...' : 'Guardar soft skill' }}
+            </button>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <mat-form-field appearance="outline">
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="nombre" [disabled]="saving" />
+            <mat-error *ngIf="softSkillForm.get('nombre')?.hasError('required')">El nombre es obligatorio.</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Tipo de medicion</mat-label>
+            <mat-select formControlName="tipoMedicion" [disabled]="saving">
+              <mat-option *ngFor="let tipo of options.tiposMedicion" [value]="tipo">{{ tipo }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="softSkillForm.get('tipoMedicion')?.hasError('required')">Selecciona un tipo.</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Codigo</mat-label>
+            <mat-select formControlName="codigo" [disabled]="saving">
+              <mat-option *ngFor="let codigo of options.codigos" [value]="codigo">{{ codigo }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="softSkillForm.get('codigo')?.hasError('required')">Selecciona un codigo.</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div *ngIf="softSkillForm.invalid" class="validation-hint">
+          <mat-icon>info</mat-icon>
+          <span>Completa los campos obligatorios marcados con asterisco para guardar.</span>
+        </div>
+
+        <mat-form-field appearance="outline" class="description-field">
+          <mat-label>Descripcion</mat-label>
+          <textarea matInput rows="3" formControlName="descripcion" [disabled]="saving"></textarea>
+        </mat-form-field>
+
+        <div class="motivos-section">
+          <div class="motivos-header">
+            <div>
+              <h4>Motivos</h4>
+              <p>La lista completa se sincroniza al guardar.</p>
+            </div>
+            <button class="add-motivo-button" mat-raised-button type="button" (click)="agregarMotivo()" [disabled]="saving">
+              <mat-icon>add</mat-icon>
+              Anadir motivo
+            </button>
+          </div>
+
+          <div formArrayName="listaMotivos" class="motivos-list">
+            <div
+              class="motivo-row"
+              *ngFor="let motivoControl of motivos.controls; let i = index"
+              [formGroupName]="i">
+              <mat-form-field appearance="outline">
+                <mat-label>Motivo {{ i + 1 }}</mat-label>
+                <input matInput formControlName="motivo" [disabled]="saving" />
+                <mat-error *ngIf="motivoControl.get('motivo')?.hasError('required')">El motivo no puede estar vacio.</mat-error>
+              </mat-form-field>
+
+              <button
+                mat-icon-button
+                type="button"
+                aria-label="Eliminar motivo"
+                matTooltip="Eliminar motivo"
+                (click)="eliminarMotivo(i)"
+                [disabled]="saving">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <div *ngIf="motivos.length === 0" class="state-message empty-state compact">
+            <mat-icon>notes</mat-icon>
+            <span>No hay motivos definidos.</span>
+            <button class="secondary-action inline-action" mat-button type="button" (click)="agregarMotivo()" [disabled]="saving">
+              Anadir el primero
+            </button>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <ng-template #noSelection>
+      <div class="state-message empty-state">
+        <mat-icon>touch_app</mat-icon>
+        <span>Selecciona una soft skill para editarla.</span>
+      </div>
+    </ng-template>
+  </div>
+</section>

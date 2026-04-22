@@ -13,6 +13,9 @@ import { LoadingService } from '../services/loading.service';
 export class DashboardComponent {
   user: UserInfo | null = null;
   isSidenavOpen = true;
+  isTeacher = false;
+  isAdmin = false;
+  isStudent = false;
   isLoading$ = this.loadingService.isLoading$;
 
   constructor(
@@ -22,6 +25,9 @@ export class DashboardComponent {
     public loadingService: LoadingService
   ) {
     this.user = this.userService.getUserInfo();
+    this.isTeacher = this.authService.isTeacher();
+    this.isAdmin = this.authService.isAdmin();
+    this.isStudent = this.authService.isStudent();
   }
 
   toggleSidenav() {

@@ -1,0 +1,124 @@
+<section class="profesores-admin-page">
+  <button mat-button routerLink="/dashboard/administracion" class="back-button">
+    <mat-icon>arrow_back</mat-icon>
+    Administracion
+  </button>
+
+  <div class="page-header">
+    <div>
+      <p class="eyebrow">Administracion</p>
+      <h2>Gestion de profesores</h2>
+    </div>
+    <button mat-button type="button" (click)="cargarProfesores()" [disabled]="loading || creando">
+      <mat-icon>refresh</mat-icon>
+      Actualizar
+    </button>
+  </div>
+
+  <section class="create-panel">
+    <div class="create-panel-header">
+      <mat-icon>person_add</mat-icon>
+      <div>
+        <h3>Alta de profesor</h3>
+        <p>Registra un profesor por su identificador de Moodle.</p>
+      </div>
+    </div>
+
+    <form class="create-form" [formGroup]="profesorForm" (ngSubmit)="crearProfesor()">
+      <mat-form-field appearance="outline" class="id-field">
+        <mat-label>ID de Moodle</mat-label>
+        <mat-icon matPrefix>badge</mat-icon>
+        <input matInput type="number" min="1" formControlName="id" placeholder="1445" [disabled]="creando" />
+        <mat-error *ngIf="idControl?.hasError('required')">El ID de Moodle es obligatorio.</mat-error>
+        <mat-error *ngIf="idControl?.hasError('min') || idControl?.hasError('invalidId')">El ID debe ser mayor que 0.</mat-error>
+        <mat-error *ngIf="idControl?.hasError('duplicate')">Ese profesor ya esta registrado.</mat-error>
+      </mat-form-field>
+
+      <div class="admin-field">
+        <div>
+          <span class="field-label">Permisos de administrador</span>
+          <span class="field-help">Puede entrar en Administracion y gestionar profesores.</span>
+        </div>
+        <mat-slide-toggle formControlName="administrador" color="primary" [disabled]="creando">
+          {{ profesorForm.value.administrador ? 'Si' : 'No' }}
+        </mat-slide-toggle>
+      </div>
+
+      <button mat-raised-button color="primary" type="submit" [disabled]="profesorForm.invalid || creando">
+        <mat-icon>person_add</mat-icon>
+        {{ creando ? 'Anadiendo...' : 'Anadir profesor' }}
+      </button>
+    </form>
+  </section>
+
+  <mat-progress-bar *ngIf="loading" color="accent" mode="indeterminate"></mat-progress-bar>
+
+  <div *ngIf="errorCarga && !loading" class="state-message error-state">
+    <mat-icon>error_outline</mat-icon>
+    <span>{{ errorCarga }}</span>
+  </div>
+
+  <div class="list-tools" *ngIf="!loading && profesores.length > 0">
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Buscar por ID</mat-label>
+      <mat-icon matPrefix>search</mat-icon>
+      <input matInput type="text" [formControl]="filtroControl" placeholder="ID de Moodle" />
+      <button
+        *ngIf="filtroControl.value"
+        mat-icon-button
+        matSuffix
+        type="button"
+        aria-label="Limpiar filtro"
+        (click)="limpiarFiltro()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+
+  <div *ngIf="!loading && !errorCarga && profesores.length === 0" class="state-message empty-state">
+    <mat-icon>group_off</mat-icon>
+    <span>No hay profesores registrados.</span>
+  </div>
+
+  <div *ngIf="!loading && !errorCarga && profesores.length > 0" class="profesores-table-wrap">
+    <table class="profesores-table">
+      <thead>
+        <tr>
+          <th>ID Moodle</th>
+          <th>Administrador</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let profesor of profesoresFiltrados">
+          <td class="id-cell">{{ profesor.id }}</td>
+          <td>
+            <mat-slide-toggle
+              class="row-admin-toggle"
+              color="primary"
+              [checked]="profesor.administrador"
+              [disabled]="estaGuardandoFila(profesor.id)"
+              (change)="actualizarAdministrador(profesor, $event.checked)">
+              {{ profesor.administrador ? 'Si' : 'No' }}
+            </mat-slide-toggle>
+          </td>
+          <td>
+            <span class="status-pill saving" *ngIf="estaGuardandoFila(profesor.id); else estadoListo">
+              Guardando
+            </span>
+            <ng-template #estadoListo>
+              <span class="status-pill" [class.admin]="profesor.administrador">
+                {{ profesor.administrador ? 'Administrador' : 'Profesor' }}
+              </span>
+            </ng-template>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div *ngIf="profesoresFiltrados.length === 0" class="state-message empty-state">
+      <mat-icon>search_off</mat-icon>
+      <span>No hay profesores que coincidan con el filtro.</span>
+    </div>
+  </div>
+</section>

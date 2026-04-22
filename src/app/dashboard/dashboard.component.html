@@ -1,7 +1,10 @@
 <mat-sidenav-container class="dashboard-container">
   <mat-sidenav [opened]="isSidenavOpen" mode="side" class="dark-sidenav">
     <div class="user-info">
-      <img *ngIf="user?.userPictureUrl" [src]="user.userPictureUrl" class="avatar" alt="Avatar" />
+      <img *ngIf="user?.userPictureUrl; else avatarFallback" [src]="user.userPictureUrl" class="avatar" alt="Avatar" />
+      <ng-template #avatarFallback>
+        <mat-icon class="avatar avatar-fallback">account_circle</mat-icon>
+      </ng-template>
       <div class="fullname">{{ user?.fullname }}</div>
       <div class="sitename">{{ user?.sitename }}</div>
     </div>
@@ -12,14 +15,18 @@
       <mat-list-item routerLink="/dashboard/mi-perfil" routerLinkActive="active">
         <mat-icon>person</mat-icon> Mi perfil
       </mat-list-item>
-      <mat-list-item routerLink="/dashboard/cursos" routerLinkActive="active">
+      <mat-list-item *ngIf="isTeacher" routerLink="/dashboard/cursos" routerLinkActive="active">
         <mat-icon>school</mat-icon> Cursos
       </mat-list-item>
-      <mat-list-item routerLink="/dashboard/grupos" routerLinkActive="active">
+      <mat-list-item *ngIf="isTeacher" routerLink="/dashboard/grupos" routerLinkActive="active">
         <mat-icon>groups</mat-icon> Grupos
       </mat-list-item>
-      <mat-list-item>
+      <mat-list-item *ngIf="isTeacher">
         <mat-icon>star</mat-icon> Catalogo de Soft Skills
+      </mat-list-item>
+
+      <mat-list-item *ngIf="isAdmin" routerLink="/dashboard/administracion" routerLinkActive="active">
+        <mat-icon>admin_panel_settings</mat-icon> Administracion
       </mat-list-item>
 
       <mat-divider></mat-divider>

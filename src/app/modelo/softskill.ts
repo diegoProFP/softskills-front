@@ -24,6 +24,7 @@ export type NivelMuestraSoftSkill =
   | 'SIGNIFICATIVA';
 
 export interface MotivoSoftSkill {
+  id?: number;
   motivo: string;
 }
 
@@ -36,3 +37,19 @@ export interface SoftSkill {
   tipoMedicion?: TipoMedicionSoftSkill;
   listaMotivos?: MotivoSoftSkill[] | null;
 }
+
+export interface AdminSoftSkill {
+  id: number;
+  nombre: string;
+  descripcion?: string | null;
+  tipoMedicion: string;
+  codigo: string;
+  listaMotivos: MotivoSoftSkill[];
+}
+
+export interface SoftSkillAdminOptions {
+  tiposMedicion: string[];
+  codigos: string[];
+}
+
+export type AdminSoftSkillUpdate = Omit<AdminSoftSkill, 'id'>;
