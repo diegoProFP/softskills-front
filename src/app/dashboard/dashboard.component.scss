@@ -78,6 +78,40 @@ mat-list-item:hover {
   transform: translateX(3px);
 }
 
+.admin-menu-group {
+  margin: 1rem 0 0.6rem;
+  padding: 0.65rem;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.menu-section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.25rem 0.45rem 0.65rem;
+  color: rgba(247, 243, 235, 0.76);
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.menu-section-title mat-icon {
+  margin-right: 0;
+  font-size: 20px;
+}
+
+.submenu-item {
+  min-height: 46px;
+  margin-bottom: 0.3rem;
+}
+
+.submenu-item mat-icon {
+  color: #ddf3f1;
+}
+
 mat-icon {
   color: #9de2dd;
   margin-right: 10px;

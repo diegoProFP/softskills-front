@@ -31,7 +31,6 @@ import { ValoracionPositivaNegativaComponent } from './valoracion-positiva-negat
 import { GruposComponent } from './grupos/grupos.component';
 import { GrupoDetalleComponent } from './grupo-detalle/grupo-detalle.component';
 import { SharedModule } from '../shared/shared.module';
-import { AdministracionComponent } from './administracion/administracion.component';
 import { ProfesoresAdminComponent } from './administracion/profesores-admin.component';
 import { SoftSkillsAdminComponent } from './administracion/soft-skills-admin.component';
 
@@ -48,7 +47,6 @@ import { SoftSkillsAdminComponent } from './administracion/soft-skills-admin.com
     FloatingButtonComponent,
     WizardModalComponent,
     ValoracionPositivaNegativaComponent,
-    AdministracionComponent,
     ProfesoresAdminComponent,
     SoftSkillsAdminComponent
   ],
