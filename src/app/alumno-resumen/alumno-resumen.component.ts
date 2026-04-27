@@ -1,6 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ParamMap } from '@angular/router';
 import { ActivatedRoute, Router } from '@angular/router';
+import { combineLatest, Subject, Subscription } from 'rxjs';
+import { distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
 import { AlumnoConTotales } from '../modelo/alumno-con-totales';
+import {
+  AlumnoSoftSkillMuestrasResponse,
+  sortAlumnoSoftSkillCursos
+} from '../modelo/alumno-soft-skill-muestras';
 import { SoftSkillTotalDTO, sortSoftSkillsByNombre } from '../modelo/softskill-total';
 import { AlumnoService } from '../services/alumno.service';
 import { AuthService } from '../services/auth.service';
@@ -26,12 +33,21 @@ interface RadarLabel extends RadarLabelPoint {
   lines: string[];
 }
 
+type SoftSkillDetailStatus = 'idle' | 'loading' | 'success' | 'error';
+
+interface SoftSkillDetailState {
+  expanded: boolean;
+  status: SoftSkillDetailStatus;
+  data: AlumnoSoftSkillMuestrasResponse | null;
+  errorMessage: string;
+}
+
 @Component({
   selector: 'app-alumno-resumen',
   templateUrl: './alumno-resumen.component.html',
   styleUrls: ['./alumno-resumen.component.scss']
 })
-export class AlumnoResumenComponent implements OnInit {
+export class AlumnoResumenComponent implements OnInit, OnDestroy {
   alumnoId: string | null = null;
   alumno: AlumnoConTotales | null = null;
   loading = true;
@@ -46,18 +62,7 @@ export class AlumnoResumenComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.alumnoId = this.route.snapshot.queryParamMap.get('idalumno')
-      || this.route.snapshot.paramMap.get('alumnoId');
-
-    if (!this.alumnoId) {
-      this.errorMessage = 'No se pudo identificar al alumno.';
-      this.loading = false;
-      return;
-    }
-
-    this.authService.setPortalMode('student');
-    this.authService.setStudentPortalUrl(this.router.url);
-    this.cargarResumen();
+    this.observeAlumnoId();
   }
 
   get metricCards(): MetricCard[] {
@@ -258,6 +263,9 @@ export class AlumnoResumenComponent implements OnInit {
   private readonly skillRadius = 48;
   private readonly radarCenter = 260;
   private readonly radarRadius = 150;
+  private readonly destroy$ = new Subject<void>();
+  private readonly softSkillDetailState = new Map<string, SoftSkillDetailState>();
+  private readonly softSkillDetailRequests = new Map<string, Subscription>();
 
   private cargarResumen(): void {
     if (!this.alumnoId) {
@@ -283,6 +291,151 @@ export class AlumnoResumenComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.resetSoftSkillDetails();
+  }
+
+  toggleSoftSkillDetail(skill: SoftSkillTotalDTO): void {
+    const state = this.getOrCreateSoftSkillDetailState(skill);
+    state.expanded = !state.expanded;
+
+    if (state.expanded) {
+      this.ensureSoftSkillDetailLoaded(skill);
+    }
+  }
+
+  retrySoftSkillDetail(skill: SoftSkillTotalDTO): void {
+    const state = this.getOrCreateSoftSkillDetailState(skill);
+    state.expanded = true;
+    this.loadSoftSkillDetail(skill, state);
+  }
+
+  getSoftSkillDetailState(skill: SoftSkillTotalDTO): SoftSkillDetailState {
+    return this.getOrCreateSoftSkillDetailState(skill);
+  }
+
+  getCursoDisplayName(cursoId: number, cursoNombre: string | null): string {
+    return cursoNombre?.trim() || `Curso ${cursoId}`;
+  }
+
+  getMuestraMotivo(motivo: string | null | undefined): string {
+    return motivo?.trim() || 'Sin comentario';
+  }
+
+  getSoftSkillDetailTrackBy(index: number, curso: { cursoId: number }): number {
+    return curso.cursoId;
+  }
+
+  getMuestraTrackBy(index: number, muestra: { id: number }): number {
+    return muestra.id;
+  }
+
+  private observeAlumnoId(): void {
+    combineLatest([this.route.paramMap, this.route.queryParamMap]).pipe(
+      map(([params, queryParams]) => this.resolveAlumnoId(params, queryParams)),
+      distinctUntilChanged(),
+      takeUntil(this.destroy$)
+    ).subscribe((alumnoId) => {
+      this.alumnoId = alumnoId;
+
+      if (!alumnoId) {
+        this.resetSoftSkillDetails();
+        this.alumno = null;
+        this.errorMessage = 'No se pudo identificar al alumno.';
+        this.loading = false;
+        return;
+      }
+
+      this.errorMessage = '';
+      this.authService.setPortalMode('student');
+      this.authService.setStudentPortalUrl(this.router.url);
+      this.resetSoftSkillDetails();
+      this.cargarResumen();
+    });
+  }
+
+  private resolveAlumnoId(params: ParamMap, queryParams: ParamMap): string | null {
+    return queryParams.get('idalumno') || params.get('alumnoId');
+  }
+
+  private ensureSoftSkillDetailLoaded(skill: SoftSkillTotalDTO): void {
+    const state = this.getOrCreateSoftSkillDetailState(skill);
+
+    if (state.status === 'success' || state.status === 'loading') {
+      return;
+    }
+
+    this.loadSoftSkillDetail(skill, state);
+  }
+
+  private loadSoftSkillDetail(skill: SoftSkillTotalDTO, state: SoftSkillDetailState): void {
+    if (!this.alumnoId) {
+      return;
+    }
+
+    const key = this.getSoftSkillDetailKey(skill);
+    if (this.softSkillDetailRequests.has(key)) {
+      return;
+    }
+
+    state.status = 'loading';
+    state.errorMessage = '';
+
+    const request = new Subscription();
+    this.softSkillDetailRequests.set(key, request);
+    request.add(
+      this.alumnoService.getSoftSkillMuestrasByAlumnoId(this.alumnoId, skill.id).subscribe({
+        next: (detail) => {
+          state.data = {
+            ...detail,
+            cursos: sortAlumnoSoftSkillCursos(detail.cursos)
+          };
+          state.status = 'success';
+          this.softSkillDetailRequests.delete(key);
+        },
+        error: (error) => {
+          state.status = 'error';
+          state.errorMessage = this.notificationService.getErrorMessage(
+            error,
+            'No se pudo cargar el detalle de esta soft skill.'
+          );
+          this.softSkillDetailRequests.delete(key);
+        }
+      })
+    );
+  }
+
+  private getOrCreateSoftSkillDetailState(skill: SoftSkillTotalDTO): SoftSkillDetailState {
+    const key = this.getSoftSkillDetailKey(skill);
+    const existingState = this.softSkillDetailState.get(key);
+
+    if (existingState) {
+      return existingState;
+    }
+
+    const initialState: SoftSkillDetailState = {
+      expanded: false,
+      status: 'idle',
+      data: null,
+      errorMessage: ''
+    };
+
+    this.softSkillDetailState.set(key, initialState);
+    return initialState;
+  }
+
+  private getSoftSkillDetailKey(skill: SoftSkillTotalDTO): string {
+    return `${skill.id}`;
+  }
+
+  private resetSoftSkillDetails(): void {
+    this.softSkillDetailRequests.forEach((request) => request.unsubscribe());
+    this.softSkillDetailRequests.clear();
+    this.softSkillDetailState.clear();
   }
 
   private getRadarPoint(index: number, ratio: number): RadarPoint {

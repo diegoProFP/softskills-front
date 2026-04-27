@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { AlumnoConTotales } from '../modelo/alumno-con-totales';
+import { AlumnoSoftSkillMuestrasResponse } from '../modelo/alumno-soft-skill-muestras';
 
 @Injectable({
   providedIn: 'root'
@@ -21,5 +22,14 @@ export class AlumnoService {
     });
 
     return this.http.get<AlumnoConTotales>(`${this.apiUrl}/resumen`, { params });
+  }
+
+  getSoftSkillMuestrasByAlumnoId(
+    alumnoId: string,
+    softSkillId: number
+  ): Observable<AlumnoSoftSkillMuestrasResponse> {
+    return this.http.get<AlumnoSoftSkillMuestrasResponse>(
+      `${this.apiUrl}/${alumnoId}/soft-skills/${softSkillId}/muestras`
+    );
   }
 }

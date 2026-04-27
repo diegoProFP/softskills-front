@@ -1,0 +1,10 @@
+.git
+.gitignore
+.angular
+.vscode
+node_modules
+dev-server.log
+dev-server.err.log
+README.md
+src
+*.md

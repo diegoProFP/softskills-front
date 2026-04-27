@@ -299,6 +299,13 @@
   gap: 16px;
 }
 
+.skill-card-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
 .skill-score {
   display: inline-flex;
   align-items: center;
@@ -310,6 +317,22 @@
   font-size: 1.35rem;
   font-weight: 800;
   margin-top: 10px;
+}
+
+.detail-toggle-button {
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #f6f9ff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 180ms ease, transform 180ms ease;
+}
+
+.detail-toggle-button:hover {
+  background: rgba(255, 255, 255, 0.14);
+  transform: translateY(-1px);
 }
 
 .skill-body {
@@ -385,6 +408,118 @@
   font-size: 0.68rem;
   letter-spacing: 0.14em;
   color: rgba(255, 255, 255, 0.66);
+}
+
+.skill-detail-panel {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.skill-detail-state {
+  display: grid;
+  gap: 12px;
+}
+
+.skill-detail-state p {
+  margin: 0;
+  color: rgba(235, 241, 255, 0.82);
+}
+
+.skill-detail-error {
+  justify-items: start;
+}
+
+.skill-detail-content {
+  display: grid;
+  gap: 18px;
+}
+
+.skill-detail-header,
+.course-detail-header,
+.sample-item-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.skill-detail-kicker,
+.course-count,
+.sample-level,
+.sample-reason {
+  margin: 0;
+}
+
+.skill-detail-kicker {
+  color: rgba(140, 216, 255, 0.88);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.75rem;
+}
+
+.skill-detail-header h4,
+.course-title {
+  margin: 6px 0 0;
+}
+
+.skill-detail-count {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.08);
+  font-weight: 700;
+}
+
+.course-detail-block {
+  padding: 16px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.course-title {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.course-count {
+  margin-top: 6px;
+  color: rgba(235, 241, 255, 0.66);
+}
+
+.course-samples {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.sample-item {
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(5, 14, 26, 0.42);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.sample-item-top {
+  font-weight: 700;
+}
+
+.sample-value {
+  color: #8fe7ff;
+}
+
+.sample-level {
+  margin-top: 6px;
+  color: rgba(235, 241, 255, 0.72);
+  font-size: 0.88rem;
+}
+
+.sample-reason {
+  margin-top: 10px;
+  color: rgba(246, 249, 255, 0.88);
+  line-height: 1.55;
 }
 
 .tone-generic .skill-ring-value {
@@ -486,5 +621,16 @@
   .skill-body {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .skill-card-actions {
+    width: 100%;
+    align-items: flex-start;
+  }
+
+  .skill-detail-header,
+  .course-detail-header,
+  .sample-item-top {
+    flex-direction: column;
   }
 }
