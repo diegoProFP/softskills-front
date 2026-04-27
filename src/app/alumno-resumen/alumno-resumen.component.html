@@ -127,7 +127,17 @@
               [label]="skill.nombre"
               size="xl">
             </app-soft-skill-icon>
-            <span class="skill-score">{{ skill.puntuacionTotal }}</span>
+            <div class="skill-card-actions">
+              <span class="skill-score">{{ skill.puntuacionTotal }}</span>
+              <button
+                type="button"
+                class="detail-toggle-button"
+                [attr.aria-expanded]="getSoftSkillDetailState(skill).expanded"
+                [attr.aria-controls]="'soft-skill-detail-' + skill.id"
+                (click)="toggleSoftSkillDetail(skill)">
+                {{ getSoftSkillDetailState(skill).expanded ? 'Ocultar detalle' : 'Ver detalle' }}
+              </button>
+            </div>
           </div>
 
           <div class="skill-body">
@@ -154,6 +164,59 @@
               </div>
             </div>
           </div>
+
+          <section
+            *ngIf="getSoftSkillDetailState(skill).expanded"
+            class="skill-detail-panel"
+            [attr.id]="'soft-skill-detail-' + skill.id">
+            <ng-container [ngSwitch]="getSoftSkillDetailState(skill).status">
+              <div *ngSwitchCase="'loading'" class="skill-detail-state skill-detail-loading">
+                <mat-progress-bar color="accent" mode="indeterminate"></mat-progress-bar>
+                <p>Cargando detalle de muestras...</p>
+              </div>
+
+              <div *ngSwitchCase="'error'" class="skill-detail-state skill-detail-error">
+                <p>{{ getSoftSkillDetailState(skill).errorMessage }}</p>
+                <button type="button" class="primary-button" (click)="retrySoftSkillDetail(skill)">Reintentar</button>
+              </div>
+
+              <div *ngSwitchCase="'success'" class="skill-detail-content">
+                <div class="skill-detail-header">
+                  <div>
+                    <p class="skill-detail-kicker">Detalle de muestras</p>
+                    <h4>{{ getSoftSkillDetailState(skill).data?.softSkill?.nombre || skill.nombre }}</h4>
+                  </div>
+                  <span class="skill-detail-count">
+                    {{ getSoftSkillDetailState(skill).data?.numMuestras || 0 }} muestras
+                  </span>
+                </div>
+
+                <div
+                  *ngFor="let curso of getSoftSkillDetailState(skill).data?.cursos; trackBy: getSoftSkillDetailTrackBy"
+                  class="course-detail-block">
+                  <div class="course-detail-header">
+                    <div>
+                      <p class="course-title">{{ getCursoDisplayName(curso.cursoId, curso.cursoNombre) }}</p>
+                      <p class="course-count">{{ curso.numMuestras }} muestras</p>
+                    </div>
+                  </div>
+
+                  <div class="course-samples">
+                    <article
+                      *ngFor="let muestra of curso.muestras; trackBy: getMuestraTrackBy"
+                      class="sample-item">
+                      <div class="sample-item-top">
+                        <span>{{ muestra.fecha | date:'dd/MM/yyyy HH:mm' }}</span>
+                        <span class="sample-value">{{ muestra.valor }}</span>
+                      </div>
+                      <p class="sample-level">{{ muestra.nivel || 'Sin nivel' }}</p>
+                      <p class="sample-reason">{{ getMuestraMotivo(muestra.motivo) }}</p>
+                    </article>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </section>
         </article>
       </div>
     </section>
