@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Curso } from '../modelo/curso';
-import { Alumno } from '../modelo/alumno';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +27,9 @@ export class CursoService {
     );
   }
 
-  registrarCurso(id: string | number): Observable<any> {
-    return this.http.post(`${this.apiUrl}/${id}/registrar`, {});
+  registrarCurso(id: string | number): Observable<string> {
+    return this.http.post(`${this.apiUrl}/${id}/registrar`, {}, {
+      responseType: 'text'
+    });
   }
 }
