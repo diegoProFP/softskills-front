@@ -5,47 +5,87 @@
     No hay cursos asociados al usuario.
   </div>
   <div *ngIf="!loading && cursos.length > 0" class="search-row">
-    <mat-form-field appearance="outline" class="course-search">
-      <mat-label>Buscar curso</mat-label>
-      <mat-icon matPrefix>search</mat-icon>
-      <input
-        type="text"
-        matInput
-        [formControl]="busquedaControl"
-        [matAutocomplete]="autoCursos"
-        placeholder="Teclea nombre o codigo">
-      <button
-        *ngIf="busquedaControl.value"
-        type="button"
-        mat-icon-button
-        matSuffix
-        aria-label="Limpiar busqueda"
-        (click)="limpiarBusqueda()">
-        <mat-icon>close</mat-icon>
-      </button>
-      <mat-autocomplete #autoCursos="matAutocomplete">
-        <mat-option *ngFor="let curso of opcionesAutocompletado" [value]="curso.nombreCorto">
-          <span>{{ curso.nombreCorto }}</span>
-          <small>{{ curso.nombreLargo }}</small>
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
+    <div class="search-controls">
+      <mat-form-field appearance="outline" class="course-search">
+        <mat-label>Buscar curso</mat-label>
+        <mat-icon matPrefix>search</mat-icon>
+        <input
+          type="text"
+          matInput
+          [formControl]="busquedaControl"
+          [matAutocomplete]="autoCursos"
+          placeholder="Teclea nombre o codigo">
+        <button
+          *ngIf="busquedaControl.value"
+          type="button"
+          mat-icon-button
+          matSuffix
+          aria-label="Limpiar busqueda"
+          (click)="limpiarBusqueda()">
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-autocomplete #autoCursos="matAutocomplete">
+          <mat-option *ngFor="let curso of opcionesAutocompletado" [value]="curso.nombreCorto">
+            <span>{{ curso.nombreCorto }}</span>
+            <small>{{ curso.nombreLargo }}</small>
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <mat-checkbox class="registrable-filter" [formControl]="soloRegistrablesControl">
+        Solo cursos registrables en Soft Skills
+      </mat-checkbox>
+    </div>
   </div>
   <div *ngIf="!loading && cursos.length > 0 && (cursosRegistradosFiltrados.length > 0 || cursosNoRegistradosFiltrados.length > 0)" class="card-list">
     <div *ngIf="cursosRegistradosFiltrados.length > 0">
       <h3>Cursos Registrados</h3>
       <mat-card class="curso-card" *ngFor="let curso of cursosRegistradosFiltrados" [routerLink]="['/dashboard/cursos', curso.id]" style="cursor:pointer">
         <mat-card-title>{{ curso.nombreCorto }}</mat-card-title>
-        <mat-card-content>{{ curso.nombreLargo }}</mat-card-content>
+        <mat-card-content>
+          <p>{{ curso.nombreLargo }}</p>
+          <div *ngIf="mostrarAvisoNoRegistrable(curso)" class="course-alert course-alert-info">
+            <div class="course-alert-header">
+              <mat-icon>info</mat-icon>
+              <span>{{ avisoCursoNoRegistrable }}</span>
+            </div>
+            <div class="id-number-help">
+              <p><strong>Formato esperado del ID number:</strong> <code>{{ patronIdNumberPrincipal }}</code></p>
+              <p><strong>Variante admitida:</strong> <code>{{ patronIdNumberConSufijo }}</code></p>
+              <p><strong>Ejemplos válidos:</strong> <code>{{ ejemploIdNumber }}</code> y <code>{{ ejemploIdNumberConSufijo }}</code></p>
+              <p><strong>Significado:</strong> nivel = nivel del curso, ciclo = ciclo formativo, grupo = grupo, cursoEscolar = curso académico.</p>
+            </div>
+          </div>
+        </mat-card-content>
       </mat-card>
     </div>
     <div *ngIf="cursosNoRegistradosFiltrados.length > 0">
       <h3>Cursos No Registrados</h3>
       <mat-card class="curso-card" *ngFor="let curso of cursosNoRegistradosFiltrados">
         <mat-card-title>{{ curso.nombreCorto }}</mat-card-title>
-        <mat-card-content>{{ curso.nombreLargo }}</mat-card-content>
+        <mat-card-content>
+          <p>{{ curso.nombreLargo }}</p>
+          <div *ngIf="mostrarAvisoNoRegistrable(curso)" class="course-alert course-alert-warning">
+            <div class="course-alert-header">
+              <mat-icon>warning_amber</mat-icon>
+              <span>{{ avisoCursoNoRegistrable }}</span>
+            </div>
+            <div class="id-number-help">
+              <p><strong>Formato esperado del ID number:</strong> <code>{{ patronIdNumberPrincipal }}</code></p>
+              <p><strong>Variante admitida:</strong> <code>{{ patronIdNumberConSufijo }}</code></p>
+              <p><strong>Ejemplos válidos:</strong> <code>{{ ejemploIdNumber }}</code> y <code>{{ ejemploIdNumberConSufijo }}</code></p>
+              <p><strong>Significado:</strong> nivel = nivel del curso, ciclo = ciclo formativo, grupo = grupo, cursoEscolar = curso académico.</p>
+            </div>
+          </div>
+        </mat-card-content>
         <mat-card-actions>
-          <button mat-raised-button color="primary" (click)="registrarCurso(curso.id)">Registrar Curso</button>
+          <button
+            mat-raised-button
+            color="primary"
+            [disabled]="!puedeRegistrarCurso(curso)"
+            [matTooltip]="mostrarAvisoNoRegistrable(curso) ? avisoCursoNoRegistrable : ''"
+            (click)="registrarCurso(curso)">
+            Registrar Curso
+          </button>
         </mat-card-actions>
       </mat-card>
     </div>

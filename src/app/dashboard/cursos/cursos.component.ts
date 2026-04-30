@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { CursoService } from '../../services/curso.service';
 import { Curso } from '../../modelo/curso';
 import { NotificationService } from '../../services/notification.service';
-import { Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -11,6 +10,12 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./cursos.component.scss']
 })
 export class CursosComponent implements OnInit {
+  readonly avisoCursoNoRegistrable = 'No se puede registrar en Soft Skills porque falta informar correctamente el ID number en Moodle.';
+  readonly patronIdNumberPrincipal = 'nivel_ciclo_grupo_cursoEscolar';
+  readonly patronIdNumberConSufijo = 'nivel_ciclo_grupo_cursoEscolar_sufijo';
+  readonly ejemploIdNumber = '1_DAW_A_2425';
+  readonly ejemploIdNumberConSufijo = '1_DAW_A_2425_OPT';
+
   cursos: Curso[] = [];
   cursosRegistrados: Curso[] = [];
   cursosNoRegistrados: Curso[] = [];
@@ -18,10 +23,16 @@ export class CursosComponent implements OnInit {
   cursosNoRegistradosFiltrados: Curso[] = [];
   opcionesAutocompletado: Curso[] = [];
   busquedaControl = new FormControl('', { nonNullable: true });
+  soloRegistrablesControl = new FormControl(true, { nonNullable: true });
   loading = true;
 
-  registrarCurso(id: number): void {
-    this.cursoService.registrarCurso(id).subscribe({
+  registrarCurso(curso: Curso): void {
+    if (!this.puedeRegistrarCurso(curso)) {
+      this.notificationService.showWarning(this.avisoCursoNoRegistrable);
+      return;
+    }
+
+    this.cursoService.registrarCurso(curso.id).subscribe({
       next: () => {
         this.notificationService.showSuccess('Curso registrado exitosamente');
         this.cargarCursos();
@@ -34,8 +45,7 @@ export class CursosComponent implements OnInit {
 
   constructor(
     private cursoService: CursoService,
-    private notificationService: NotificationService,
-    private router: Router
+    private notificationService: NotificationService
   ) {}
 
   cargarCursos(): void {
@@ -62,6 +72,7 @@ export class CursosComponent implements OnInit {
 
   ngOnInit(): void {
     this.busquedaControl.valueChanges.subscribe(valor => this.aplicarFiltro(valor));
+    this.soloRegistrablesControl.valueChanges.subscribe(() => this.aplicarFiltro(this.busquedaControl.value));
     this.cargarCursos();
   }
 
@@ -80,11 +91,19 @@ export class CursosComponent implements OnInit {
   }
 
   private filtrarCursos(cursos: Curso[], termino: string): Curso[] {
-    if (!termino) {
-      return cursos;
-    }
+    return cursos.filter((curso) => {
+      const cumpleBusqueda = !termino || this.normalizar(this.textoBuscable(curso)).includes(termino);
+      const cumpleRegistrable = !this.soloRegistrablesControl.value || curso.registrableEnSoftSkills;
+      return cumpleBusqueda && cumpleRegistrable;
+    });
+  }
 
-    return cursos.filter(curso => this.normalizar(this.textoBuscable(curso)).includes(termino));
+  puedeRegistrarCurso(curso: Curso): boolean {
+    return !curso.registradoSk && curso.registrableEnSoftSkills;
+  }
+
+  mostrarAvisoNoRegistrable(curso: Curso): boolean {
+    return !curso.registrableEnSoftSkills;
   }
 
   private textoBuscable(curso: Curso): string {

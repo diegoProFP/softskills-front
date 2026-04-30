@@ -37,12 +37,19 @@ h3 {
 
 .search-row {
   display: flex;
-  justify-content: flex-start;
   margin: 0 0 1.25rem;
 }
 
-.course-search {
+.search-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
   width: min(100%, 34rem);
+}
+
+.course-search {
+  width: 100%;
   --mdc-outlined-text-field-label-text-color: var(--text-soft);
   --mdc-outlined-text-field-input-text-color: var(--text-main);
   --mdc-outlined-text-field-outline-color: rgba(24, 52, 70, 0.24);
@@ -56,6 +63,28 @@ h3 {
 
 .course-search mat-icon {
   color: var(--text-soft);
+}
+
+.registrable-filter {
+  color: var(--text-main);
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(24, 52, 70, 0.12);
+  border-radius: 999px;
+  padding: 0.55rem 0.9rem;
+  box-shadow: var(--shadow-sm);
+}
+
+::ng-deep .registrable-filter .mdc-form-field {
+  color: var(--text-main);
+}
+
+::ng-deep .registrable-filter .mdc-label {
+  color: var(--text-main) !important;
+}
+
+::ng-deep .registrable-filter .mdc-checkbox__background {
+  border-color: rgba(24, 52, 70, 0.42) !important;
 }
 
 ::ng-deep .course-search .mat-mdc-text-field-wrapper {
@@ -160,6 +189,10 @@ mat-card-content {
   line-height: 1.6;
 }
 
+mat-card-content p {
+  margin: 0;
+}
+
 .card-list > div:first-child mat-card-title {
   color: var(--accent-strong);
 }
@@ -173,10 +206,66 @@ mat-card-actions {
   margin: 0 !important;
 }
 
+.course-alert {
+  margin-top: 1rem;
+  padding: 0.9rem 1rem;
+  border-radius: 18px;
+  border: 1px solid transparent;
+}
+
+.course-alert-warning {
+  background: rgba(255, 244, 230, 0.9);
+  border-color: rgba(181, 82, 53, 0.18);
+}
+
+.course-alert-info {
+  background: rgba(229, 244, 242, 0.88);
+  border-color: rgba(15, 139, 141, 0.16);
+}
+
+.course-alert-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  color: var(--text-main);
+  font-weight: 700;
+}
+
+.course-alert-header mat-icon {
+  font-size: 1.1rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  margin-top: 0.1rem;
+}
+
+.id-number-help {
+  margin-top: 0.55rem;
+  color: var(--text-soft);
+  font-size: 0.9rem;
+}
+
+.id-number-help p + p {
+  margin-top: 0.3rem;
+}
+
+.id-number-help code {
+  font-size: 0.86rem;
+  padding: 0.12rem 0.35rem;
+  border-radius: 8px;
+  background: rgba(23, 48, 66, 0.08);
+  color: var(--text-main);
+}
+
 button[mat-raised-button] {
   border-radius: 999px;
   padding-inline: 1.1rem;
   font-weight: 700;
+}
+
+button[mat-raised-button][disabled] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none !important;
 }
 
 @media (max-width: 900px) {
@@ -187,5 +276,13 @@ button[mat-raised-button] {
   .card-list > div {
     padding: 1rem;
     border-radius: 24px;
+  }
+
+  .search-row {
+    width: 100%;
+  }
+
+  .search-controls {
+    width: 100%;
   }
 }

@@ -7,6 +7,7 @@ export interface Curso {
   nombreLargo: string;
   nombreVisible: string;
   registradoSk: boolean;
+  registrableEnSoftSkills: boolean;
   fechaAlta: string | null;
   profesor: {
     id: number;
