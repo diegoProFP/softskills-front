@@ -20,6 +20,9 @@ interface SkillColumn {
   nombre: string;
 }
 
+type SortDirection = 'asc' | 'desc';
+type CursoSortColumn = 'id' | 'nombre' | 'apellidos' | `skill:${string}`;
+
 @Component({
   selector: 'app-curso-detalle',
   templateUrl: './curso-detalle.component.html',
@@ -30,6 +33,8 @@ export class CursoDetalleComponent implements OnInit {
   loading = true;
   isWizardVisible = false;
   alumnoWizardSeleccionado: Alumno | null = null;
+  sortColumn: CursoSortColumn = 'id';
+  sortDirection: SortDirection = 'asc';
 
   constructor(
     private route: ActivatedRoute,
@@ -42,7 +47,10 @@ export class CursoDetalleComponent implements OnInit {
     if (id) {
       this.cursoService.getCursoById(id).subscribe({
         next: (curso) => {
-          this.curso = curso;
+          this.curso = {
+            ...curso,
+            alumnos: (curso.alumnos || []).map((alumno) => this.normalizarAlumno(alumno))
+          };
           this.loading = false;
         },
         error: (error) => {
@@ -87,11 +95,39 @@ export class CursoDetalleComponent implements OnInit {
     );
   }
 
+  get alumnosOrdenados(): Alumno[] {
+    const alumnos = this.curso?.alumnos || [];
+
+    return alumnos.slice().sort((a, b) => this.compareAlumnos(a, b));
+  }
+
   getTotalPorSkill(alumno: Alumno, skill: SkillColumn): number | null {
     const totalByCodigo = getSoftSkillTotalByCodigo(alumno?.totalesPorSkill, skill.codigo);
     const total = totalByCodigo ?? getSoftSkillTotalByKey(alumno?.totalesPorSkill, skill.key);
 
     return typeof total?.puntuacionTotal === 'number' ? total.puntuacionTotal : null;
+  }
+
+  ordenarPor(column: CursoSortColumn): void {
+    if (this.sortColumn === column) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+      return;
+    }
+
+    this.sortColumn = column;
+    this.sortDirection = 'asc';
+  }
+
+  getSortLabel(column: CursoSortColumn): string {
+    if (this.sortColumn !== column) {
+      return '';
+    }
+
+    return this.sortDirection === 'asc' ? '▲' : '▼';
+  }
+
+  getSkillSortColumn(skill: SkillColumn): CursoSortColumn {
+    return `skill:${skill.key}`;
   }
 
   abrirWizardNuevaMuestra(alumno: Alumno): void {
@@ -105,7 +141,92 @@ export class CursoDetalleComponent implements OnInit {
   }
 
   getNuevaMuestraTooltip(alumno: Alumno): string {
-    return `nueva muestra para el alumno ${alumno.nombre}`;
+    return `nueva muestra para el alumno ${this.getAlumnoNombreCompleto(alumno)}`;
+  }
+
+  private getAlumnoNombreCompleto(alumno: Alumno): string {
+    return alumno.nombreCompleto || [alumno.nombre, alumno.apellidos].filter(Boolean).join(' ') || 'seleccionado';
+  }
+
+  private compareAlumnos(a: Alumno, b: Alumno): number {
+    const direction = this.sortDirection === 'asc' ? 1 : -1;
+    const value = this.compareByColumn(a, b, this.sortColumn);
+
+    return value * direction || a.id - b.id;
+  }
+
+  private compareByColumn(a: Alumno, b: Alumno, column: CursoSortColumn): number {
+    if (column === 'id') {
+      return this.compareNumbers(a.id, b.id);
+    }
+
+    if (column === 'nombre') {
+      return this.compareText(a.nombre, b.nombre);
+    }
+
+    if (column === 'apellidos') {
+      return this.compareText(a.apellidos, b.apellidos);
+    }
+
+    const skill = this.skillColumns.find((columnItem) => this.getSkillSortColumn(columnItem) === column);
+
+    return skill
+      ? this.compareNullableNumbers(this.getTotalPorSkill(a, skill), this.getTotalPorSkill(b, skill))
+      : 0;
+  }
+
+  private compareNumbers(a: number, b: number): number {
+    return a - b;
+  }
+
+  private compareNullableNumbers(a: number | null, b: number | null): number {
+    if (a === null && b === null) {
+      return 0;
+    }
+
+    if (a === null) {
+      return 1;
+    }
+
+    if (b === null) {
+      return -1;
+    }
+
+    return a - b;
+  }
+
+  private compareText(a?: string | null, b?: string | null): number {
+    return (a || '').localeCompare(b || '', 'es', { sensitivity: 'base' });
+  }
+
+  private normalizarAlumno(alumno: Alumno): Alumno {
+    const nombre = this.getTexto(alumno.nombre);
+    const apellidos = this.getTexto(alumno.apellidos);
+    const nombreCompleto = this.getTexto(alumno.nombreCompleto) || [nombre, apellidos].filter(Boolean).join(' ');
+
+    if (apellidos) {
+      return {
+        ...alumno,
+        nombre,
+        apellidos,
+        nombreCompleto
+      };
+    }
+
+    const partesNombreCompleto = (nombreCompleto || nombre).split(/\s+/).filter(Boolean);
+    const nombreSeparado = partesNombreCompleto[0] || nombre;
+    const apellidosSeparados = partesNombreCompleto.slice(1).join(' ');
+
+    return {
+      ...alumno,
+      nombre: nombreSeparado,
+      apellidos: apellidosSeparados || null,
+      nombreCompleto: nombreCompleto || [nombreSeparado, apellidosSeparados].filter(Boolean).join(' ')
+    };
+  }
+
+  private getTexto(value: unknown): string {
+    return typeof value === 'string' ? value.trim() : '';
   }
 
   private toSkillColumn(softSkill: SoftSkill | SoftSkillTotalDTO): SkillColumn {

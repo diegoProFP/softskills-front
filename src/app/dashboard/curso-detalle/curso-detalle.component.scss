@@ -139,6 +139,46 @@ h2 {
   white-space: normal;
 }
 
+.alumno-name,
+.alumno-surnames {
+  font-weight: 700;
+}
+
+.sort-header {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  text-align: left;
+}
+
+.sort-header:hover,
+.sort-header:focus-visible {
+  color: var(--text-main);
+  outline: none;
+}
+
+.skill-sort-header {
+  align-items: flex-start;
+}
+
+.sort-indicator {
+  min-width: 0.75rem;
+  display: inline-flex;
+  justify-content: center;
+  font-size: 0.72rem;
+  line-height: 1;
+}
+
 .accion-cell {
   width: 1%;
   white-space: nowrap;

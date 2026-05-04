@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AlumnoConTotales } from '../../modelo/alumno-con-totales';
 import { Grupo } from '../../modelo/grupo';
 import { GrupoService } from '../../services/grupo.service';
@@ -18,6 +18,9 @@ interface SkillColumn {
   nombre: string;
 }
 
+type SortDirection = 'asc' | 'desc';
+type GrupoSortColumn = 'ranking' | 'nombre' | 'apellidos' | 'score' | 'muestras' | `skill:${string}`;
+
 @Component({
   selector: 'app-grupo-detalle',
   templateUrl: './grupo-detalle.component.html',
@@ -30,9 +33,12 @@ export class GrupoDetalleComponent implements OnInit {
   alumnos: AlumnoConTotales[] = [];
   loading = true;
   errorMessage = '';
+  sortColumn: GrupoSortColumn = 'ranking';
+  sortDirection: SortDirection = 'asc';
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private grupoService: GrupoService,
     private notificationService: NotificationService
   ) {}
@@ -90,6 +96,14 @@ export class GrupoDetalleComponent implements OnInit {
     return this.alumnos.slice(0, 3);
   }
 
+  get alumnosOrdenados(): AlumnoConTotales[] {
+    return this.alumnos.slice().sort((a, b) => this.compareAlumnos(a, b));
+  }
+
+  get resumenReturnUrl(): string {
+    return this.router.url;
+  }
+
   getTotalPorSkill(alumno: AlumnoConTotales, skill: SkillColumn): number | null {
     const totalByCodigo = getSoftSkillTotalByCodigo(alumno?.totalesPorSkill, skill.codigo);
     const total = totalByCodigo ?? getSoftSkillTotalByKey(alumno?.totalesPorSkill, skill.key);
@@ -111,6 +125,32 @@ export class GrupoDetalleComponent implements OnInit {
     return typeof alumno.numMuestrasTotales === 'number' ? alumno.numMuestrasTotales : null;
   }
 
+  getAlumnoNombreCompleto(alumno: AlumnoConTotales): string {
+    return alumno.nombreCompleto || [alumno.nombre, alumno.apellidos].filter(Boolean).join(' ') || '-';
+  }
+
+  ordenarPor(column: GrupoSortColumn): void {
+    if (this.sortColumn === column) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+      return;
+    }
+
+    this.sortColumn = column;
+    this.sortDirection = 'asc';
+  }
+
+  getSortLabel(column: GrupoSortColumn): string {
+    if (this.sortColumn !== column) {
+      return '';
+    }
+
+    return this.sortDirection === 'asc' ? '▲' : '▼';
+  }
+
+  getSkillSortColumn(skill: SkillColumn): GrupoSortColumn {
+    return `skill:${skill.key}`;
+  }
+
   recargar(): void {
     if (!this.grupo) {
       return;
@@ -129,7 +169,7 @@ export class GrupoDetalleComponent implements OnInit {
 
     this.grupoService.getTotalesByGrupo(this.grupo).subscribe({
       next: (alumnos) => {
-        this.alumnos = alumnos || [];
+        this.alumnos = (alumnos || []).map((alumno) => this.normalizarAlumno(alumno));
         this.loading = false;
       },
       error: (error) => {
@@ -146,5 +186,91 @@ export class GrupoDetalleComponent implements OnInit {
       codigo: softSkill.codigo ?? null,
       nombre: softSkill.nombre
     };
+  }
+
+  private compareAlumnos(a: AlumnoConTotales, b: AlumnoConTotales): number {
+    const direction = this.sortDirection === 'asc' ? 1 : -1;
+    const value = this.compareByColumn(a, b, this.sortColumn);
+
+    return value * direction || this.compareNullableNumbers(a.posicionRanking ?? null, b.posicionRanking ?? null);
+  }
+
+  private compareByColumn(a: AlumnoConTotales, b: AlumnoConTotales, column: GrupoSortColumn): number {
+    if (column === 'ranking') {
+      return this.compareNullableNumbers(a.posicionRanking ?? null, b.posicionRanking ?? null);
+    }
+
+    if (column === 'nombre') {
+      return this.compareText(a.nombre, b.nombre);
+    }
+
+    if (column === 'apellidos') {
+      return this.compareText(a.apellidos, b.apellidos);
+    }
+
+    if (column === 'score') {
+      return this.compareNullableNumbers(this.getRankingScore(a), this.getRankingScore(b));
+    }
+
+    if (column === 'muestras') {
+      return this.compareNullableNumbers(this.getNumMuestras(a), this.getNumMuestras(b));
+    }
+
+    const skill = this.skillColumns.find((columnItem) => this.getSkillSortColumn(columnItem) === column);
+
+    return skill
+      ? this.compareNullableNumbers(this.getTotalPorSkill(a, skill), this.getTotalPorSkill(b, skill))
+      : 0;
+  }
+
+  private compareNullableNumbers(a: number | null, b: number | null): number {
+    if (a === null && b === null) {
+      return 0;
+    }
+
+    if (a === null) {
+      return 1;
+    }
+
+    if (b === null) {
+      return -1;
+    }
+
+    return a - b;
+  }
+
+  private compareText(a?: string | null, b?: string | null): number {
+    return (a || '').localeCompare(b || '', 'es', { sensitivity: 'base' });
+  }
+
+  private normalizarAlumno(alumno: AlumnoConTotales): AlumnoConTotales {
+    const alumnoResponse = alumno as AlumnoConTotales & Record<string, unknown>;
+    const nombre = this.getTexto(alumno.nombre);
+    const apellidos = this.getTexto(alumno.apellidos);
+    const nombreCompleto = this.getTexto(alumnoResponse['nombreCompleto']) || [nombre, apellidos].filter(Boolean).join(' ');
+
+    if (apellidos) {
+      return {
+        ...alumno,
+        nombre,
+        apellidos,
+        nombreCompleto
+      };
+    }
+
+    const partesNombreCompleto = (nombreCompleto || nombre).split(/\s+/).filter(Boolean);
+    const nombreSeparado = partesNombreCompleto[0] || nombre;
+    const apellidosSeparados = partesNombreCompleto.slice(1).join(' ');
+
+    return {
+      ...alumno,
+      nombre: nombreSeparado,
+      apellidos: apellidosSeparados || null,
+      nombreCompleto: nombreCompleto || [nombreSeparado, apellidosSeparados].filter(Boolean).join(' ')
+    };
+  }
+
+  private getTexto(value: unknown): string {
+    return typeof value === 'string' ? value.trim() : '';
   }
 }

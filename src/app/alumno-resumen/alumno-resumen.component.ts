@@ -50,6 +50,7 @@ interface SoftSkillDetailState {
 export class AlumnoResumenComponent implements OnInit, OnDestroy {
   alumnoId: string | null = null;
   alumno: AlumnoConTotales | null = null;
+  returnUrl: string | null = null;
   loading = true;
   errorMessage = '';
 
@@ -173,6 +174,11 @@ export class AlumnoResumenComponent implements OnInit, OnDestroy {
 
   recargar(): void {
     this.cargarResumen();
+  }
+
+  volver(): void {
+    this.authService.setPortalMode('dashboard');
+    void this.router.navigateByUrl(this.returnUrl || '/dashboard');
   }
 
   logout(): void {
@@ -341,6 +347,7 @@ export class AlumnoResumenComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe((alumnoId) => {
       this.alumnoId = alumnoId;
+      this.returnUrl = this.resolveReturnUrl(this.route.snapshot.queryParamMap);
 
       if (!alumnoId) {
         this.resetSoftSkillDetails();
@@ -351,8 +358,10 @@ export class AlumnoResumenComponent implements OnInit, OnDestroy {
       }
 
       this.errorMessage = '';
-      this.authService.setPortalMode('student');
-      this.authService.setStudentPortalUrl(this.router.url);
+      if (!this.returnUrl) {
+        this.authService.setPortalMode('student');
+        this.authService.setStudentPortalUrl(this.router.url);
+      }
       this.resetSoftSkillDetails();
       this.cargarResumen();
     });
@@ -360,6 +369,12 @@ export class AlumnoResumenComponent implements OnInit, OnDestroy {
 
   private resolveAlumnoId(params: ParamMap, queryParams: ParamMap): string | null {
     return queryParams.get('idalumno') || params.get('alumnoId');
+  }
+
+  private resolveReturnUrl(queryParams: ParamMap): string | null {
+    const returnUrl = queryParams.get('returnUrl');
+
+    return returnUrl?.startsWith('/') && !returnUrl.startsWith('//') ? returnUrl : null;
   }
 
   private ensureSoftSkillDetailLoaded(skill: SoftSkillTotalDTO): void {

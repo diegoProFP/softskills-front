@@ -39,7 +39,7 @@
         [class.is-third]="index === 2">
         <div class="podium-rank">{{ getRankingPositionLabel(alumno) }}</div>
         <div class="podium-body">
-          <p class="podium-name">{{ alumno.nombre }}</p>
+          <p class="podium-name">{{ getAlumnoNombreCompleto(alumno) }}</p>
           <p class="podium-score">
             <span>Score</span>
             <strong>{{ getRankingScore(alumno) !== null ? (getRankingScore(alumno) | number:'1.2-2') : '-' }}</strong>
@@ -62,28 +62,70 @@
       <table>
         <thead>
           <tr>
-            <th>Ranking</th>
-            <th>Alumno</th>
-            <th>Score</th>
-            <th>Muestras</th>
+            <th>
+              <button type="button" class="sort-header" (click)="ordenarPor('ranking')">
+                <span>Ranking</span>
+                <span class="sort-indicator">{{ getSortLabel('ranking') }}</span>
+              </button>
+            </th>
+            <th>
+              <button type="button" class="sort-header" (click)="ordenarPor('nombre')">
+                <span>Nombre</span>
+                <span class="sort-indicator">{{ getSortLabel('nombre') }}</span>
+              </button>
+            </th>
+            <th>
+              <button type="button" class="sort-header" (click)="ordenarPor('apellidos')">
+                <span>Apellidos</span>
+                <span class="sort-indicator">{{ getSortLabel('apellidos') }}</span>
+              </button>
+            </th>
+            <th>
+              <button type="button" class="sort-header" (click)="ordenarPor('score')">
+                <span>Score</span>
+                <span class="sort-indicator">{{ getSortLabel('score') }}</span>
+              </button>
+            </th>
+            <th>
+              <button type="button" class="sort-header" (click)="ordenarPor('muestras')">
+                <span>Muestras</span>
+                <span class="sort-indicator">{{ getSortLabel('muestras') }}</span>
+              </button>
+            </th>
             <th *ngFor="let skill of skillColumns">
-              <span class="skill-header">
-                <app-soft-skill-icon
-                  [code]="skill.codigo"
-                  [label]="skill.nombre"
-                  size="sm">
-                </app-soft-skill-icon>
-                <span>{{ skill.nombre }}</span>
-              </span>
+              <button type="button" class="sort-header skill-sort-header" (click)="ordenarPor(getSkillSortColumn(skill))">
+                <span class="skill-header">
+                  <app-soft-skill-icon
+                    [code]="skill.codigo"
+                    [label]="skill.nombre"
+                    size="sm">
+                  </app-soft-skill-icon>
+                  <span>{{ skill.nombre }}</span>
+                </span>
+                <span class="sort-indicator">{{ getSortLabel(getSkillSortColumn(skill)) }}</span>
+              </button>
             </th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let alumno of alumnos">
+          <tr *ngFor="let alumno of alumnosOrdenados">
             <td class="ranking-cell">
               <span class="ranking-badge">{{ getRankingPositionLabel(alumno) }}</span>
             </td>
-            <td class="alumno-name">{{ alumno.nombre }}</td>
+            <td class="alumno-name">{{ alumno.nombre || '-' }}</td>
+            <td class="alumno-surnames">
+              <span>{{ alumno.apellidos || '-' }}</span>
+              <button
+                type="button"
+                class="resumen-alumno-button"
+                routerLink="/alumnos/resumen"
+                [queryParams]="{ idalumno: alumno.id, returnUrl: resumenReturnUrl }"
+                matTooltip="Ver resumen del alumno"
+                matTooltipPosition="above"
+                [attr.aria-label]="'Ver resumen de ' + getAlumnoNombreCompleto(alumno)">
+                <mat-icon>open_in_new</mat-icon>
+              </button>
+            </td>
             <td>{{ getRankingScore(alumno) !== null ? (getRankingScore(alumno) | number:'1.2-2') : '-' }}</td>
             <td>{{ getNumMuestras(alumno) !== null ? getNumMuestras(alumno) : '-' }}</td>
             <td *ngFor="let skill of skillColumns">

@@ -18,25 +18,45 @@
       <table>
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Nombre</th>
+            <th>
+              <button type="button" class="sort-header" (click)="ordenarPor('id')">
+                <span>ID</span>
+                <span class="sort-indicator">{{ getSortLabel('id') }}</span>
+              </button>
+            </th>
+            <th>
+              <button type="button" class="sort-header" (click)="ordenarPor('nombre')">
+                <span>Nombre</span>
+                <span class="sort-indicator">{{ getSortLabel('nombre') }}</span>
+              </button>
+            </th>
+            <th>
+              <button type="button" class="sort-header" (click)="ordenarPor('apellidos')">
+                <span>Apellidos</span>
+                <span class="sort-indicator">{{ getSortLabel('apellidos') }}</span>
+              </button>
+            </th>
             <th>Accion</th>
             <th *ngFor="let skill of skillColumns">
-              <span class="skill-header">
-                <app-soft-skill-icon
-                  [code]="skill.codigo"
-                  [label]="skill.nombre"
-                  size="sm">
-                </app-soft-skill-icon>
-                <span>{{ skill.nombre }}</span>
-              </span>
+              <button type="button" class="sort-header skill-sort-header" (click)="ordenarPor(getSkillSortColumn(skill))">
+                <span class="skill-header">
+                  <app-soft-skill-icon
+                    [code]="skill.codigo"
+                    [label]="skill.nombre"
+                    size="sm">
+                  </app-soft-skill-icon>
+                  <span>{{ skill.nombre }}</span>
+                </span>
+                <span class="sort-indicator">{{ getSortLabel(getSkillSortColumn(skill)) }}</span>
+              </button>
             </th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let alumno of curso?.alumnos">
+          <tr *ngFor="let alumno of alumnosOrdenados">
             <td>{{ alumno.id }}</td>
-            <td>{{ alumno.nombre }}</td>
+            <td class="alumno-name">{{ alumno.nombre || '-' }}</td>
+            <td class="alumno-surnames">{{ alumno.apellidos || '-' }}</td>
             <td class="accion-cell">
               <button
                 type="button"
