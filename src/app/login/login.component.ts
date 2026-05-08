@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+import { LoginErrorResponse } from '../modelo/login-response';
 import { AuthService } from '../services/auth.service';
 import { LoadingService } from '../services/loading.service';
-import { NotificationService } from '../services/notification.service';
 import { UserService } from '../services/user.service';
+
+type LoginFailurePayload = Pick<LoginErrorResponse, 'codigoError' | 'mensaje'> | null;
 
 @Component({
   selector: 'app-login',
@@ -23,8 +26,7 @@ export class LoginComponent {
     private userService: UserService,
     private route: ActivatedRoute,
     private router: Router,
-    private loadingService: LoadingService,
-    private notificationService: NotificationService
+    private loadingService: LoadingService
   ) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
@@ -44,7 +46,7 @@ export class LoginComponent {
     this.authService.login(username, password).subscribe({
       next: (response) => {
         if (!response.exito) {
-          this.loginError = response.mensaje ?? 'No se pudo iniciar sesion.';
+          this.loginError = this.getLoginErrorMessage(response);
           return;
         }
 
@@ -77,13 +79,56 @@ export class LoginComponent {
         void this.router.navigate(['/dashboard']);
       },
       error: (error) => {
-        this.loginError = this.notificationService.showHttpError(error, 'Error de autenticacion.');
+        this.loginError = this.getLoginErrorMessage(this.getLoginErrorPayload(error));
       }
     });
   }
 
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
+  }
+
+  private getLoginErrorPayload(error: unknown): LoginErrorResponse | null {
+    if (!(error instanceof HttpErrorResponse)) {
+      return null;
+    }
+
+    if (this.isLoginErrorResponse(error.error)) {
+      return error.error;
+    }
+
+    if (typeof error.error !== 'string') {
+      return null;
+    }
+
+    try {
+      const payload = JSON.parse(error.error);
+      return this.isLoginErrorResponse(payload) ? payload : null;
+    } catch {
+      return null;
+    }
+  }
+
+  private getLoginErrorMessage(error: LoginFailurePayload): string {
+    switch (error?.codigoError) {
+      case 'CREDENCIALES_INVALIDAS':
+        return 'Usuario o contraseña incorrectos.';
+      case 'MOODLE_NO_DISPONIBLE':
+        return 'No se puede conectar con Moodle en este momento. Inténtalo más tarde.';
+      case 'LOGIN_RECHAZADO':
+        return error.mensaje?.trim() || 'No se ha podido iniciar sesión.';
+      default:
+        return 'No se ha podido iniciar sesión.';
+    }
+  }
+
+  private isLoginErrorResponse(value: unknown): value is LoginErrorResponse {
+    if (!value || typeof value !== 'object') {
+      return false;
+    }
+
+    const payload = value as Record<string, unknown>;
+    return payload['exito'] === false;
   }
 
 }
