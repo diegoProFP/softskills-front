@@ -1,13 +1,11 @@
 <div class="curso-detalle-container" *ngIf="!loading">
   <div class="curso-info-wrapper">
     <ng-container *ngIf="curso; else noCurso">
-      <h2>{{ curso.nombreVisible }}</h2>
+      <h2>{{ getCursoNombre(curso) }}</h2>
       <div class="curso-info">
-        <p><strong>Nombre corto:</strong> {{ curso.nombreCorto }}</p>
-        <p><strong>ID:</strong> {{ curso.id }}</p>
-        <p><strong>Descripción:</strong> {{ curso.nombreLargo || 'No disponible' }}</p>
-        <p><strong>Fecha Alta:</strong> {{ curso.fechaAlta || 'No disponible' }}</p>
-        <p><strong>Profesor:</strong> ID {{ curso.profesor.id }}</p>
+        <p><strong>Nombre</strong><span>{{ getCursoNombre(curso) }}</span></p>
+        <p><strong>ID</strong><span>{{ curso.id }}</span></p>
+        <p><strong>Numero de alumnos</strong><span>{{ numeroAlumnos }}</span></p>
       </div>
     </ng-container>
   </div>
@@ -19,26 +17,30 @@
         <thead>
           <tr>
             <th>
-              <button type="button" class="sort-header" (click)="ordenarPor('id')">
+              <button type="button" class="sort-header" [class.is-active]="isSortedBy('id')" (click)="ordenarPor('id')">
                 <span>ID</span>
                 <span class="sort-indicator">{{ getSortLabel('id') }}</span>
               </button>
             </th>
             <th>
-              <button type="button" class="sort-header" (click)="ordenarPor('nombre')">
+              <button type="button" class="sort-header" [class.is-active]="isSortedBy('nombre')" (click)="ordenarPor('nombre')">
                 <span>Nombre</span>
                 <span class="sort-indicator">{{ getSortLabel('nombre') }}</span>
               </button>
             </th>
             <th>
-              <button type="button" class="sort-header" (click)="ordenarPor('apellidos')">
+              <button type="button" class="sort-header" [class.is-active]="isSortedBy('apellidos')" (click)="ordenarPor('apellidos')">
                 <span>Apellidos</span>
                 <span class="sort-indicator">{{ getSortLabel('apellidos') }}</span>
               </button>
             </th>
             <th>Accion</th>
             <th *ngFor="let skill of skillColumns">
-              <button type="button" class="sort-header skill-sort-header" (click)="ordenarPor(getSkillSortColumn(skill))">
+              <button
+                type="button"
+                class="sort-header skill-sort-header"
+                [class.is-active]="isSortedBy(getSkillSortColumn(skill))"
+                (click)="ordenarPor(getSkillSortColumn(skill))">
                 <span class="skill-header">
                   <app-soft-skill-icon
                     [code]="skill.codigo"

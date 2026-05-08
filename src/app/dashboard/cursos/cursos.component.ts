@@ -106,11 +106,14 @@ export class CursosComponent implements OnInit {
     return !curso.registrableEnSoftSkills;
   }
 
+  getCursoNombre(curso: Curso): string {
+    return curso.nombre?.trim() || `Curso ${curso.id}`;
+  }
+
   private textoBuscable(curso: Curso): string {
     return [
-      curso.nombreCorto,
+      curso.nombre,
       curso.nombreLargo,
-      curso.nombreVisible
     ].filter(Boolean).join(' ');
   }
 

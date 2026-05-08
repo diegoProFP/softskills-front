@@ -164,6 +164,10 @@ export class WizardModalComponent implements OnInit {
     this.cargarSoftSkills();
   }
 
+  getCursoNombre(curso: Curso | null | undefined): string {
+    return curso?.nombre?.trim() || (curso ? `Curso ${curso.id}` : '');
+  }
+
   handleValoracionSeleccionada(valoracion: 'positiva' | 'negativa') {
     this.valoracionSeleccionada = valoracion;
   }

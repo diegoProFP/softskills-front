@@ -141,6 +141,8 @@ describe('AlumnoResumenComponent', () => {
 
     expect(component.getSoftSkillDetailState(skill).status).toBe('success');
     expect(component.getSoftSkillDetailState(skill).data?.cursos[0].muestras.map((muestra) => muestra.id)).toEqual([1, 2]);
+    expect(component.getCursoDisplayName(101, null)).toBe('Curso sin nombre (101)');
+    expect(component.getCursoDisplayName(101, ' 1_DAW_A_2526 ')).toBe('1_DAW_A_2526');
 
     component.toggleSoftSkillDetail(skill);
     component.toggleSoftSkillDetail(skill);

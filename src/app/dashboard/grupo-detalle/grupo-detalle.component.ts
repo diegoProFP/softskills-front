@@ -141,10 +141,14 @@ export class GrupoDetalleComponent implements OnInit {
 
   getSortLabel(column: GrupoSortColumn): string {
     if (this.sortColumn !== column) {
-      return '';
+      return '⇅';
     }
 
     return this.sortDirection === 'asc' ? '▲' : '▼';
+  }
+
+  isSortedBy(column: GrupoSortColumn): boolean {
+    return this.sortColumn === column;
   }
 
   getSkillSortColumn(skill: SkillColumn): GrupoSortColumn {

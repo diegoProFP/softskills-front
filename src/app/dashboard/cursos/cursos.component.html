@@ -25,8 +25,8 @@
           <mat-icon>close</mat-icon>
         </button>
         <mat-autocomplete #autoCursos="matAutocomplete">
-          <mat-option *ngFor="let curso of opcionesAutocompletado" [value]="curso.nombreCorto">
-            <span>{{ curso.nombreCorto }}</span>
+          <mat-option *ngFor="let curso of opcionesAutocompletado" [value]="getCursoNombre(curso)">
+            <span>{{ getCursoNombre(curso) }}</span>
             <small>{{ curso.nombreLargo }}</small>
           </mat-option>
         </mat-autocomplete>
@@ -40,7 +40,7 @@
     <div *ngIf="cursosRegistradosFiltrados.length > 0">
       <h3>Cursos Registrados</h3>
       <mat-card class="curso-card" *ngFor="let curso of cursosRegistradosFiltrados" [routerLink]="['/dashboard/cursos', curso.id]" style="cursor:pointer">
-        <mat-card-title>{{ curso.nombreCorto }}</mat-card-title>
+        <mat-card-title>{{ getCursoNombre(curso) }}</mat-card-title>
         <mat-card-content>
           <p>{{ curso.nombreLargo }}</p>
           <div *ngIf="mostrarAvisoNoRegistrable(curso)" class="course-alert course-alert-info">
@@ -61,7 +61,7 @@
     <div *ngIf="cursosNoRegistradosFiltrados.length > 0">
       <h3>Cursos No Registrados</h3>
       <mat-card class="curso-card" *ngFor="let curso of cursosNoRegistradosFiltrados">
-        <mat-card-title>{{ curso.nombreCorto }}</mat-card-title>
+        <mat-card-title>{{ getCursoNombre(curso) }}</mat-card-title>
         <mat-card-content>
           <p>{{ curso.nombreLargo }}</p>
           <div *ngIf="mostrarAvisoNoRegistrable(curso)" class="course-alert course-alert-warning">

@@ -101,6 +101,14 @@ export class CursoDetalleComponent implements OnInit {
     return alumnos.slice().sort((a, b) => this.compareAlumnos(a, b));
   }
 
+  get numeroAlumnos(): number {
+    return this.curso?.alumnos?.length || 0;
+  }
+
+  getCursoNombre(curso: Curso): string {
+    return curso.nombre?.trim() || `Curso ${curso.id}`;
+  }
+
   getTotalPorSkill(alumno: Alumno, skill: SkillColumn): number | null {
     const totalByCodigo = getSoftSkillTotalByCodigo(alumno?.totalesPorSkill, skill.codigo);
     const total = totalByCodigo ?? getSoftSkillTotalByKey(alumno?.totalesPorSkill, skill.key);
@@ -120,10 +128,14 @@ export class CursoDetalleComponent implements OnInit {
 
   getSortLabel(column: CursoSortColumn): string {
     if (this.sortColumn !== column) {
-      return '';
+      return '⇅';
     }
 
     return this.sortDirection === 'asc' ? '▲' : '▼';
+  }
+
+  isSortedBy(column: CursoSortColumn): boolean {
+    return this.sortColumn === column;
   }
 
   getSkillSortColumn(skill: SkillColumn): CursoSortColumn {

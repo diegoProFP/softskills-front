@@ -4,14 +4,14 @@
   max-width: none;
   margin: 0;
   display: grid;
-  gap: 1.4rem;
+  gap: 1rem;
 }
 
 .curso-info-wrapper {
   background: rgba(255, 250, 241, 0.78);
-  border-radius: var(--radius-xl);
+  border-radius: 24px;
   box-shadow: var(--shadow-md);
-  padding: 2.5rem;
+  padding: 1.5rem 1.75rem;
   border: 1px solid rgba(255, 255, 255, 0.76);
 }
 
@@ -41,16 +41,40 @@
 
 h2 {
   color: var(--text-main);
-  margin-bottom: 1.5rem;
-  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  margin: 0 0 1rem;
+  font-size: clamp(1.55rem, 2vw, 2rem);
+  line-height: 1.08;
+  max-width: 58rem;
+}
+
+.curso-info {
+  display: grid;
+  grid-template-columns: minmax(220px, 2fr) minmax(120px, 0.6fr) minmax(160px, 0.8fr);
+  gap: 0.75rem;
 }
 
 .curso-info p {
-  font-size: 1rem;
+  min-width: 0;
+  display: grid;
+  gap: 0.2rem;
+  font-size: 0.92rem;
   color: var(--text-main);
-  margin-bottom: 0.85rem;
-  padding-bottom: 0.85rem;
-  border-bottom: 1px solid rgba(23, 48, 66, 0.08);
+  margin: 0;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid rgba(23, 48, 66, 0.08);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.42);
+}
+
+.curso-info strong {
+  color: var(--accent-strong);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.72rem;
+}
+
+.curso-info span {
+  overflow-wrap: anywhere;
 }
 
 .alumnos-table {
@@ -154,8 +178,10 @@ h2 {
   letter-spacing: inherit;
   text-transform: inherit;
   padding: 0;
-  display: inline-flex;
+  width: 100%;
+  display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 0.4rem;
   cursor: pointer;
   text-align: left;
@@ -165,6 +191,10 @@ h2 {
 .sort-header:focus-visible {
   color: var(--text-main);
   outline: none;
+}
+
+.sort-header.is-active {
+  color: var(--accent-strong);
 }
 
 .skill-sort-header {
@@ -177,6 +207,11 @@ h2 {
   justify-content: center;
   font-size: 0.72rem;
   line-height: 1;
+  opacity: 0.55;
+}
+
+.sort-header.is-active .sort-indicator {
+  opacity: 1;
 }
 
 .accion-cell {
@@ -215,7 +250,7 @@ h2 {
 
 @media (min-width: 1100px) {
   .curso-detalle-container {
-    grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 0.38fr);
     align-items: start;
   }
 
@@ -230,6 +265,10 @@ h2 {
   .soft-skills-wrapper {
     padding: 1.4rem;
     border-radius: 24px;
+  }
+
+  .curso-info {
+    grid-template-columns: 1fr;
   }
 
   .alumnos-table {

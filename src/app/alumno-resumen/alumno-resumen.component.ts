@@ -325,7 +325,7 @@ export class AlumnoResumenComponent implements OnInit, OnDestroy {
   }
 
   getCursoDisplayName(cursoId: number, cursoNombre: string | null): string {
-    return cursoNombre?.trim() || `Curso ${cursoId}`;
+    return cursoNombre?.trim() || `Curso sin nombre (${cursoId})`;
   }
 
   getMuestraMotivo(motivo: string | null | undefined): string {

@@ -12,9 +12,8 @@ describe('CursosComponent', () => {
   const cursos: Curso[] = [
     {
       id: 1,
-      nombreCorto: '1DAW',
+      nombre: '1_DAW_A_2526',
       nombreLargo: 'Primero de DAW',
-      nombreVisible: '1 DAW A',
       registradoSk: true,
       registrableEnSoftSkills: true,
       fechaAlta: '2026-04-01',
@@ -24,9 +23,8 @@ describe('CursosComponent', () => {
     },
     {
       id: 2,
-      nombreCorto: '2DAW',
+      nombre: '2_DAW_A_2526',
       nombreLargo: 'Segundo de DAW',
-      nombreVisible: '2 DAW A',
       registradoSk: false,
       registrableEnSoftSkills: true,
       fechaAlta: '2026-04-02',
@@ -36,9 +34,8 @@ describe('CursosComponent', () => {
     },
     {
       id: 3,
-      nombreCorto: '1DAM',
+      nombre: '1_DAM_B_2526',
       nombreLargo: 'Primero de DAM',
-      nombreVisible: '1 DAM B',
       registradoSk: false,
       registrableEnSoftSkills: false,
       fechaAlta: '2026-04-03',

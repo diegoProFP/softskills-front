@@ -6,17 +6,17 @@
         <mat-expansion-panel [expanded]="currentStep === 1">
             <mat-expansion-panel-header>
               <mat-panel-title>
-                Curso {{cursoSeleccionado?.nombreVisible}}
+                Curso {{ getCursoNombre(cursoSeleccionado) }}
               </mat-panel-title>
             </mat-expansion-panel-header>
             <div *ngIf="cursoSeleccionado">
-              <p>Curso seleccionado: {{ cursoSeleccionado.nombreVisible }}</p>
+              <p>Curso seleccionado: {{ getCursoNombre(cursoSeleccionado) }}</p>
             </div>
             <div *ngIf="!cursoSeleccionado">
               <p>Seleccione un curso:</p>
               <ul>
                 <li *ngFor="let curso of cursos$ | async">
-                  {{ curso.nombreVisible }}
+                  {{ getCursoNombre(curso) }}
                 </li>
               </ul>
             </div>
@@ -189,7 +189,7 @@
                   <mat-card-title>Resumen de la valoracion</mat-card-title>
                 </mat-card-header>
                 <mat-card-content>
-                  <p><strong>Curso:</strong> {{ cursoSeleccionado?.nombreVisible }}</p>
+                  <p><strong>Curso:</strong> {{ getCursoNombre(cursoSeleccionado) }}</p>
                   <p><strong>Alumno:</strong> {{ alumnoSeleccionado?.nombre }}</p>
                   <p class="summary-soft-skill">
                     <strong>Soft Skill:</strong>

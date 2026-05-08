@@ -3,9 +3,8 @@ import { SoftSkill } from './softskill';
 
 export interface Curso {
   id: number;
-  nombreCorto: string;
+  nombre: string;
   nombreLargo: string;
-  nombreVisible: string;
   registradoSk: boolean;
   registrableEnSoftSkills: boolean;
   fechaAlta: string | null;

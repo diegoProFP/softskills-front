@@ -63,37 +63,41 @@
         <thead>
           <tr>
             <th>
-              <button type="button" class="sort-header" (click)="ordenarPor('ranking')">
+              <button type="button" class="sort-header" [class.is-active]="isSortedBy('ranking')" (click)="ordenarPor('ranking')">
                 <span>Ranking</span>
                 <span class="sort-indicator">{{ getSortLabel('ranking') }}</span>
               </button>
             </th>
             <th>
-              <button type="button" class="sort-header" (click)="ordenarPor('nombre')">
+              <button type="button" class="sort-header" [class.is-active]="isSortedBy('nombre')" (click)="ordenarPor('nombre')">
                 <span>Nombre</span>
                 <span class="sort-indicator">{{ getSortLabel('nombre') }}</span>
               </button>
             </th>
             <th>
-              <button type="button" class="sort-header" (click)="ordenarPor('apellidos')">
+              <button type="button" class="sort-header" [class.is-active]="isSortedBy('apellidos')" (click)="ordenarPor('apellidos')">
                 <span>Apellidos</span>
                 <span class="sort-indicator">{{ getSortLabel('apellidos') }}</span>
               </button>
             </th>
             <th>
-              <button type="button" class="sort-header" (click)="ordenarPor('score')">
+              <button type="button" class="sort-header" [class.is-active]="isSortedBy('score')" (click)="ordenarPor('score')">
                 <span>Score</span>
                 <span class="sort-indicator">{{ getSortLabel('score') }}</span>
               </button>
             </th>
             <th>
-              <button type="button" class="sort-header" (click)="ordenarPor('muestras')">
+              <button type="button" class="sort-header" [class.is-active]="isSortedBy('muestras')" (click)="ordenarPor('muestras')">
                 <span>Muestras</span>
                 <span class="sort-indicator">{{ getSortLabel('muestras') }}</span>
               </button>
             </th>
             <th *ngFor="let skill of skillColumns">
-              <button type="button" class="sort-header skill-sort-header" (click)="ordenarPor(getSkillSortColumn(skill))">
+              <button
+                type="button"
+                class="sort-header skill-sort-header"
+                [class.is-active]="isSortedBy(getSkillSortColumn(skill))"
+                (click)="ordenarPor(getSkillSortColumn(skill))">
                 <span class="skill-header">
                   <app-soft-skill-icon
                     [code]="skill.codigo"
