@@ -114,46 +114,126 @@
           <mat-expansion-panel (opened)="onPanelOpened(4)" [expanded]="currentStep === 4">
             <mat-expansion-panel-header>
               <mat-panel-title>
-                Paso 4: Valoracion
-                <span *ngIf="valoracionSeleccionada">
-                  - {{ resumenValoracion }}
+                Paso 4: Conducta observada
+                <span *ngIf="motivoSeleccionado || valoracionSeleccionada">
+                  - {{ resumenRegistro || resumenValoracion }}
                 </span>
               </mat-panel-title>
             </mat-expansion-panel-header>
 
-            <div *ngIf="!esAcumulacionSaturada">
-              <app-valoracion-positiva-negativa
-                (valoracionSeleccionada)="handleValoracionSeleccionada($event)">
-              </app-valoracion-positiva-negativa>
+            <div *ngIf="muestraAyudaAutonomia" class="autonomia-help">
+              <mat-icon>info</mat-icon>
+              <span>Registra conductas observables. Preguntar bien puede ser positivo; quedarse bloqueado sin actuar puede ser negativo.</span>
             </div>
 
-            <div *ngIf="esAcumulacionSaturada" class="nivel-muestra">
-              <p class="nivel-title">Participacion positiva</p>
-              <div class="custom-chips nivel-options">
+            <div *ngIf="hayMotivosEnriquecidos" class="conductas-layout">
+              <section *ngIf="motivosPositivos.length > 0" class="conducta-group positive" [class.is-open]="grupoConductaActivo === 'positiva'">
                 <button
-                  *ngFor="let nivel of nivelesMuestra"
                   type="button"
-                  [class.active]="nivelSeleccionado === nivel.value"
-                  (click)="seleccionarNivel(nivel.value)">
-                  {{ nivel.label }}
+                  class="conducta-group-header"
+                  (click)="seleccionarGrupoConducta('positiva')"
+                  [attr.aria-expanded]="grupoConductaActivo === 'positiva'">
+                  <span class="conducta-group-title">
+                    <mat-icon>trending_up</mat-icon>
+                    <span>Evidencias positivas</span>
+                  </span>
+                  <span class="conducta-group-count">{{ motivosPositivos.length }}</span>
+                  <mat-icon class="expand-icon">expand_more</mat-icon>
                 </button>
+
+                <div *ngIf="grupoConductaActivo === 'positiva'" class="conducta-options">
+                  <button
+                    *ngFor="let motivo of motivosPositivos"
+                    type="button"
+                    class="conducta-card"
+                    [class.active]="motivoSeleccionado?.id === motivo.id"
+                    (click)="seleccionarMotivo(motivo)">
+                    <span class="conducta-main">
+                      <span class="conducta-title">{{ getMotivoTitulo(motivo) }}</span>
+                      <span class="conducta-detail" *ngIf="getMotivoDetalle(motivo)">{{ getMotivoDetalle(motivo) }}</span>
+                    </span>
+                    <span class="conducta-badges">
+                      <span class="badge type-badge">Positiva</span>
+                      <span class="badge impact-badge">{{ getImpactoLabel(motivo) }}</span>
+                      <span class="badge level-badge">{{ getNivelBadge(motivo) }}</span>
+                    </span>
+                  </button>
+                </div>
+              </section>
+
+              <section *ngIf="motivosNegativos.length > 0" class="conducta-group negative" [class.is-open]="grupoConductaActivo === 'negativa'">
+                <button
+                  type="button"
+                  class="conducta-group-header"
+                  (click)="seleccionarGrupoConducta('negativa')"
+                  [attr.aria-expanded]="grupoConductaActivo === 'negativa'">
+                  <span class="conducta-group-title">
+                    <mat-icon>report_problem</mat-icon>
+                    <span>Incidencias / evidencias negativas</span>
+                  </span>
+                  <span class="conducta-group-count">{{ motivosNegativos.length }}</span>
+                  <mat-icon class="expand-icon">expand_more</mat-icon>
+                </button>
+
+                <div *ngIf="grupoConductaActivo === 'negativa'" class="conducta-options">
+                  <button
+                    *ngFor="let motivo of motivosNegativos"
+                    type="button"
+                    class="conducta-card"
+                    [class.active]="motivoSeleccionado?.id === motivo.id"
+                    (click)="seleccionarMotivo(motivo)">
+                    <span class="conducta-main">
+                      <span class="conducta-title">{{ getMotivoTitulo(motivo) }}</span>
+                      <span class="conducta-detail" *ngIf="getMotivoDetalle(motivo)">{{ getMotivoDetalle(motivo) }}</span>
+                    </span>
+                    <span class="conducta-badges">
+                      <span class="badge type-badge">Negativa</span>
+                      <span class="badge impact-badge">{{ getImpactoLabel(motivo) }}</span>
+                      <span class="badge level-badge">{{ getNivelBadge(motivo) }}</span>
+                    </span>
+                  </button>
+                </div>
+              </section>
+            </div>
+
+            <div *ngIf="motivosLegacy.length > 0" class="motivo-section legacy-motivos">
+              <p class="motivo-title">Otros motivos</p>
+              <div class="custom-chips motivo-options">
+                <button
+                  *ngFor="let motivo of motivosLegacy"
+                  type="button"
+                  [class.active]="motivoSeleccionado?.id === motivo.id || motivoControl.value === motivo.motivo"
+                  (click)="seleccionarMotivo(motivo)">
+                  {{ getMotivoTitulo(motivo) }}
+                </button>
+              </div>
+            </div>
+
+            <div *ngIf="!hayMotivosEnriquecidos || (motivoSeleccionado && !tieneMetadatosMotivo(motivoSeleccionado))" class="legacy-controls">
+              <p class="motivo-title">Valoracion manual</p>
+
+              <div *ngIf="!esAcumulacionSaturada">
+                <app-valoracion-positiva-negativa
+                  (valoracionSeleccionada)="handleValoracionSeleccionada($event)">
+                </app-valoracion-positiva-negativa>
+              </div>
+
+              <div *ngIf="esAcumulacionSaturada" class="nivel-muestra">
+                <p class="nivel-title">Participacion positiva</p>
+                <div class="custom-chips nivel-options">
+                  <button
+                    *ngFor="let nivel of nivelesMuestra"
+                    type="button"
+                    [class.active]="nivelSeleccionado === nivel.value"
+                    (click)="seleccionarNivel(nivel.value)">
+                    {{ nivel.label }}
+                  </button>
+                </div>
               </div>
             </div>
 
             <div *ngIf="softSkillSeleccionada" class="motivo-section">
-              <p class="motivo-title">Motivo</p>
-
-              <div *ngIf="motivosSoftSkillSeleccionada.length > 0" class="custom-chips motivo-options">
-                <button
-                  *ngFor="let motivo of motivosSoftSkillSeleccionada"
-                  type="button"
-                  [class.active]="motivoControl.value === motivo.motivo"
-                  (click)="seleccionarMotivo(motivo)">
-                  {{ motivo.motivo }}
-                </button>
-              </div>
-
-              <mat-form-field appearance="outline" class="motivo-field">
+              <mat-form-field *ngIf="!motivoSeleccionado || !tieneMetadatosMotivo(motivoSeleccionado)" appearance="outline" class="motivo-field">
                 <mat-label>Motivo de la muestra</mat-label>
                 <textarea
                   matInput
@@ -162,6 +242,20 @@
                   placeholder="Escribe un motivo o ajusta el motivo seleccionado">
                 </textarea>
               </mat-form-field>
+
+              <mat-form-field appearance="outline" class="motivo-field">
+                <mat-label>Comentario opcional</mat-label>
+                <textarea
+                  matInput
+                  rows="2"
+                  [formControl]="comentarioControl"
+                  placeholder="Anade un detalle concreto si hace falta">
+                </textarea>
+              </mat-form-field>
+
+              <div *ngIf="motivoSeleccionado && tieneMetadatosMotivo(motivoSeleccionado)" class="registro-preview">
+                <strong>Se registrara:</strong> {{ resumenRegistro }}
+              </div>
             </div>
 
             <mat-action-row>
@@ -204,6 +298,8 @@
                   </p>
                   <p><strong>Valoracion:</strong> {{ resumenValoracion }}</p>
                   <p *ngIf="motivoResumen"><strong>Motivo:</strong> {{ motivoResumen }}</p>
+                  <p *ngIf="motivoSeleccionado?.id"><strong>Motivo ID:</strong> {{ motivoSeleccionado?.id }}</p>
+                  <p *ngIf="comentarioResumen"><strong>Comentario:</strong> {{ comentarioResumen }}</p>
                 </mat-card-content>
               </mat-card>
             </div>

@@ -16,7 +16,8 @@ export type SoftSkillCodeValue = SoftSkillCode | string;
 
 export type TipoMedicionSoftSkill =
   | 'PENALIZACION_POR_TRAMOS'
-  | 'ACUMULACION_SATURADA';
+  | 'ACUMULACION_SATURADA'
+  | 'EVIDENCIA_MIXTA';
 
 export type NivelMuestraSoftSkill =
   | 'LEVE'
@@ -26,6 +27,10 @@ export type NivelMuestraSoftSkill =
 export interface MotivoSoftSkill {
   id?: number;
   motivo: string;
+  descripcionCorta?: string | null;
+  descripcionLarga?: string | null;
+  valorPorDefecto?: 1 | -1 | null;
+  nivelPorDefecto?: NivelMuestraSoftSkill | null;
 }
 
 export interface SoftSkill {
