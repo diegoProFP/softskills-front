@@ -96,6 +96,7 @@
 <app-wizard-modal
   *ngIf="isWizardVisible"
   [initialAlumno]="alumnoWizardSeleccionado"
+  (muestraCreada)="recargarCursoActual()"
   (close)="cerrarWizardNuevaMuestra()">
 </app-wizard-modal>
 <app-floating-button></app-floating-button>

@@ -18,6 +18,7 @@ import { SoftSkillService } from '../../services/softskill.service';
 export class WizardModalComponent implements OnInit {
   @Input() initialAlumno: Alumno | null = null;
   @Output() close = new EventEmitter<void>();
+  @Output() muestraCreada = new EventEmitter<void>();
   @ViewChildren(MatExpansionPanel) panels: QueryList<MatExpansionPanel>;
 
   currentStep = 1;
@@ -31,6 +32,9 @@ export class WizardModalComponent implements OnInit {
   softSkillSeleccionada: SoftSkill | null = null;
   softSkills: SoftSkill[] = [];
   motivoControl = new FormControl<string>('', { nonNullable: true });
+  comentarioControl = new FormControl<string>('', { nonNullable: true });
+  motivoSeleccionado: MotivoSoftSkill | null = null;
+  grupoConductaActivo: 'positiva' | 'negativa' | null = null;
   valoracionSeleccionada: 'positiva' | 'negativa' | null = null;
   nivelSeleccionado: NivelMuestraSoftSkill = 'NORMAL';
   readonly nivelesMuestra: { value: NivelMuestraSoftSkill; label: string }[] = [
@@ -145,17 +149,14 @@ export class WizardModalComponent implements OnInit {
   seleccionarSoftSkill(softSkill: SoftSkill) {
     this.softSkillSeleccionada = softSkill;
     this.valoracionSeleccionada = this.esAcumulacionSaturada ? 'positiva' : null;
-    this.nivelSeleccionado = 'NORMAL';
-    this.motivoControl.setValue('');
+    this.resetSeleccionConducta();
     this.nextStep();
   }
 
   cargarSoftSkills() {
     this.softSkills = this.cursoSeleccionado?.softSkills || [];
     this.softSkillSeleccionada = null;
-    this.valoracionSeleccionada = null;
-    this.nivelSeleccionado = 'NORMAL';
-    this.motivoControl.setValue('');
+    this.resetSeleccionConducta();
   }
 
   seleccionarCurso(curso: Curso) {
@@ -178,7 +179,22 @@ export class WizardModalComponent implements OnInit {
   }
 
   seleccionarMotivo(motivo: MotivoSoftSkill) {
+    this.motivoSeleccionado = motivo;
     this.motivoControl.setValue(motivo.motivo);
+    this.grupoConductaActivo = motivo.valorPorDefecto === -1 ? 'negativa' : motivo.valorPorDefecto === 1 ? 'positiva' : this.grupoConductaActivo;
+
+    if (this.tieneMetadatosMotivo(motivo)) {
+      this.valoracionSeleccionada = motivo.valorPorDefecto === 1 ? 'positiva' : 'negativa';
+      this.nivelSeleccionado = motivo.nivelPorDefecto ?? 'NORMAL';
+    }
+
+    if (this.puedeContinuarValoracion) {
+      this.nextStep();
+    }
+  }
+
+  seleccionarGrupoConducta(grupo: 'positiva' | 'negativa'): void {
+    this.grupoConductaActivo = this.grupoConductaActivo === grupo ? null : grupo;
   }
 
   get motivosSoftSkillSeleccionada(): MotivoSoftSkill[] {
@@ -186,9 +202,34 @@ export class WizardModalComponent implements OnInit {
       .filter((motivo) => typeof motivo?.motivo === 'string' && motivo.motivo.trim().length > 0);
   }
 
+  get motivosPositivos(): MotivoSoftSkill[] {
+    return this.motivosSoftSkillSeleccionada
+      .filter((motivo) => motivo.valorPorDefecto === 1)
+      .sort((a, b) => this.getOrdenNivel(b) - this.getOrdenNivel(a));
+  }
+
+  get motivosNegativos(): MotivoSoftSkill[] {
+    return this.motivosSoftSkillSeleccionada
+      .filter((motivo) => motivo.valorPorDefecto === -1)
+      .sort((a, b) => this.getOrdenNivel(b) - this.getOrdenNivel(a));
+  }
+
+  get motivosLegacy(): MotivoSoftSkill[] {
+    return this.motivosSoftSkillSeleccionada.filter((motivo) => !this.tieneMetadatosMotivo(motivo));
+  }
+
+  get hayMotivosEnriquecidos(): boolean {
+    return this.motivosPositivos.length > 0 || this.motivosNegativos.length > 0;
+  }
+
   get motivoResumen(): string | null {
     const motivo = this.motivoControl.value.trim();
     return motivo.length > 0 ? motivo : null;
+  }
+
+  get comentarioResumen(): string | null {
+    const comentario = this.comentarioControl.value.trim();
+    return comentario.length > 0 ? comentario : null;
   }
 
   get tipoMedicionSeleccionada(): TipoMedicionSoftSkill {
@@ -200,10 +241,22 @@ export class WizardModalComponent implements OnInit {
   }
 
   get puedeContinuarValoracion(): boolean {
+    if (this.motivoSeleccionado && this.tieneMetadatosMotivo(this.motivoSeleccionado)) {
+      return true;
+    }
+
+    if (this.hayMotivosEnriquecidos && !this.motivoSeleccionado) {
+      return false;
+    }
+
     return this.esAcumulacionSaturada || !!this.valoracionSeleccionada;
   }
 
   get resumenValoracion(): string {
+    if (this.motivoSeleccionado && this.tieneMetadatosMotivo(this.motivoSeleccionado)) {
+      return `${this.getTipoEvidenciaLabel(this.motivoSeleccionado)} ${this.getNivelLabel(this.nivelSeleccionado).toLowerCase()}`;
+    }
+
     if (this.esAcumulacionSaturada) {
       return `Participacion positiva - ${this.getNivelLabel(this.nivelSeleccionado)}`;
     }
@@ -211,8 +264,122 @@ export class WizardModalComponent implements OnInit {
     return this.valoracionSeleccionada === 'positiva' ? 'Positiva' : 'Negativa';
   }
 
+  get resumenRegistro(): string {
+    const partes = [
+      this.softSkillSeleccionada?.nombre,
+      this.getMotivoTitulo(this.motivoSeleccionado) ?? this.motivoResumen,
+      this.resumenValoracion,
+      this.motivoSeleccionado ? this.getImpactoLabel(this.motivoSeleccionado) : null
+    ].filter(Boolean);
+
+    return partes.join(' - ');
+  }
+
+  get muestraAyudaAutonomia(): boolean {
+    const codigo = this.softSkillSeleccionada?.codigo?.toString().toUpperCase();
+    const nombre = this.softSkillSeleccionada?.nombre?.toUpperCase() ?? '';
+
+    return codigo === 'AUTONOMIA' || nombre.includes('AUTONOM');
+  }
+
   private getNivelLabel(nivel: NivelMuestraSoftSkill): string {
     return this.nivelesMuestra.find((item) => item.value === nivel)?.label ?? 'Normal';
+  }
+
+  private getOrdenNivel(motivo: MotivoSoftSkill): number {
+    const ordenPorNivel: Record<NivelMuestraSoftSkill, number> = {
+      LEVE: 1,
+      NORMAL: 2,
+      SIGNIFICATIVA: 3
+    };
+
+    return motivo.nivelPorDefecto ? ordenPorNivel[motivo.nivelPorDefecto] : 0;
+  }
+
+  getMotivoTitulo(motivo: MotivoSoftSkill | null | undefined): string | null {
+    if (!motivo) {
+      return null;
+    }
+
+    return motivo.descripcionCorta?.trim() || motivo.motivo.trim();
+  }
+
+  getMotivoDetalle(motivo: MotivoSoftSkill): string {
+    const descripcion = motivo.descripcionLarga?.trim();
+
+    if (descripcion) {
+      return descripcion.length > 150 ? `${descripcion.slice(0, 147)}...` : descripcion;
+    }
+
+    return motivo.descripcionCorta?.trim() && motivo.descripcionCorta.trim() !== motivo.motivo.trim()
+      ? motivo.motivo.trim()
+      : '';
+  }
+
+  getNivelBadge(motivo: MotivoSoftSkill): string {
+    return motivo.nivelPorDefecto ?? 'Manual';
+  }
+
+  getTipoEvidenciaLabel(motivo: MotivoSoftSkill): string {
+    if (motivo.valorPorDefecto === 1) {
+      return 'Positiva';
+    }
+
+    if (motivo.valorPorDefecto === -1) {
+      return 'Negativa';
+    }
+
+    return 'Neutra';
+  }
+
+  getImpactoLabel(motivo: MotivoSoftSkill): string {
+    const nivel = motivo.nivelPorDefecto;
+
+    if (this.tipoMedicionSeleccionada === 'EVIDENCIA_MIXTA') {
+      const impactoMixto: Record<string, string> = {
+        '1-LEVE': '+0.4',
+        '1-NORMAL': '+0.8',
+        '1-SIGNIFICATIVA': '+1.5',
+        '-1-LEVE': '-0.5',
+        '-1-NORMAL': '-1.0',
+        '-1-SIGNIFICATIVA': '-2.0'
+      };
+
+      return impactoMixto[`${motivo.valorPorDefecto}-${nivel}`] ?? 'impacto variable';
+    }
+
+    if (this.tipoMedicionSeleccionada === 'ACUMULACION_SATURADA') {
+      const evidencia: Record<NivelMuestraSoftSkill, string> = {
+        LEVE: 'suma evidencia leve',
+        NORMAL: 'suma evidencia normal',
+        SIGNIFICATIVA: 'suma evidencia fuerte'
+      };
+
+      return nivel ? evidencia[nivel] : 'suma evidencia';
+    }
+
+    if (motivo.valorPorDefecto === 1) {
+      return 'recupera puntuacion';
+    }
+
+    if (motivo.valorPorDefecto === -1) {
+      return 'penaliza puntuacion';
+    }
+
+    return 'manual';
+  }
+
+  tieneMetadatosMotivo(motivo: MotivoSoftSkill | null | undefined): boolean {
+    return !!motivo?.id && (motivo.valorPorDefecto === 1 || motivo.valorPorDefecto === -1) && !!motivo.nivelPorDefecto;
+  }
+
+  private resetSeleccionConducta(): void {
+    this.valoracionSeleccionada = this.esAcumulacionSaturada ? 'positiva' : null;
+    this.nivelSeleccionado = 'NORMAL';
+    this.motivoSeleccionado = null;
+    this.grupoConductaActivo = null;
+    this.motivoControl.setValue('');
+    this.comentarioControl.setValue('');
   }
 
   enviarMuestra() {
@@ -228,19 +395,29 @@ export class WizardModalComponent implements OnInit {
 
     const esAcumulacionSaturada = this.esAcumulacionSaturada;
     const motivo = this.motivoControl.value.trim();
+    const comentario = this.comentarioControl.value.trim();
+    const motivoEnriquecido = this.motivoSeleccionado && this.tieneMetadatosMotivo(this.motivoSeleccionado)
+      ? this.motivoSeleccionado
+      : null;
     const muestra: MuestraSK = {
       profesorId: this.cursoSeleccionado.profesor.id,
       cursoId: this.cursoSeleccionado.id,
       alumnoId: this.alumnoSeleccionado.id,
       softSkillId: this.softSkillSeleccionada.id,
-      valor: esAcumulacionSaturada || this.valoracionSeleccionada === 'positiva' ? 1 : -1,
-      motivo: motivo.length > 0 ? motivo : null,
-      ...(esAcumulacionSaturada ? { nivel: this.nivelSeleccionado } : {})
+      ...(motivoEnriquecido?.id ? { motivoId: motivoEnriquecido.id } : {}),
+      ...(motivoEnriquecido
+        ? { motivoComentario: comentario.length > 0 ? comentario : null }
+        : {
+            valor: esAcumulacionSaturada || this.valoracionSeleccionada === 'positiva' ? 1 : -1,
+            motivo: motivo.length > 0 ? motivo : null,
+            ...(esAcumulacionSaturada ? { nivel: this.nivelSeleccionado } : {})
+          })
     };
 
     this.softSkillService.crearMuestra(muestra).subscribe({
       next: () => {
         this.notificationService.showSuccess('Valoración enviada correctamente');
+        this.muestraCreada.emit();
         this.closeModal();
       },
       error: (error) => {
