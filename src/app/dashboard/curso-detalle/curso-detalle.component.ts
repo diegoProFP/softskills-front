@@ -44,24 +44,12 @@ export class CursoDetalleComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.cursoService.getCursoById(id).subscribe({
-        next: (curso) => {
-          this.curso = {
-            ...curso,
-            alumnos: (curso.alumnos || []).map((alumno) => this.normalizarAlumno(alumno))
-          };
-          this.loading = false;
-        },
-        error: (error) => {
-          this.curso = null;
-          this.notificationService.showHttpError(error, 'No se pudo cargar el detalle del curso.');
-          this.loading = false;
-        }
-      });
-    } else {
+    if (!id) {
       this.loading = false;
+      return;
     }
+
+    this.cargarCurso(id);
   }
 
   get skillColumns(): SkillColumn[] {
@@ -152,12 +140,41 @@ export class CursoDetalleComponent implements OnInit {
     this.alumnoWizardSeleccionado = null;
   }
 
+  recargarCursoActual(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+
+    if (id) {
+      this.cargarCurso(id, false);
+    }
+  }
+
   getNuevaMuestraTooltip(alumno: Alumno): string {
     return `nueva muestra para el alumno ${this.getAlumnoNombreCompleto(alumno)}`;
   }
 
   private getAlumnoNombreCompleto(alumno: Alumno): string {
     return alumno.nombreCompleto || [alumno.nombre, alumno.apellidos].filter(Boolean).join(' ') || 'seleccionado';
+  }
+
+  private cargarCurso(id: string, showLoading = true): void {
+    if (showLoading) {
+      this.loading = true;
+    }
+
+    this.cursoService.getCursoById(id).subscribe({
+      next: (curso) => {
+        this.curso = {
+          ...curso,
+          alumnos: (curso.alumnos || []).map((alumno) => this.normalizarAlumno(alumno))
+        };
+        this.loading = false;
+      },
+      error: (error) => {
+        this.curso = null;
+        this.notificationService.showHttpError(error, 'No se pudo cargar el detalle del curso.');
+        this.loading = false;
+      }
+    });
   }
 
   private compareAlumnos(a: Alumno, b: Alumno): number {

@@ -18,6 +18,7 @@ import { SoftSkillService } from '../../services/softskill.service';
 export class WizardModalComponent implements OnInit {
   @Input() initialAlumno: Alumno | null = null;
   @Output() close = new EventEmitter<void>();
+  @Output() muestraCreada = new EventEmitter<void>();
   @ViewChildren(MatExpansionPanel) panels: QueryList<MatExpansionPanel>;
 
   currentStep = 1;
@@ -149,7 +150,6 @@ export class WizardModalComponent implements OnInit {
     this.softSkillSeleccionada = softSkill;
     this.valoracionSeleccionada = this.esAcumulacionSaturada ? 'positiva' : null;
     this.resetSeleccionConducta();
-    this.grupoConductaActivo = this.motivosPositivos.length > 0 ? 'positiva' : this.motivosNegativos.length > 0 ? 'negativa' : null;
     this.nextStep();
   }
 
@@ -186,6 +186,10 @@ export class WizardModalComponent implements OnInit {
     if (this.tieneMetadatosMotivo(motivo)) {
       this.valoracionSeleccionada = motivo.valorPorDefecto === 1 ? 'positiva' : 'negativa';
       this.nivelSeleccionado = motivo.nivelPorDefecto ?? 'NORMAL';
+    }
+
+    if (this.puedeContinuarValoracion) {
+      this.nextStep();
     }
   }
 
@@ -413,6 +417,7 @@ export class WizardModalComponent implements OnInit {
     this.softSkillService.crearMuestra(muestra).subscribe({
       next: () => {
         this.notificationService.showSuccess('Valoración enviada correctamente');
+        this.muestraCreada.emit();
         this.closeModal();
       },
       error: (error) => {
