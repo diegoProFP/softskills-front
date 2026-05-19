@@ -7,9 +7,9 @@
   width: 292px;
   padding: 18px 14px;
   background:
-    linear-gradient(180deg, rgba(16, 44, 58, 0.94), rgba(26, 58, 76, 0.9));
+    linear-gradient(180deg, #062b55 0%, #073967 58%, #05213f 100%);
   color: var(--text-inverse);
-  box-shadow: 20px 0 40px rgba(15, 34, 46, 0.18);
+  box-shadow: 20px 0 42px rgba(6, 43, 85, 0.18);
   border-right: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -19,9 +19,9 @@
   align-items: center;
   padding: 1.8rem 1rem 1.4rem;
   margin-bottom: 1rem;
-  border-radius: 24px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .avatar {
@@ -39,7 +39,7 @@
   align-items: center;
   justify-content: center;
   background: rgba(255, 255, 255, 0.08);
-  color: #9de2dd;
+  color: var(--brand-cyan);
   font-size: 88px;
   line-height: 1;
 }
@@ -48,12 +48,12 @@
   font-weight: 800;
   text-align: center;
   font-size: 1.1rem;
-  color: #fffef8;
+  color: #ffffff;
   margin-bottom: 0.25rem;
 }
 
 .sitename {
-  color: rgba(247, 243, 235, 0.72);
+  color: rgba(246, 250, 252, 0.72);
   text-transform: uppercase;
   letter-spacing: 0.14em;
   font-size: 0.72rem;
@@ -66,10 +66,10 @@ mat-divider {
 
 mat-list-item {
   cursor: pointer;
-  border-radius: 18px;
+  border-radius: var(--radius-md);
   margin-bottom: 0.45rem;
   min-height: 52px;
-  color: rgba(247, 243, 235, 0.9);
+  color: rgba(246, 250, 252, 0.92);
   transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
@@ -81,7 +81,7 @@ mat-list-item:hover {
 .admin-menu-group {
   margin: 1rem 0 0.6rem;
   padding: 0.65rem;
-  border-radius: 18px;
+  border-radius: var(--radius-md);
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
@@ -91,7 +91,7 @@ mat-list-item:hover {
   align-items: center;
   gap: 0.45rem;
   padding: 0.25rem 0.45rem 0.65rem;
-  color: rgba(247, 243, 235, 0.76);
+  color: rgba(246, 250, 252, 0.76);
   font-size: 0.75rem;
   font-weight: 900;
   letter-spacing: 0.12em;
@@ -109,11 +109,11 @@ mat-list-item:hover {
 }
 
 .submenu-item mat-icon {
-  color: #ddf3f1;
+  color: #d8f8f9;
 }
 
 mat-icon {
-  color: #9de2dd;
+  color: var(--brand-cyan);
   margin-right: 10px;
 }
 
@@ -122,7 +122,7 @@ mat-toolbar {
   top: 0;
   z-index: 3;
   margin: 18px 18px 0;
-  border-radius: 22px;
+  border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
 }
 
@@ -148,8 +148,8 @@ button[mat-icon-button] {
 ::ng-deep .dark-sidenav .mat-mdc-list-item.active,
 ::ng-deep .dark-sidenav .mdc-list-item.active,
 ::ng-deep .dark-sidenav .mat-mdc-list-item-interactive.active {
-  background: linear-gradient(135deg, rgba(15, 139, 141, 0.22), rgba(255, 122, 89, 0.2));
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(135deg, rgba(8, 119, 201, 0.36), rgba(22, 191, 194, 0.18));
+  border: 1px solid rgba(255, 255, 255, 0.16);
 }
 
 ::ng-deep .dark-sidenav .mdc-list-item__primary-text {

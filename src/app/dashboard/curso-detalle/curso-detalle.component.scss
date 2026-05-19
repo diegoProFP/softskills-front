@@ -8,19 +8,19 @@
 }
 
 .curso-info-wrapper {
-  background: rgba(255, 250, 241, 0.78);
+  background: var(--bg-surface);
   border-radius: 24px;
   box-shadow: var(--shadow-md);
   padding: 1.5rem 1.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.76);
+  border: 1px solid var(--line-soft);
 }
 
 .alumnos-wrapper {
-  background: rgba(255, 255, 255, 0.74);
+  background: var(--bg-surface);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-sm);
   padding: 2.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.76);
+  border: 1px solid var(--line-soft);
 }
 
 .alumnos-wrapper h3 {
@@ -32,11 +32,11 @@
 }
 
 .soft-skills-wrapper {
-  background: rgba(244, 250, 249, 0.88);
+  background: #edf6fb;
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-sm);
   padding: 2.5rem;
-  border: 1px solid rgba(15, 139, 141, 0.16);
+  border: 1px solid rgba(8, 119, 201, 0.16);
 }
 
 h2 {
@@ -61,9 +61,9 @@ h2 {
   color: var(--text-main);
   margin: 0;
   padding: 0.75rem 0.85rem;
-  border: 1px solid rgba(23, 48, 66, 0.08);
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.42);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.72);
 }
 
 .curso-info strong {
@@ -92,7 +92,7 @@ h2 {
     border-spacing: 0;
     border-radius: 18px;
     background: rgba(255, 255, 255, 0.62);
-    border: 1px solid rgba(23, 48, 66, 0.08);
+    border: 1px solid var(--line-soft);
   }
 
   thead {
@@ -106,7 +106,7 @@ h2 {
     padding: 1rem 1.1rem;
     text-align: left;
     vertical-align: middle;
-    border-bottom: 1px solid rgba(23, 48, 66, 0.08);
+    border-bottom: 1px solid rgba(6, 43, 85, 0.08);
     color: var(--text-main);
   }
 
@@ -114,18 +114,18 @@ h2 {
     position: sticky;
     top: 0;
     z-index: 4;
-    background: rgba(244, 250, 249, 0.96);
+    background: #edf6fb;
     font-weight: 800;
     color: var(--accent-strong);
     text-transform: uppercase;
     letter-spacing: 0.08em;
     font-size: 0.8rem;
     backdrop-filter: blur(10px);
-    box-shadow: inset 0 -1px 0 rgba(23, 48, 66, 0.08);
+    box-shadow: inset 0 -1px 0 rgba(6, 43, 85, 0.08);
   }
 
   tr:hover td {
-    background-color: rgba(255, 122, 89, 0.06);
+    background-color: rgba(8, 119, 201, 0.06);
   }
 
   tr:last-child td {
@@ -149,8 +149,8 @@ h2 {
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.94);
   color: var(--text-main);
-  border: 1px solid rgba(15, 139, 141, 0.28);
-  box-shadow: 0 8px 18px rgba(23, 48, 66, 0.08);
+  border: 1px solid rgba(8, 119, 201, 0.2);
+  box-shadow: 0 8px 18px rgba(6, 43, 85, 0.08);
   font-weight: 800;
   line-height: 1.2;
 }
@@ -227,16 +227,16 @@ h2 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--highlight), #ff9870);
+  background: linear-gradient(135deg, var(--brand-blue), var(--brand-cyan));
   color: #fff;
   cursor: pointer;
-  box-shadow: 0 10px 18px rgba(255, 122, 89, 0.22);
+  box-shadow: 0 10px 18px rgba(8, 119, 201, 0.22);
   transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
 }
 
 .nueva-muestra-button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 14px 22px rgba(255, 122, 89, 0.28);
+  box-shadow: 0 14px 22px rgba(8, 119, 201, 0.28);
   filter: saturate(1.05);
 }
 
@@ -274,7 +274,7 @@ h2 {
   .alumnos-table {
     margin-top: 1rem;
     max-height: 60vh;
-    box-shadow: inset -18px 0 18px -18px rgba(23, 48, 66, 0.28);
+    box-shadow: inset -18px 0 18px -18px rgba(6, 43, 85, 0.28);
   }
 
   table {

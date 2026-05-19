@@ -31,8 +31,8 @@ h3 {
   margin: 2rem 0;
   padding: 2rem;
   border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.72);
-  border: 1px solid rgba(23, 48, 66, 0.08);
+  background: var(--bg-surface);
+  border: 1px solid var(--line-soft);
 }
 
 .search-row {
@@ -52,7 +52,7 @@ h3 {
   width: 100%;
   --mdc-outlined-text-field-label-text-color: var(--text-soft);
   --mdc-outlined-text-field-input-text-color: var(--text-main);
-  --mdc-outlined-text-field-outline-color: rgba(24, 52, 70, 0.24);
+  --mdc-outlined-text-field-outline-color: rgba(6, 43, 85, 0.24);
   --mdc-outlined-text-field-hover-outline-color: var(--accent-strong);
   --mdc-outlined-text-field-focus-outline-color: var(--accent);
   --mdc-outlined-text-field-focus-label-text-color: var(--accent-strong);
@@ -69,7 +69,7 @@ h3 {
   color: var(--text-main);
   font-weight: 600;
   background: rgba(255, 255, 255, 0.82);
-  border: 1px solid rgba(24, 52, 70, 0.12);
+  border: 1px solid rgba(6, 43, 85, 0.12);
   border-radius: 999px;
   padding: 0.55rem 0.9rem;
   box-shadow: var(--shadow-sm);
@@ -84,7 +84,7 @@ h3 {
 }
 
 ::ng-deep .registrable-filter .mdc-checkbox__background {
-  border-color: rgba(24, 52, 70, 0.42) !important;
+  border-color: rgba(6, 43, 85, 0.42) !important;
 }
 
 ::ng-deep .course-search .mat-mdc-text-field-wrapper {
@@ -131,19 +131,19 @@ mat-option {
 .card-list > div {
   padding: 1.5rem;
   border-radius: var(--radius-xl);
-  background: rgba(255, 250, 241, 0.72);
-  border: 1px solid rgba(255, 255, 255, 0.75);
+  background: var(--bg-surface);
+  border: 1px solid var(--line-soft);
   box-shadow: var(--shadow-sm);
 }
 
 .card-list > div:first-child {
   background:
-    linear-gradient(180deg, rgba(221, 243, 241, 0.82), rgba(255, 250, 241, 0.92));
+    linear-gradient(180deg, rgba(229, 244, 251, 0.92), rgba(255, 255, 255, 0.96));
 }
 
 .card-list > div:last-child {
   background:
-    linear-gradient(180deg, rgba(255, 241, 232, 0.82), rgba(255, 250, 241, 0.92));
+    linear-gradient(180deg, rgba(255, 240, 230, 0.9), rgba(255, 255, 255, 0.96));
 }
 
 .curso-card {
@@ -155,21 +155,21 @@ mat-option {
   flex-direction: column;
   justify-content: space-between;
   gap: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--line-soft);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   margin-bottom: 1rem;
 }
 
 .card-list > div:first-child .curso-card {
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(230, 246, 244, 0.92)) !important;
-  border: 1px solid rgba(15, 139, 141, 0.14);
+    linear-gradient(135deg, #ffffff, rgba(229, 244, 251, 0.78)) !important;
+  border: 1px solid rgba(8, 119, 201, 0.14);
 }
 
 .card-list > div:last-child .curso-card {
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(255, 237, 230, 0.92)) !important;
-  border: 1px solid rgba(255, 122, 89, 0.16);
+    linear-gradient(135deg, #ffffff, rgba(255, 240, 230, 0.78)) !important;
+  border: 1px solid rgba(255, 122, 26, 0.18);
 }
 
 .curso-card:hover {
@@ -198,7 +198,7 @@ mat-card-content p {
 }
 
 .card-list > div:last-child mat-card-title {
-  color: #b55235;
+  color: #9f4a16;
 }
 
 mat-card-actions {
@@ -215,12 +215,12 @@ mat-card-actions {
 
 .course-alert-warning {
   background: rgba(255, 244, 230, 0.9);
-  border-color: rgba(181, 82, 53, 0.18);
+  border-color: rgba(255, 122, 26, 0.24);
 }
 
 .course-alert-info {
-  background: rgba(229, 244, 242, 0.88);
-  border-color: rgba(15, 139, 141, 0.16);
+  background: rgba(229, 244, 251, 0.88);
+  border-color: rgba(8, 119, 201, 0.16);
 }
 
 .course-alert-header {
@@ -252,7 +252,7 @@ mat-card-actions {
   font-size: 0.86rem;
   padding: 0.12rem 0.35rem;
   border-radius: 8px;
-  background: rgba(23, 48, 66, 0.08);
+  background: rgba(6, 43, 85, 0.08);
   color: var(--text-main);
 }
 

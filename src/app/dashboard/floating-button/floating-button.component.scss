@@ -2,7 +2,7 @@
   position: fixed;
   bottom: 28px;
   right: 28px;
-  background: linear-gradient(135deg, var(--highlight), #ff9870);
+  background: linear-gradient(135deg, var(--brand-blue), var(--brand-cyan));
   color: white;
   border: none;
   border-radius: 50%;
@@ -13,14 +13,14 @@
   align-items: center;
   font-size: 24px;
   cursor: pointer;
-  box-shadow: 0 22px 36px rgba(255, 122, 89, 0.28);
+  box-shadow: 0 22px 36px rgba(8, 119, 201, 0.28);
   transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
   z-index: 10;
 }
 
 .floating-button:hover {
   transform: translateY(-3px) scale(1.03);
-  box-shadow: 0 28px 42px rgba(255, 122, 89, 0.32);
+  box-shadow: 0 28px 42px rgba(8, 119, 201, 0.32);
   filter: saturate(1.05);
 }
 

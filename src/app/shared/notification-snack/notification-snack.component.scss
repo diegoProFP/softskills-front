@@ -1,20 +1,20 @@
 .snack-success {
-  background: linear-gradient(135deg, #14956f, #1f9d77);
+  background: linear-gradient(135deg, #3a9d2c, var(--brand-green));
   color: white;
 }
 
 .snack-error {
-  background: linear-gradient(135deg, #c84f45, #d95d52);
+  background: linear-gradient(135deg, #a93426, var(--danger));
   color: white;
 }
 
 .snack-info {
-  background: linear-gradient(135deg, #12757a, #0f8b8d);
+  background: linear-gradient(135deg, var(--brand-blue), var(--brand-cyan));
   color: white;
 }
 
 .snack-warning {
-  background: linear-gradient(135deg, #e8a228, #d9911a);
+  background: linear-gradient(135deg, var(--brand-orange), #ff9a4d);
   color: white;
 }
 

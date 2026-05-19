@@ -7,9 +7,9 @@
   padding: 2rem;
   border-radius: var(--radius-xl);
   background:
-    linear-gradient(135deg, rgba(157, 226, 221, 0.24), rgba(255, 196, 163, 0.3)),
-    rgba(255, 250, 241, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.75);
+    linear-gradient(135deg, rgba(8, 119, 201, 0.1), rgba(22, 191, 194, 0.12)),
+    rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(6, 43, 85, 0.1);
   box-shadow: var(--shadow-md);
 }
 
@@ -51,8 +51,8 @@ h2 {
 .alumnos-wrapper {
   padding: 1.5rem;
   border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.74);
-  border: 1px solid rgba(23, 48, 66, 0.08);
+  background: var(--bg-surface);
+  border: 1px solid var(--line-soft);
   color: var(--text-main);
   box-shadow: var(--shadow-sm);
 }
@@ -120,16 +120,16 @@ h2 {
   align-items: center;
   padding: 1.25rem;
   border-radius: 22px;
-  border: 1px solid rgba(23, 48, 66, 0.1);
+  border: 1px solid rgba(6, 43, 85, 0.1);
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(244, 250, 249, 0.82)),
+    linear-gradient(135deg, #ffffff, rgba(229, 244, 251, 0.78)),
     rgba(255, 255, 255, 0.86);
   box-shadow: var(--shadow-sm);
 }
 
 .podium-card.is-first {
   background:
-    linear-gradient(135deg, rgba(255, 236, 195, 0.92), rgba(255, 255, 255, 0.92)),
+    linear-gradient(135deg, rgba(255, 240, 230, 0.94), rgba(255, 255, 255, 0.92)),
     rgba(255, 255, 255, 0.9);
   border-color: rgba(222, 163, 55, 0.35);
 }
@@ -153,7 +153,7 @@ h2 {
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  background: rgba(23, 48, 66, 0.08);
+  background: rgba(8, 119, 201, 0.1);
   color: var(--accent-strong);
   font-weight: 900;
   font-size: 1.1rem;
@@ -209,7 +209,7 @@ h2 {
     border-spacing: 0;
     border-radius: 18px;
     background: rgba(255, 255, 255, 0.62);
-    border: 1px solid rgba(23, 48, 66, 0.08);
+    border: 1px solid rgba(6, 43, 85, 0.08);
   }
 
   th,
@@ -217,21 +217,21 @@ h2 {
     padding: 1rem 1.1rem;
     text-align: left;
     vertical-align: middle;
-    border-bottom: 1px solid rgba(23, 48, 66, 0.08);
+    border-bottom: 1px solid rgba(6, 43, 85, 0.08);
     color: var(--text-main);
   }
 
   th {
-    background: rgba(244, 250, 249, 0.96);
+    background: #edf6fb;
     font-weight: 800;
-    color: var(--accent-strong);
+    color: var(--brand-navy);
     text-transform: uppercase;
     letter-spacing: 0.08em;
     font-size: 0.8rem;
   }
 
   tr:hover td {
-    background-color: rgba(255, 122, 89, 0.06);
+    background-color: rgba(8, 119, 201, 0.06);
   }
 
   tr:last-child td {
@@ -259,7 +259,7 @@ h2 {
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
-  background: rgba(15, 139, 141, 0.1);
+  background: rgba(8, 119, 201, 0.1);
   color: var(--accent-strong);
   cursor: pointer;
   transition: background-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
@@ -267,7 +267,7 @@ h2 {
 
 .resumen-alumno-button:hover,
 .resumen-alumno-button:focus-visible {
-  background: rgba(15, 139, 141, 0.18);
+  background: rgba(8, 119, 201, 0.18);
   color: var(--text-main);
   outline: none;
   transform: translateY(-1px);
@@ -338,7 +338,7 @@ h2 {
   min-width: 3rem;
   padding: 0.35rem 0.7rem;
   border-radius: 999px;
-  background: rgba(23, 48, 66, 0.08);
+  background: rgba(8, 119, 201, 0.1);
   color: var(--accent-strong);
   font-weight: 800;
 }
@@ -368,7 +368,7 @@ h2 {
   }
 
   .alumnos-table {
-    box-shadow: inset -18px 0 18px -18px rgba(23, 48, 66, 0.28);
+    box-shadow: inset -18px 0 18px -18px rgba(6, 43, 85, 0.28);
   }
 
   .skill-header {

@@ -6,7 +6,7 @@
 
 .guide-hero,
 .content-section {
-  border: 1px solid rgba(24, 52, 70, 0.12);
+  border: 1px solid rgba(6, 43, 85, 0.12);
   box-shadow: var(--shadow-sm);
 }
 
@@ -18,8 +18,8 @@
   padding: clamp(1.5rem, 3vw, 2.5rem);
   border-radius: var(--radius-xl);
   background:
-    linear-gradient(135deg, rgba(15, 139, 141, 0.16), rgba(255, 122, 89, 0.14)),
-    rgba(255, 250, 241, 0.9);
+    linear-gradient(135deg, rgba(8, 119, 201, 0.16), rgba(255, 122, 26, 0.14)),
+    rgba(255, 255, 255, 0.9);
 }
 
 .hero-copy {
@@ -116,19 +116,19 @@ h3 {
 }
 
 .hero-metrics mat-icon {
-  color: #9de2dd;
+  color: #16bfc2;
 }
 
 .content-section {
   padding: clamp(1.2rem, 2.5vw, 2rem);
   border-radius: var(--radius-lg);
-  background: rgba(255, 250, 241, 0.88);
+  background: rgba(255, 255, 255, 0.88);
 }
 
 .guide-tabs {
-  border: 1px solid rgba(24, 52, 70, 0.12);
+  border: 1px solid rgba(6, 43, 85, 0.12);
   border-radius: var(--radius-lg);
-  background: rgba(255, 250, 241, 0.72);
+  background: rgba(255, 255, 255, 0.72);
   box-shadow: var(--shadow-sm);
   overflow: hidden;
 }
@@ -141,7 +141,7 @@ h3 {
 
 ::ng-deep .guide-tabs .mat-mdc-tab-header {
   background: rgba(255, 255, 255, 0.72);
-  border-bottom: 1px solid rgba(24, 52, 70, 0.1);
+  border-bottom: 1px solid rgba(6, 43, 85, 0.1);
 }
 
 ::ng-deep .guide-tabs .mdc-tab {
@@ -198,7 +198,7 @@ h3 {
 .strategy-card,
 .quality-grid article,
 .transform-box {
-  border: 1px solid rgba(24, 52, 70, 0.1);
+  border: 1px solid rgba(6, 43, 85, 0.1);
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.74);
 }
@@ -276,7 +276,7 @@ h3 {
   display: block;
   padding: 0.45rem 0.65rem;
   border-radius: 12px;
-  background: rgba(15, 139, 141, 0.08);
+  background: rgba(8, 119, 201, 0.08);
   color: var(--text-main);
   font-weight: 700;
 }
@@ -297,8 +297,8 @@ h3 {
   margin-top: 1rem;
   padding: 1rem;
   border-radius: 16px;
-  background: rgba(15, 139, 141, 0.09);
-  border: 1px solid rgba(15, 139, 141, 0.16);
+  background: rgba(8, 119, 201, 0.09);
+  border: 1px solid rgba(8, 119, 201, 0.16);
 }
 
 .configured-note p {
@@ -415,7 +415,7 @@ ul {
   margin-top: 0.9rem;
   padding: 0.85rem;
   border-radius: 12px;
-  background: rgba(255, 122, 89, 0.1);
+  background: rgba(255, 122, 26, 0.1);
   color: #843d28;
   font-weight: 800;
   line-height: 1.45;
@@ -436,7 +436,7 @@ ul {
   padding: 1rem;
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.76);
-  border: 1px solid rgba(24, 52, 70, 0.1);
+  border: 1px solid rgba(6, 43, 85, 0.1);
 }
 
 .flow-list span {
@@ -472,7 +472,7 @@ ul {
   padding: 1rem;
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.74);
-  border: 1px solid rgba(24, 52, 70, 0.1);
+  border: 1px solid rgba(6, 43, 85, 0.1);
 }
 
 .glossary-grid dt {
@@ -499,7 +499,7 @@ ul {
 }
 
 .quality-tags span {
-  background: rgba(15, 139, 141, 0.1);
+  background: rgba(8, 119, 201, 0.1);
   color: var(--accent-strong);
 }
 
