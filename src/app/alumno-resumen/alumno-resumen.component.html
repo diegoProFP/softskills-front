@@ -1,6 +1,19 @@
-<section class="student-summary-page">
+<section class="student-summary-page" [class.is-dark-summary]="themeService.isDarkMode">
   <div class="ambient ambient-left" aria-hidden="true"></div>
   <div class="ambient ambient-right" aria-hidden="true"></div>
+
+  <button
+    type="button"
+    class="student-theme-toggle"
+    role="switch"
+    [class.is-on]="themeService.isDarkMode"
+    [attr.aria-checked]="themeService.isDarkMode"
+    aria-label="Cambiar modo oscuro"
+    (click)="toggleTheme()">
+    <mat-icon>{{ themeService.isDarkMode ? 'dark_mode' : 'light_mode' }}</mat-icon>
+    <span>Modo oscuro</span>
+    <span class="student-theme-switch"><span></span></span>
+  </button>
 
   <header class="hero-card">
     <div class="hero-copy">

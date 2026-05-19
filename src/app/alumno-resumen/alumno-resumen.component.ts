@@ -12,6 +12,7 @@ import { SoftSkillTotalDTO, sortSoftSkillsByNombre } from '../modelo/softskill-t
 import { AlumnoService } from '../services/alumno.service';
 import { AuthService } from '../services/auth.service';
 import { NotificationService } from '../services/notification.service';
+import { ThemeService } from '../services/theme.service';
 
 interface MetricCard {
   label: string;
@@ -59,7 +60,8 @@ export class AlumnoResumenComponent implements OnInit, OnDestroy {
     private router: Router,
     private alumnoService: AlumnoService,
     private authService: AuthService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    public themeService: ThemeService
   ) { }
 
   ngOnInit(): void {
@@ -326,6 +328,10 @@ export class AlumnoResumenComponent implements OnInit, OnDestroy {
 
   getCursoDisplayName(cursoId: number, cursoNombre: string | null): string {
     return cursoNombre?.trim() || `Curso sin nombre (${cursoId})`;
+  }
+
+  toggleTheme(): void {
+    this.themeService.toggleTheme();
   }
 
   getMuestraMotivo(motivo: string | null | undefined): string {

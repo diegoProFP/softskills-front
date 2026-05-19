@@ -260,6 +260,110 @@ select {
   color: var(--text-main) !important;
 }
 
+app-alumno-resumen .student-theme-toggle {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: fit-content;
+  min-height: 42px;
+  margin: 0 0 1rem auto;
+  padding: 0.4rem 0.55rem 0.4rem 0.8rem;
+  border: 1px solid var(--line-soft);
+  border-radius: 999px;
+  background: var(--bg-surface);
+  color: var(--text-main);
+  box-shadow: var(--shadow-sm);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+app-alumno-resumen .student-theme-toggle mat-icon {
+  width: 1.15rem;
+  height: 1.15rem;
+  font-size: 1.15rem;
+  line-height: 1.15rem;
+}
+
+app-alumno-resumen .student-theme-switch {
+  width: 44px;
+  height: 26px;
+  padding: 3px;
+  border-radius: 999px;
+  background: rgba(6, 43, 85, 0.12);
+  transition: background-color 0.2s ease;
+}
+
+app-alumno-resumen .student-theme-switch span {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 4px 10px rgba(6, 43, 85, 0.2);
+  transition: transform 0.2s ease;
+}
+
+app-alumno-resumen .student-theme-toggle.is-on .student-theme-switch {
+  background: linear-gradient(135deg, var(--brand-blue), var(--brand-cyan));
+}
+
+app-alumno-resumen .student-theme-toggle.is-on .student-theme-switch span {
+  transform: translateX(18px);
+}
+
+app-alumno-resumen .student-summary-page.is-dark-summary {
+  --bg-surface: rgba(9, 28, 52, 0.92);
+  --bg-surface-strong: #0c213c;
+  --line-soft: rgba(184, 217, 242, 0.16);
+  --text-main: #eef7ff;
+  --text-soft: #b8c7d7;
+  --accent-strong: #e5f4fb;
+  --accent-soft: rgba(22, 191, 194, 0.16);
+  --shadow-md: 0 18px 44px rgba(0, 0, 0, 0.28);
+  --shadow-sm: 0 10px 24px rgba(0, 0, 0, 0.22);
+  background:
+    linear-gradient(135deg, rgba(8, 119, 201, 0.18), transparent 34%),
+    linear-gradient(225deg, rgba(22, 191, 194, 0.16), transparent 30%),
+    linear-gradient(180deg, #06162a 0%, #071f38 100%);
+}
+
+app-alumno-resumen .student-summary-page.is-dark-summary .hero-card {
+  background:
+    linear-gradient(135deg, rgba(4, 19, 38, 0.98), rgba(6, 43, 85, 0.9));
+}
+
+app-alumno-resumen .student-summary-page.is-dark-summary .accent-sun {
+  background:
+    linear-gradient(135deg, rgba(255, 122, 26, 0.18), rgba(9, 28, 52, 0.88)),
+    var(--bg-surface-strong);
+}
+
+app-alumno-resumen .student-summary-page.is-dark-summary .accent-aqua {
+  background:
+    linear-gradient(135deg, rgba(22, 191, 194, 0.18), rgba(9, 28, 52, 0.88)),
+    var(--bg-surface-strong);
+}
+
+app-alumno-resumen .student-summary-page.is-dark-summary .accent-coral {
+  background:
+    linear-gradient(135deg, rgba(91, 43, 140, 0.24), rgba(9, 28, 52, 0.88)),
+    var(--bg-surface-strong);
+}
+
+app-alumno-resumen .student-summary-page.is-dark-summary .radar-panel,
+app-alumno-resumen .student-summary-page.is-dark-summary .course-detail-block,
+app-alumno-resumen .student-summary-page.is-dark-summary .sample-item {
+  background: var(--bg-surface-strong);
+}
+
+app-alumno-resumen .student-summary-page.is-dark-summary .radar-grid polygon,
+app-alumno-resumen .student-summary-page.is-dark-summary .radar-grid line,
+app-alumno-resumen .student-summary-page.is-dark-summary .skill-ring-track {
+  stroke: rgba(184, 217, 242, 0.16);
+}
+
 ::ng-deep .mat-mdc-raised-button.mat-primary,
 ::ng-deep .mat-raised-button.mat-primary {
   background: linear-gradient(135deg, var(--brand-blue), var(--brand-navy)) !important;
