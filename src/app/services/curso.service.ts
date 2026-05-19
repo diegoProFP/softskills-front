@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Curso } from '../modelo/curso';
+import { CursoSoftSkillMuestrasResponse } from '../modelo/curso-soft-skill-muestras';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +25,16 @@ export class CursoService {
   getCursoById(id: string): Observable<Curso> {
     return this.http.get<Curso>(`${this.apiUrl}/${id}`).pipe(
       tap(curso => this.cursoSeleccionado = curso)
+    );
+  }
+
+  getMuestrasByCursoAlumnoSoftSkill(
+    cursoId: number,
+    alumnoId: number,
+    softSkillId: number
+  ): Observable<CursoSoftSkillMuestrasResponse> {
+    return this.http.get<CursoSoftSkillMuestrasResponse>(
+      `${this.apiUrl}/${cursoId}/alumnos/${alumnoId}/soft-skills/${softSkillId}/muestras`
     );
   }
 

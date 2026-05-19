@@ -6,7 +6,7 @@
   justify-content: center;
   align-items: center;
   padding: 24px;
-  z-index: 100;
+  z-index: 1200;
   backdrop-filter: blur(10px);
 }
 
@@ -23,6 +23,7 @@
   box-shadow: var(--shadow-lg);
   border: 1px solid rgba(255, 255, 255, 0.8);
   position: relative;
+  z-index: 1201;
 }
 
 .close-button {
@@ -336,15 +337,37 @@ mat-accordion {
   min-width: 0;
 }
 
+.conducta-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
 .conducta-title {
   font-weight: 800;
   line-height: 1.25;
 }
 
-.conducta-detail {
-  color: var(--text-soft);
-  font-size: 0.86rem;
-  line-height: 1.35;
+.motivo-help-button {
+  width: 1.45rem;
+  height: 1.45rem;
+  border: 1px solid rgba(8,119,201,.18);
+  border-radius: 999px;
+  padding: 0;
+  display: inline-flex;
+  place-content: center;
+  background: rgba(255,255,255,.78);
+  color: var(--accent-strong);
+  cursor: help;
+  flex: 0 0 auto;
+}
+
+.motivo-help-button mat-icon {
+  margin: 0;
+  font-size: 1rem;
+  width: 1rem;
+  height: 1rem;
+  line-height: 1rem;
 }
 
 .conducta-badges {
@@ -537,9 +560,11 @@ mat-accordion {
 @media (max-width: 768px) {
   .modal {
     padding: 12px;
+    align-items: stretch;
   }
 
   .modal-content {
+    width: 100%;
     padding: 72px 16px 18px;
     border-radius: 24px;
     max-height: calc(100vh - 24px);

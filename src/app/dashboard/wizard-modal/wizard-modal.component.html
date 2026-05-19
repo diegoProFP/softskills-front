@@ -149,8 +149,19 @@
                     [class.active]="motivoSeleccionado?.id === motivo.id"
                     (click)="seleccionarMotivo(motivo)">
                     <span class="conducta-main">
-                      <span class="conducta-title">{{ getMotivoTitulo(motivo) }}</span>
-                      <span class="conducta-detail" *ngIf="getMotivoDetalle(motivo)">{{ getMotivoDetalle(motivo) }}</span>
+                      <span class="conducta-title-row">
+                        <span class="conducta-title">{{ getMotivoTitulo(motivo) }}</span>
+                        <button
+                          *ngIf="getMotivoDetalle(motivo)"
+                          type="button"
+                          class="motivo-help-button"
+                          (click)="mostrarAyudaMotivo($event)"
+                          [matTooltip]="getMotivoDetalle(motivo)"
+                          matTooltipPosition="above"
+                          [attr.aria-label]="'Ver ayuda sobre ' + getMotivoTitulo(motivo)">
+                          <mat-icon>help_outline</mat-icon>
+                        </button>
+                      </span>
                     </span>
                     <span class="conducta-badges">
                       <span class="badge type-badge">Positiva</span>
@@ -183,8 +194,19 @@
                     [class.active]="motivoSeleccionado?.id === motivo.id"
                     (click)="seleccionarMotivo(motivo)">
                     <span class="conducta-main">
-                      <span class="conducta-title">{{ getMotivoTitulo(motivo) }}</span>
-                      <span class="conducta-detail" *ngIf="getMotivoDetalle(motivo)">{{ getMotivoDetalle(motivo) }}</span>
+                      <span class="conducta-title-row">
+                        <span class="conducta-title">{{ getMotivoTitulo(motivo) }}</span>
+                        <button
+                          *ngIf="getMotivoDetalle(motivo)"
+                          type="button"
+                          class="motivo-help-button"
+                          (click)="mostrarAyudaMotivo($event)"
+                          [matTooltip]="getMotivoDetalle(motivo)"
+                          matTooltipPosition="above"
+                          [attr.aria-label]="'Ver ayuda sobre ' + getMotivoTitulo(motivo)">
+                          <mat-icon>help_outline</mat-icon>
+                        </button>
+                      </span>
                     </span>
                     <span class="conducta-badges">
                       <span class="badge type-badge">Negativa</span>
@@ -273,7 +295,7 @@
           <mat-expansion-panel (opened)="onPanelOpened(5)" [expanded]="currentStep === 5">
             <mat-expansion-panel-header>
               <mat-panel-title>
-                Paso 5: Resumen y Confirmar
+                Paso 5: {{ tituloAccion }}
               </mat-panel-title>
             </mat-expansion-panel-header>
 
@@ -312,7 +334,7 @@
                 (click)="enviarMuestra()"
                 [disabled]="!cursoSeleccionado || !alumnoSeleccionado ||
                            !softSkillSeleccionada || !puedeContinuarValoracion">
-                Enviar
+                {{ textoBotonEnviar }}
               </button>
             </mat-action-row>
           </mat-expansion-panel>
