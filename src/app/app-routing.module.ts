@@ -4,11 +4,13 @@ import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './auth.guard';
 import { DashboardAccessGuard } from './dashboard-access.guard';
 import { AlumnoResumenComponent } from './alumno-resumen/alumno-resumen.component';
+import { GuiaSoftSkillsComponent } from './dashboard/guia-soft-skills/guia-soft-skills.component';
 // Dashboard se importará tras crearlo
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'guia-soft-skills', component: GuiaSoftSkillsComponent },
   { path: 'alumnos/resumen', component: AlumnoResumenComponent, canActivate: [AuthGuard] },
   { path: 'alumnos/:alumnoId/resumen', component: AlumnoResumenComponent, canActivate: [AuthGuard] },
   {

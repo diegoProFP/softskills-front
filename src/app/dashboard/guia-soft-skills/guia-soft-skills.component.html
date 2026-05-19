@@ -1,0 +1,291 @@
+<section class="guide-page">
+  <header class="guide-hero">
+    <div class="hero-copy">
+      <p class="eyebrow">Guia de uso</p>
+      <h1>Como funciona la evaluacion de Soft Skills</h1>
+      <p class="hero-summary">
+        La aplicacion permite registrar observaciones reales del aula para medir la evolucion de competencias
+        transversales como concentracion, puntualidad, participacion y autonomia.
+      </p>
+    </div>
+    <div class="hero-panel" aria-label="Resumen rapido">
+      <div class="score-preview">
+        <span class="score-number">7,8</span>
+        <span class="score-label">Evolucion visible</span>
+      </div>
+      <div class="hero-metrics">
+        <span><mat-icon>edit_note</mat-icon> Muestras</span>
+        <span><mat-icon>insights</mat-icon> Puntuaciones</span>
+        <span><mat-icon>groups</mat-icon> Grupo</span>
+      </div>
+    </div>
+  </header>
+
+  <mat-tab-group class="guide-tabs" mat-stretch-tabs="false" animationDuration="180ms">
+    <mat-tab label="Conceptos">
+      <div class="tab-content">
+        <section class="content-section two-columns">
+          <div>
+            <p class="eyebrow">Concepto base</p>
+            <h2>Que es una soft skill en esta aplicacion</h2>
+            <p>
+              Una soft skill es una competencia transversal que se observa en el comportamiento del alumno. No se evalua
+              solo con examenes: se mide a partir de evidencias registradas durante el trabajo diario.
+            </p>
+          </div>
+          <div class="example-stack">
+            <article class="example-box positive">
+              <span class="tag positive-tag">Ejemplo positivo</span>
+              <p>Si un alumno ayuda a resolver una duda del grupo, puede registrarse como una muestra positiva de Participacion.</p>
+            </article>
+            <article class="example-box negative">
+              <span class="tag negative-tag">Ejemplo negativo</span>
+              <p>Si un alumno permanece bloqueado mucho tiempo sin pedir ayuda ni consultar recursos, puede registrarse como una muestra negativa de Autonomia.</p>
+            </article>
+          </div>
+        </section>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Soft skills">
+      <div class="tab-content">
+        <section class="content-section">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Catalogo actual</p>
+              <h2>Soft skills disponibles actualmente</h2>
+            </div>
+            <p>Estas son las competencias listas para registrar muestras en el aula.</p>
+          </div>
+
+    <div class="skills-grid">
+      <article class="skill-card" *ngFor="let skill of skillCards">
+        <div class="skill-heading">
+          <app-soft-skill-icon [code]="skill.code" [label]="skill.title" size="lg"></app-soft-skill-icon>
+          <div>
+            <h3>{{ skill.title }}</h3>
+            <span class="strategy-pill">{{ skill.strategy }}</span>
+          </div>
+        </div>
+        <p>{{ skill.description }}</p>
+
+        <div *ngIf="skill.examples.length" class="mini-list">
+          <strong>Ejemplos de muestras</strong>
+          <span *ngFor="let example of skill.examples">{{ example }}</span>
+        </div>
+
+        <div *ngIf="skill.positiveExamples" class="split-examples">
+          <div>
+            <strong>Positivas</strong>
+            <span *ngFor="let example of skill.positiveExamples">{{ example }}</span>
+          </div>
+          <div>
+            <strong>Negativas</strong>
+            <span *ngFor="let example of skill.negativeExamples">{{ example }}</span>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <aside class="configured-note">
+      <mat-icon>settings</mat-icon>
+      <p>
+        Tambien existen codigos preparados para configurar en administracion:
+        <strong>{{ plannedSkills.join(', ') }}</strong>.
+      </p>
+    </aside>
+        </section>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Muestras">
+      <div class="tab-content">
+        <section class="content-section sample-section">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Registro diario</p>
+              <h2>Que es una muestra</h2>
+            </div>
+            <p>Una muestra es una observacion concreta registrada por el profesor sobre un alumno, dentro de un curso y asociada a una soft skill.</p>
+          </div>
+
+    <div class="sample-layout">
+      <div class="fields-card">
+        <h3>Una muestra contiene</h3>
+        <div class="field-grid">
+          <span *ngFor="let field of sampleFields"><mat-icon>check_circle</mat-icon>{{ field }}</span>
+        </div>
+      </div>
+      <div class="value-level-grid">
+        <article>
+          <h3>Tipos de valor</h3>
+          <p><strong>Positivo:</strong> refuerza una conducta adecuada.</p>
+          <p><strong>Negativo:</strong> registra una incidencia o conducta que debe mejorar.</p>
+        </article>
+        <article>
+          <h3>Niveles</h3>
+          <p><strong>Leve:</strong> impacto pequeno.</p>
+          <p><strong>Normal:</strong> impacto medio.</p>
+          <p><strong>Significativa:</strong> impacto alto.</p>
+        </article>
+      </div>
+    </div>
+
+    <div class="sample-examples">
+      <article *ngFor="let sample of sampleExamples" [class.positive-row]="sample.value === 'Positiva'">
+        <span class="tag">{{ sample.value }}</span>
+        <strong>{{ sample.skill }} - {{ sample.level }}</strong>
+        <p>{{ sample.text }}</p>
+      </article>
+    </div>
+        </section>
+
+        <section class="content-section two-columns">
+          <div>
+            <p class="eyebrow">Motivos predefinidos</p>
+            <h2>Registrar mas rapido y con criterio comun</h2>
+            <p>
+              Algunas soft skills tienen motivos preparados para facilitar el registro. Un motivo puede traer un valor y
+              un nivel por defecto, de forma que el usuario entiende rapidamente si suma o resta.
+            </p>
+          </div>
+          <div class="reason-board">
+            <article>
+              <span class="tag positive-tag">Autonomia positiva</span>
+              <ul>
+                <li *ngFor="let reason of positiveReasons">{{ reason }}</li>
+              </ul>
+            </article>
+            <article>
+              <span class="tag negative-tag">Autonomia negativa</span>
+              <ul>
+                <li *ngFor="let reason of negativeReasons">{{ reason }}</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Medicion">
+      <div class="tab-content">
+        <section class="content-section">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Calculo</p>
+              <h2>Tipos de estrategia de medicion</h2>
+            </div>
+            <p>No todas las soft skills se calculan igual. La app usa estrategias distintas segun la naturaleza de la competencia.</p>
+          </div>
+
+    <div class="strategy-grid">
+      <details class="strategy-card" *ngFor="let strategy of strategies" open>
+        <summary>
+          <span>{{ strategy.title }}</span>
+          <mat-icon>expand_more</mat-icon>
+        </summary>
+        <p><strong>Uso:</strong> {{ strategy.use }}</p>
+        <p><strong>Ejemplos:</strong> {{ strategy.examples }}</p>
+        <ul>
+          <li *ngFor="let point of strategy.points">{{ point }}</li>
+        </ul>
+        <div class="classroom-example">{{ strategy.classroomExample }}</div>
+      </details>
+    </div>
+        </section>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Uso y resumenes">
+      <div class="tab-content">
+        <section class="content-section">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Operacion</p>
+              <h2>Como opera un profesor en la app</h2>
+            </div>
+            <p>El flujo esta pensado para registrar una evidencia en pocos pasos, cerca del momento en que ocurre.</p>
+          </div>
+          <ol class="flow-list">
+            <li *ngFor="let step of teacherFlow; let i = index">
+              <span>{{ i + 1 }}</span>
+              <p>{{ step }}</p>
+            </li>
+          </ol>
+        </section>
+
+        <section class="content-section two-columns">
+          <div>
+            <p class="eyebrow">Resumenes</p>
+            <h2>Que ve el usuario despues de registrar muestras</h2>
+            <p>
+              El ranking no debe entenderse como una nota absoluta. Sirve para visualizar evolucion, consistencia y
+              comparacion dentro del contexto del grupo.
+            </p>
+          </div>
+          <div class="summary-grid">
+            <span *ngFor="let item of summaryItems"><mat-icon>analytics</mat-icon>{{ item }}</span>
+          </div>
+        </section>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Buenas muestras">
+      <div class="tab-content">
+        <section class="content-section">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Glosario</p>
+              <h2>Terminos clave</h2>
+            </div>
+          </div>
+          <dl class="glossary-grid">
+            <div *ngFor="let item of glossary">
+              <dt>{{ item.term }}</dt>
+              <dd>{{ item.definition }}</dd>
+            </div>
+          </dl>
+        </section>
+
+        <section class="content-section final-section">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Calidad del dato</p>
+              <h2>Como registrar una buena muestra</h2>
+            </div>
+            <p>La muestra debe describir una conducta observable, no una etiqueta personal.</p>
+          </div>
+
+    <div class="quality-grid">
+      <article>
+        <h3>Una buena muestra debe ser</h3>
+        <div class="quality-tags">
+          <span *ngFor="let item of goodSamples">{{ item }}</span>
+        </div>
+      </article>
+      <article>
+        <h3>Buenos ejemplos</h3>
+        <ul class="checked-list">
+          <li *ngFor="let example of goodExamples">{{ example }}</li>
+        </ul>
+      </article>
+      <article>
+        <h3>Malos ejemplos</h3>
+        <ul class="warning-list">
+          <li *ngFor="let example of badExamples">{{ example }}</li>
+        </ul>
+      </article>
+    </div>
+
+    <div class="transform-box">
+      <span>Transformacion practica</span>
+      <p>
+        En lugar de <strong>"Es irresponsable"</strong>, escribir:
+        <strong>"No entrega la parte asignada del trabajo en la fecha acordada y no avisa al equipo."</strong>
+      </p>
+    </div>
+        </section>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</section>

@@ -1,9 +1,9 @@
 <div class="login-container">
-  <mat-progress-bar *ngIf="isLoading$ | async" color="accent" mode="indeterminate" class="login-loading-bar"></mat-progress-bar>
+  <mat-progress-bar *ngIf="isLoading$ | async" color="accent" mode="indeterminate"
+    class="login-loading-bar"></mat-progress-bar>
   <div *ngIf="isLoading$ | async" class="login-loading-overlay" aria-hidden="true"></div>
   <div class="logo-placeholder">
-    <img src="assets/logo.jpg" alt="Logo" />
-    <mat-icon style="font-size:3rem;">account_circle</mat-icon>
+    <img src="assets/logo_sk.png" alt="Logo" />
   </div>
   <h1 class="app-title">Plataforma Soft Skills</h1>
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
@@ -18,16 +18,10 @@
     <div>
       <label for="password">Contrasena:</label>
       <div class="password-input-container">
-        <input id="password"
-               [type]="showPassword ? 'text' : 'password'"
-               formControlName="password"
-               required
-               [disabled]="isLoading$ | async" />
-        <button type="button"
-                mat-icon-button
-                (click)="togglePasswordVisibility()"
-                class="password-toggle-button"
-                [disabled]="isLoading$ | async">
+        <input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password" required
+          [disabled]="isLoading$ | async" />
+        <button type="button" mat-icon-button (click)="togglePasswordVisibility()" class="password-toggle-button"
+          [disabled]="isLoading$ | async">
           <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
         </button>
       </div>
@@ -35,7 +29,8 @@
         Contrasena requerida
       </div>
     </div>
-    <button type="submit" [disabled]="loginForm.invalid || (isLoading$ | async)">{{ (isLoading$ | async) ? 'Entrando...' : 'Entrar' }}</button>
+    <button type="submit" [disabled]="loginForm.invalid || (isLoading$ | async)">{{ (isLoading$ | async) ? 'Entrando...'
+      : 'Entrar' }}</button>
     <p *ngIf="isLoading$ | async" class="loading-message">Validando credenciales y preparando tu acceso...</p>
     <div *ngIf="loginError" class="error">{{ loginError }}</div>
   </form>
