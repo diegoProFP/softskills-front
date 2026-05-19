@@ -125,6 +125,43 @@ h3 {
   background: rgba(255, 250, 241, 0.88);
 }
 
+.guide-tabs {
+  border: 1px solid rgba(24, 52, 70, 0.12);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 250, 241, 0.72);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.tab-content {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+::ng-deep .guide-tabs .mat-mdc-tab-header {
+  background: rgba(255, 255, 255, 0.72);
+  border-bottom: 1px solid rgba(24, 52, 70, 0.1);
+}
+
+::ng-deep .guide-tabs .mdc-tab {
+  min-width: auto;
+  padding-inline: 1rem;
+}
+
+::ng-deep .guide-tabs .mdc-tab__text-label {
+  color: var(--text-soft) !important;
+  font-weight: 900;
+}
+
+::ng-deep .guide-tabs .mdc-tab--active .mdc-tab__text-label {
+  color: var(--accent-strong) !important;
+}
+
+::ng-deep .guide-tabs .mdc-tab-indicator__content--underline {
+  border-color: var(--highlight) !important;
+}
+
 .two-columns {
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);

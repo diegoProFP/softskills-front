@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTabsModule } from '@angular/material/tabs';
 import { SharedModule } from '../../shared/shared.module';
 
 interface SkillCard {
@@ -24,7 +25,7 @@ interface StrategyCard {
 @Component({
   selector: 'app-guia-soft-skills',
   standalone: true,
-  imports: [CommonModule, MatIconModule, SharedModule],
+  imports: [CommonModule, MatIconModule, MatTabsModule, SharedModule],
   templateUrl: './guia-soft-skills.component.html',
   styleUrls: ['./guia-soft-skills.component.scss']
 })
