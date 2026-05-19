@@ -59,8 +59,8 @@ h4 {
 .soft-skill-list,
 .editor-panel {
   border-radius: var(--radius-lg);
-  background: rgba(255, 250, 241, 0.9);
-  border: 1px solid rgba(24, 52, 70, 0.12);
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(6, 43, 85, 0.12);
   box-shadow: var(--shadow-sm);
 }
 
@@ -85,7 +85,7 @@ h4 {
 .skill-list-item {
   width: 100%;
   padding: 0.9rem 1rem;
-  border: 1px solid rgba(24, 52, 70, 0.1);
+  border: 1px solid rgba(6, 43, 85, 0.1);
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.78);
   color: var(--text-main);
@@ -100,7 +100,7 @@ h4 {
 
 .skill-list-item:hover,
 .skill-list-item.active {
-  border-color: rgba(15, 139, 141, 0.3);
+  border-color: rgba(8, 119, 201, 0.3);
   background: var(--accent-soft);
   transform: translateY(-1px);
 }
@@ -128,7 +128,7 @@ h4 {
 .editor-header {
   margin-bottom: 1.2rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(24, 52, 70, 0.1);
+  border-bottom: 1px solid rgba(6, 43, 85, 0.1);
 }
 
 .editor-title {
@@ -195,7 +195,7 @@ mat-form-field {
   width: 100%;
   --mdc-outlined-text-field-label-text-color: var(--text-soft);
   --mdc-outlined-text-field-input-text-color: var(--text-main);
-  --mdc-outlined-text-field-outline-color: rgba(24, 52, 70, 0.24);
+  --mdc-outlined-text-field-outline-color: rgba(6, 43, 85, 0.24);
   --mdc-outlined-text-field-hover-outline-color: var(--accent-strong);
   --mdc-outlined-text-field-focus-outline-color: var(--accent);
   --mdc-outlined-text-field-focus-label-text-color: var(--accent-strong);
@@ -220,7 +220,7 @@ mat-form-field {
   padding: 1rem;
   border-radius: var(--radius-lg);
   background: rgba(255, 255, 255, 0.58);
-  border: 1px solid rgba(24, 52, 70, 0.1);
+  border: 1px solid rgba(6, 43, 85, 0.1);
 }
 
 .motivos-header {
@@ -263,7 +263,7 @@ button[mat-raised-button] {
 .secondary-action {
   min-height: 40px;
   border-radius: 999px;
-  border: 1px solid rgba(24, 52, 70, 0.2);
+  border: 1px solid rgba(6, 43, 85, 0.2);
   background: #ffffff;
   color: var(--accent-strong) !important;
   font-weight: 900;
@@ -298,7 +298,7 @@ button[mat-raised-button] {
   padding: 1.1rem 1.25rem;
   border-radius: var(--radius-lg);
   background: rgba(255, 255, 255, 0.78);
-  border: 1px solid rgba(23, 48, 66, 0.08);
+  border: 1px solid rgba(6, 43, 85, 0.08);
   color: var(--text-soft);
   font-weight: 700;
 }

@@ -1,29 +1,120 @@
+@font-face {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/assets/fonts/montserrat/montserrat-400.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/assets/fonts/montserrat/montserrat-500.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/assets/fonts/montserrat/montserrat-600.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/assets/fonts/montserrat/montserrat-700.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("/assets/fonts/montserrat/montserrat-800.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url("/assets/fonts/montserrat/montserrat-900.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Material Icons";
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url("/assets/fonts/material-icons/material-icons.ttf") format("truetype");
+}
+
 :root {
-  --bg-base: #f4efe7;
-  --bg-surface: rgba(255, 252, 247, 0.82);
-  --bg-surface-strong: #fffaf1;
-  --bg-panel: rgba(18, 47, 63, 0.88);
-  --bg-panel-soft: rgba(255, 255, 255, 0.74);
-  --line-soft: rgba(24, 52, 70, 0.12);
-  --line-strong: rgba(24, 52, 70, 0.2);
-  --text-main: #173042;
-  --text-soft: #4f6473;
-  --text-inverse: #f7f3eb;
-  --accent: #0f8b8d;
-  --accent-strong: #0a6c70;
-  --accent-soft: #ddf3f1;
-  --highlight: #ff7a59;
-  --highlight-soft: #ffe1d7;
-  --success: #1f9d77;
-  --warning: #d9911a;
-  --danger: #d95d52;
-  --shadow-lg: 0 30px 70px rgba(23, 48, 66, 0.14);
-  --shadow-md: 0 18px 45px rgba(23, 48, 66, 0.12);
-  --shadow-sm: 0 10px 25px rgba(23, 48, 66, 0.08);
-  --radius-xl: 32px;
-  --radius-lg: 24px;
-  --radius-md: 18px;
-  --radius-sm: 12px;
+  --font-brand: "Montserrat", "Segoe UI", Arial, sans-serif;
+  --brand-navy: #062b55;
+  --brand-blue: #0877c9;
+  --brand-cyan: #16bfc2;
+  --brand-green: #59b832;
+  --brand-orange: #ff7a1a;
+  --brand-purple: #5b2b8c;
+  --bg-base: #f6fafc;
+  --bg-surface: rgba(255, 255, 255, 0.92);
+  --bg-surface-strong: #ffffff;
+  --bg-panel: #062b55;
+  --bg-panel-soft: #edf6fb;
+  --line-soft: rgba(6, 43, 85, 0.12);
+  --line-strong: rgba(6, 43, 85, 0.24);
+  --text-main: #062b55;
+  --text-soft: #526377;
+  --text-inverse: #f6fafc;
+  --accent: #0877c9;
+  --accent-strong: #062b55;
+  --accent-soft: #e5f4fb;
+  --highlight: #ff7a1a;
+  --highlight-soft: #fff0e6;
+  --success: #59b832;
+  --warning: #ff7a1a;
+  --danger: #c74732;
+  --purple-soft: #efe9f7;
+  --shadow-lg: 0 28px 70px rgba(6, 43, 85, 0.14);
+  --shadow-md: 0 18px 44px rgba(6, 43, 85, 0.12);
+  --shadow-sm: 0 10px 24px rgba(6, 43, 85, 0.08);
+  --radius-xl: 24px;
+  --radius-lg: 18px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+  --mdc-typography-font-family: var(--font-brand);
+  --mat-option-label-text-font: var(--font-brand);
+  --mat-select-trigger-text-font: var(--font-brand);
+  --mat-form-field-container-text-font: var(--font-brand);
+  --mdc-filled-text-field-label-text-font: var(--font-brand);
+  --mdc-outlined-text-field-label-text-font: var(--font-brand);
+  --mdc-text-button-label-text-font: var(--font-brand);
+  --mdc-protected-button-label-text-font: var(--font-brand);
+  --mdc-elevated-card-title-text-font: var(--font-brand);
+  --mdc-elevated-card-subtitle-text-font: var(--font-brand);
+}
+
+.material-icons,
+.mat-icon {
+  font-family: "Material Icons" !important;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
 }
 
 html,
@@ -33,12 +124,12 @@ body {
 
 body {
   margin: 0;
-  font-family: "Aptos", "Segoe UI Variable", "Trebuchet MS", sans-serif;
+  font-family: var(--font-brand);
   color: var(--text-main);
   background:
-    radial-gradient(circle at top left, rgba(15, 139, 141, 0.16), transparent 28%),
-    radial-gradient(circle at top right, rgba(255, 122, 89, 0.18), transparent 24%),
-    linear-gradient(180deg, #f8f4ec 0%, #f2ebe1 55%, #ece5db 100%);
+    linear-gradient(135deg, rgba(8, 119, 201, 0.08), transparent 32%),
+    linear-gradient(225deg, rgba(22, 191, 194, 0.08), transparent 30%),
+    linear-gradient(180deg, #ffffff 0%, #f6fafc 48%, #edf6fb 100%);
   background-attachment: fixed;
 }
 
@@ -48,8 +139,8 @@ body::before {
   inset: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(rgba(23, 48, 66, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(23, 48, 66, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(6, 43, 85, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(6, 43, 85, 0.035) 1px, transparent 1px);
   background-size: 32px 32px;
   mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.3), transparent 85%);
 }
@@ -63,8 +154,9 @@ h2,
 h3,
 h4 {
   margin: 0;
-  font-family: "Aptos Display", "Segoe UI", sans-serif;
-  letter-spacing: -0.03em;
+  font-family: var(--font-brand);
+  letter-spacing: 0;
+  font-weight: 800;
 }
 
 p {
@@ -84,6 +176,34 @@ select {
   font: inherit;
 }
 
+.mat-typography,
+.mat-typography h1,
+.mat-typography h2,
+.mat-typography h3,
+.mat-typography h4,
+.mat-typography h5,
+.mat-typography h6,
+.mat-typography p,
+.mat-mdc-button,
+.mat-mdc-raised-button,
+.mat-mdc-outlined-button,
+.mat-mdc-unelevated-button,
+.mat-mdc-card,
+.mat-mdc-form-field,
+.mat-mdc-option,
+.mat-mdc-select,
+.mat-mdc-menu-item,
+.mat-mdc-list-item,
+.mat-mdc-tab,
+.mdc-button,
+.mdc-list-item,
+.mdc-tab,
+.mdc-text-field,
+.mdc-floating-label,
+.mdc-form-field {
+  font-family: var(--font-brand) !important;
+}
+
 .snack-success,
 .snack-error,
 .snack-info,
@@ -97,19 +217,19 @@ select {
 }
 
 .snack-success {
-  background: linear-gradient(135deg, #14956f, #1f9d77) !important;
+  background: linear-gradient(135deg, #3a9d2c, var(--brand-green)) !important;
 }
 
 .snack-error {
-  background: linear-gradient(135deg, #c84f45, #d95d52) !important;
+  background: linear-gradient(135deg, #a93426, var(--danger)) !important;
 }
 
 .snack-info {
-  background: linear-gradient(135deg, #12757a, #0f8b8d) !important;
+  background: linear-gradient(135deg, var(--brand-blue), var(--brand-cyan)) !important;
 }
 
 .snack-warning {
-  background: linear-gradient(135deg, #e8a228, #d9911a) !important;
+  background: linear-gradient(135deg, var(--brand-orange), #ff9a4d) !important;
   color: #fff !important;
 }
 
@@ -125,7 +245,7 @@ select {
 }
 
 ::ng-deep .mat-toolbar.mat-primary {
-  background: rgba(255, 250, 241, 0.76) !important;
+  background: rgba(255, 255, 255, 0.9) !important;
   color: var(--text-main) !important;
   border-bottom: 1px solid var(--line-soft);
   backdrop-filter: blur(18px);
@@ -134,15 +254,15 @@ select {
 ::ng-deep .mat-mdc-card,
 ::ng-deep .mat-card,
 ::ng-deep mat-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(230, 246, 244, 0.9)) !important;
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  background: var(--bg-surface-strong) !important;
+  border: 1px solid var(--line-soft);
   box-shadow: var(--shadow-sm) !important;
   color: var(--text-main) !important;
 }
 
 ::ng-deep .mat-mdc-raised-button.mat-primary,
 ::ng-deep .mat-raised-button.mat-primary {
-  background: linear-gradient(135deg, var(--accent), var(--accent-strong)) !important;
+  background: linear-gradient(135deg, var(--brand-blue), var(--brand-navy)) !important;
   color: #fff !important;
 }
 
@@ -161,7 +281,7 @@ select {
 ::ng-deep .mat-button[disabled],
 ::ng-deep .mat-mdc-raised-button[disabled],
 ::ng-deep .mat-raised-button[disabled] {
-  color: rgba(23, 48, 66, 0.38) !important;
+  color: rgba(6, 43, 85, 0.38) !important;
 }
 
 ::ng-deep .mat-mdc-card-title,
@@ -173,7 +293,7 @@ select {
 
 ::ng-deep .mat-mdc-progress-bar .mdc-linear-progress__bar-inner,
 ::ng-deep .mat-progress-bar-fill::after {
-  border-color: var(--highlight) !important;
+  border-color: var(--brand-cyan) !important;
 }
 
 ::ng-deep .mat-mdc-chip,

@@ -4,9 +4,9 @@
   padding: 2.5rem;
   border-radius: var(--radius-xl);
   background:
-    linear-gradient(135deg, rgba(15, 139, 141, 0.12), rgba(255, 122, 89, 0.14)),
-    rgba(255, 250, 241, 0.82);
-  border: 1px solid rgba(255, 255, 255, 0.75);
+    linear-gradient(135deg, rgba(8, 119, 201, 0.12), rgba(22, 191, 194, 0.12)),
+    rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(6, 43, 85, 0.1);
   box-shadow: var(--shadow-md);
   position: relative;
   overflow: hidden;
@@ -20,12 +20,14 @@
   right: -100px;
   top: -110px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.55), transparent 70%);
+  background: radial-gradient(circle, rgba(89, 184, 50, 0.16), transparent 70%);
 }
 
 h2 {
-  font-size: clamp(2rem, 4vw, 3.25rem);
+  font-size: clamp(2rem, 4vw, 3rem);
   color: var(--text-main);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
   margin-bottom: 0.7rem;
 }
 
