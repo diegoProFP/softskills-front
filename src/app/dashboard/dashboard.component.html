@@ -1,5 +1,5 @@
-<mat-sidenav-container class="dashboard-container">
-  <mat-sidenav [opened]="isSidenavOpen" mode="side" class="dark-sidenav">
+<mat-sidenav-container class="dashboard-container" [class.is-menu-collapsed]="!isSidenavOpen" autosize>
+  <mat-sidenav opened mode="side" class="dark-sidenav" [class.is-collapsed]="!isSidenavOpen">
     <div class="user-info">
       <img *ngIf="user?.userPictureUrl; else avatarFallback" [src]="user.userPictureUrl" class="avatar" alt="Avatar" />
       <ng-template #avatarFallback>
@@ -13,13 +13,16 @@
 
     <mat-nav-list>
       <mat-list-item routerLink="/dashboard/mi-perfil" routerLinkActive="active">
-        <mat-icon>person</mat-icon> Mi perfil
+        <mat-icon>person</mat-icon>
+        <span class="nav-label">Mi perfil</span>
       </mat-list-item>
       <mat-list-item *ngIf="isTeacher" routerLink="/dashboard/cursos" routerLinkActive="active">
-        <mat-icon>school</mat-icon> Cursos
+        <mat-icon>school</mat-icon>
+        <span class="nav-label">Cursos</span>
       </mat-list-item>
       <mat-list-item *ngIf="isTeacher" routerLink="/dashboard/grupos" routerLinkActive="active">
-        <mat-icon>groups</mat-icon> Grupos
+        <mat-icon>groups</mat-icon>
+        <span class="nav-label">Grupos</span>
       </mat-list-item>
       <div *ngIf="isAdmin" class="admin-menu-group">
         <div class="menu-section-title">
@@ -27,21 +30,25 @@
           <span>Administracion</span>
         </div>
         <mat-list-item class="submenu-item" routerLink="/dashboard/administracion/profesores" routerLinkActive="active">
-          <mat-icon>person_add</mat-icon> Profesores
+          <mat-icon>person_add</mat-icon>
+          <span class="nav-label">Profesores</span>
         </mat-list-item>
         <mat-list-item class="submenu-item" routerLink="/dashboard/administracion/soft-skills" routerLinkActive="active">
-          <mat-icon>tune</mat-icon> Soft Skills
+          <mat-icon>tune</mat-icon>
+          <span class="nav-label">Soft Skills</span>
         </mat-list-item>
       </div>
 
       <mat-divider></mat-divider>
 
       <mat-list-item routerLink="/dashboard/guia-soft-skills" routerLinkActive="active">
-        <mat-icon>menu_book</mat-icon> Guia de Soft Skills
+        <mat-icon>menu_book</mat-icon>
+        <span class="nav-label">Guia de Soft Skills</span>
       </mat-list-item>
 
       <mat-list-item (click)="logout()" style="color:#e57373;">
-        <mat-icon>logout</mat-icon> Cerrar sesion
+        <mat-icon>logout</mat-icon>
+        <span class="nav-label">Cerrar sesion</span>
       </mat-list-item>
     </mat-nav-list>
   </mat-sidenav>
