@@ -70,8 +70,21 @@
                 <mat-icon>add</mat-icon>
               </button>
             </td>
-            <td *ngFor="let skill of skillColumns">
-              {{ getTotalPorSkill(alumno, skill) ?? '-' }}
+            <td *ngFor="let skill of skillColumns" class="skill-total-cell">
+              <button
+                type="button"
+                class="muestra-cell-button"
+                [class.has-value]="getTotalPorSkill(alumno, skill) !== null"
+                (click)="abrirPanelMuestras(alumno, skill, $event)"
+                (touchstart)="registrarInicioToque($event)"
+                (touchmove)="registrarMovimientoToque($event)"
+                (touchend)="abrirPanelMuestrasConToque(alumno, skill, $event)"
+                [attr.title]="getMuestraAccionTooltip(alumno, skill)"
+                [attr.aria-label]="getMuestraAccionTooltip(alumno, skill)"
+                [attr.data-tooltip]="getMuestraAccionTooltip(alumno, skill)">
+                <span>{{ getTotalPorSkill(alumno, skill) ?? '-' }}</span>
+                <mat-icon>visibility</mat-icon>
+              </button>
             </td>
           </tr>
         </tbody>
@@ -93,10 +106,89 @@
     <p>No se encontró información del curso.</p>
   </ng-template>
 </div>
+<div class="muestras-panel-backdrop" *ngIf="muestrasPanelState"></div>
+<aside class="muestras-panel" *ngIf="muestrasPanelState" aria-label="Detalle de muestras">
+  <header class="muestras-panel-header">
+    <div>
+      <p class="panel-kicker">Muestras del curso</p>
+      <h3>{{ muestrasPanelState.alumno.nombreCompleto || (muestrasPanelState.alumno.nombre + ' ' + (muestrasPanelState.alumno.apellidos || '')) }}</h3>
+      <div class="panel-skill">
+        <app-soft-skill-icon
+          [code]="muestrasPanelState.skill.codigo"
+          [label]="muestrasPanelState.skill.nombre"
+          size="sm">
+        </app-soft-skill-icon>
+        <span>{{ muestrasPanelState.skill.nombre }}</span>
+      </div>
+    </div>
+    <button
+      type="button"
+      class="panel-close-button"
+      (click)="cerrarPanelMuestras()"
+      matTooltip="Cerrar panel"
+      aria-label="Cerrar panel de muestras">
+      <mat-icon>close</mat-icon>
+    </button>
+  </header>
+
+  <div class="muestras-panel-count" *ngIf="muestrasDetalle && !muestrasLoading">
+    {{ muestrasDetalle.numMuestras }} muestras registradas
+  </div>
+
+  <div class="muestras-panel-loading" *ngIf="muestrasLoading">
+    Cargando muestras...
+  </div>
+
+  <div class="muestras-empty error" *ngIf="!muestrasLoading && muestrasErrorMessage">
+    {{ muestrasErrorMessage }}
+  </div>
+
+  <div class="muestras-empty" *ngIf="!muestrasLoading && muestrasDetalle && muestrasDetalle.muestras.length === 0">
+    No hay muestras registradas para esta soft skill.
+  </div>
+
+  <div class="muestras-list" *ngIf="!muestrasLoading && muestrasDetalle && muestrasDetalle.muestras.length > 0">
+    <article class="muestra-card" *ngFor="let muestra of muestrasDetalle.muestras">
+      <div class="muestra-card-top">
+        <time>{{ muestra.fecha | date:'dd/MM/yyyy HH:mm' }}</time>
+        <span class="muestra-value" [class.is-negative]="muestra.valor < 0">{{ getValorMuestraLabel(muestra) }}</span>
+      </div>
+      <p class="muestra-motivo">{{ getMotivoMuestra(muestra) }}</p>
+      <p class="muestra-comentario" *ngIf="muestra.motivoComentario">{{ muestra.motivoComentario }}</p>
+      <div class="muestra-meta">
+        <span>{{ getNivelMuestraLabel(muestra) }}</span>
+        <span *ngIf="muestra.profesorId">Profesor {{ muestra.profesorId }}</span>
+      </div>
+      <div class="muestra-actions" *ngIf="muestra.editable || muestra.deletable">
+        <button
+          *ngIf="muestra.editable"
+          type="button"
+          class="muestra-action-button"
+          (click)="abrirEdicionMuestra(muestra)">
+          <mat-icon>edit</mat-icon>
+          <span>Editar</span>
+        </button>
+        <button
+          *ngIf="muestra.deletable"
+          type="button"
+          class="muestra-action-button danger"
+          [disabled]="isBorrandoMuestra(muestra)"
+          (click)="borrarMuestra(muestra)">
+          <mat-icon>delete</mat-icon>
+          <span>{{ isBorrandoMuestra(muestra) ? 'Borrando' : 'Borrar' }}</span>
+        </button>
+      </div>
+    </article>
+  </div>
+</aside>
+
 <app-wizard-modal
   *ngIf="isWizardVisible"
   [initialAlumno]="alumnoWizardSeleccionado"
+  [initialSoftSkill]="softSkillWizardSeleccionada"
+  [editingMuestra]="muestraWizardSeleccionada"
   (muestraCreada)="recargarCursoActual()"
+  (muestraActualizada)="onMuestraActualizada($event)"
   (close)="cerrarWizardNuevaMuestra()">
 </app-wizard-modal>
 <app-floating-button></app-floating-button>

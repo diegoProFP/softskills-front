@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { MatExpansionPanel } from '@angular/material/expansion';
 import { Observable } from 'rxjs';
 import { Alumno, Curso } from '../../modelo/curso';
-import { MuestraSK } from '../../modelo/muestra-sk';
+import { MuestraSK, MuestraSKDetalle, MuestraSKUpdate, MuestraSKUpdateResponse } from '../../modelo/muestra-sk';
 import { MotivoSoftSkill, NivelMuestraSoftSkill, SoftSkill, TipoMedicionSoftSkill } from '../../modelo/softskill';
 import { CursoService } from '../../services/curso.service';
 import { LoadingService } from '../../services/loading.service';
@@ -17,8 +17,11 @@ import { SoftSkillService } from '../../services/softskill.service';
 })
 export class WizardModalComponent implements OnInit {
   @Input() initialAlumno: Alumno | null = null;
+  @Input() initialSoftSkill: SoftSkill | null = null;
+  @Input() editingMuestra: MuestraSKDetalle | null = null;
   @Output() close = new EventEmitter<void>();
   @Output() muestraCreada = new EventEmitter<void>();
+  @Output() muestraActualizada = new EventEmitter<MuestraSKUpdateResponse>();
   @ViewChildren(MatExpansionPanel) panels: QueryList<MatExpansionPanel>;
 
   currentStep = 1;
@@ -73,7 +76,20 @@ export class WizardModalComponent implements OnInit {
 
     if (this.initialAlumno) {
       this.alumnoSeleccionado = this.initialAlumno;
-      this.currentStep = 3;
+    }
+
+    if (this.initialSoftSkill) {
+      this.softSkillSeleccionada = this.resolveInitialSoftSkill(this.initialSoftSkill);
+    }
+
+    if (this.editingMuestra) {
+      this.hidratarEdicion(this.editingMuestra);
+      this.currentStep = 4;
+      return;
+    }
+
+    if (this.initialAlumno) {
+      this.currentStep = this.softSkillSeleccionada ? 4 : 3;
       return;
     }
 
@@ -195,6 +211,11 @@ export class WizardModalComponent implements OnInit {
 
   seleccionarGrupoConducta(grupo: 'positiva' | 'negativa'): void {
     this.grupoConductaActivo = this.grupoConductaActivo === grupo ? null : grupo;
+  }
+
+  mostrarAyudaMotivo(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
   }
 
   get motivosSoftSkillSeleccionada(): MotivoSoftSkill[] {
@@ -399,19 +420,28 @@ export class WizardModalComponent implements OnInit {
     const motivoEnriquecido = this.motivoSeleccionado && this.tieneMetadatosMotivo(this.motivoSeleccionado)
       ? this.motivoSeleccionado
       : null;
+    const muestraPayload = this.buildMuestraPayload(esAcumulacionSaturada, motivo, comentario, motivoEnriquecido);
+
+    if (this.editingMuestra) {
+      this.softSkillService.actualizarMuestra(this.editingMuestra.id, muestraPayload).subscribe({
+        next: (response) => {
+          this.notificationService.showSuccess('Muestra actualizada correctamente');
+          this.muestraActualizada.emit(response);
+          this.closeModal();
+        },
+        error: (error) => {
+          this.notificationService.showHttpError(error, 'Error al actualizar la muestra.');
+        },
+        complete: () => {
+          this.loadingService.hide();
+        }
+      });
+      return;
+    }
+
     const muestra: MuestraSK = {
       profesorId: this.cursoSeleccionado.profesor.id,
-      cursoId: this.cursoSeleccionado.id,
-      alumnoId: this.alumnoSeleccionado.id,
-      softSkillId: this.softSkillSeleccionada.id,
-      ...(motivoEnriquecido?.id ? { motivoId: motivoEnriquecido.id } : {}),
-      ...(motivoEnriquecido
-        ? { motivoComentario: comentario.length > 0 ? comentario : null }
-        : {
-            valor: esAcumulacionSaturada || this.valoracionSeleccionada === 'positiva' ? 1 : -1,
-            motivo: motivo.length > 0 ? motivo : null,
-            ...(esAcumulacionSaturada ? { nivel: this.nivelSeleccionado } : {})
-          })
+      ...muestraPayload
     };
 
     this.softSkillService.crearMuestra(muestra).subscribe({
@@ -427,5 +457,69 @@ export class WizardModalComponent implements OnInit {
         this.loadingService.hide();
       }
     });
+  }
+
+  get tituloAccion(): string {
+    return this.editingMuestra ? 'Editar muestra' : 'Resumen y Confirmar';
+  }
+
+  get textoBotonEnviar(): string {
+    return this.editingMuestra ? 'Guardar cambios' : 'Enviar';
+  }
+
+  private buildMuestraPayload(
+    esAcumulacionSaturada: boolean,
+    motivo: string,
+    comentario: string,
+    motivoEnriquecido: MotivoSoftSkill | null
+  ): MuestraSKUpdate {
+    if (!this.cursoSeleccionado || !this.alumnoSeleccionado || !this.softSkillSeleccionada) {
+      throw new Error('Faltan datos necesarios para enviar la valoracion');
+    }
+
+    return {
+      cursoId: this.cursoSeleccionado.id,
+      alumnoId: this.alumnoSeleccionado.id,
+      softSkillId: this.softSkillSeleccionada.id,
+      ...(motivoEnriquecido?.id ? { motivoId: motivoEnriquecido.id } : {}),
+      ...(motivoEnriquecido
+        ? { motivoComentario: comentario.length > 0 ? comentario : null }
+        : {
+            valor: esAcumulacionSaturada || this.valoracionSeleccionada === 'positiva' ? 1 : -1,
+            motivo: motivo.length > 0 ? motivo : null,
+            nivel: this.nivelSeleccionado,
+            motivoComentario: comentario.length > 0 ? comentario : null
+          })
+    };
+  }
+
+  private resolveInitialSoftSkill(initialSoftSkill: SoftSkill): SoftSkill {
+    return this.softSkills.find((softSkill) => softSkill.id === initialSoftSkill.id) ?? initialSoftSkill;
+  }
+
+  private hidratarEdicion(muestra: MuestraSKDetalle): void {
+    const motivoPredefinido = muestra.motivoId && this.softSkillSeleccionada
+      ? this.softSkillSeleccionada.listaMotivos?.find((motivo) => motivo.id === muestra.motivoId) ?? null
+      : null;
+
+    this.motivoSeleccionado = motivoPredefinido;
+    this.motivoControl.setValue(muestra.motivo ?? '');
+    this.comentarioControl.setValue(muestra.motivoComentario ?? '');
+
+    if (motivoPredefinido) {
+      this.valoracionSeleccionada = motivoPredefinido.valorPorDefecto === 1 ? 'positiva' : 'negativa';
+      this.nivelSeleccionado = motivoPredefinido.nivelPorDefecto ?? this.normalizarNivel(muestra.nivel);
+      this.grupoConductaActivo = motivoPredefinido.valorPorDefecto === -1 ? 'negativa' : 'positiva';
+      return;
+    }
+
+    this.valoracionSeleccionada = muestra.valor >= 0 ? 'positiva' : 'negativa';
+    this.nivelSeleccionado = this.normalizarNivel(muestra.nivel);
+  }
+
+  private normalizarNivel(nivel: string | null): NivelMuestraSoftSkill {
+    return this.nivelesMuestra.some((item) => item.value === nivel)
+      ? nivel as NivelMuestraSoftSkill
+      : 'NORMAL';
   }
 }

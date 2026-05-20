@@ -6,8 +6,12 @@ export interface AlumnoSoftSkillMuestraDetalle {
   valor: number;
   nivel: NivelMuestraSoftSkill | string | null;
   pesoNivel: number | null;
+  motivoId?: number | null;
   motivo: string | null;
+  motivoComentario?: string | null;
   profesorId: number | null;
+  editable?: boolean;
+  deletable?: boolean;
 }
 
 export interface AlumnoSoftSkillCursoDetalle {
