@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlumnoConTotales } from '../../modelo/alumno-con-totales';
@@ -178,10 +179,19 @@ export class GrupoDetalleComponent implements OnInit {
       },
       error: (error) => {
         this.alumnos = [];
-        this.errorMessage = this.notificationService.showHttpError(error, 'No se pudieron cargar los totales del grupo.');
+        this.errorMessage = this.obtenerMensajeErrorTotales(error);
+        this.notificationService.showError(this.errorMessage);
         this.loading = false;
       }
     });
+  }
+
+  private obtenerMensajeErrorTotales(error: unknown): string {
+    if (error instanceof HttpErrorResponse && error.status === 403) {
+      return 'No tienes permisos en Moodle para consultar los alumnos de este grupo. Revisa que estes matriculado en el curso Moodle asociado al grupo academico.';
+    }
+
+    return this.notificationService.getErrorMessage(error, 'No se pudieron cargar los totales del grupo.');
   }
 
   private toSkillColumn(softSkill: SoftSkillTotalDTO): SkillColumn {

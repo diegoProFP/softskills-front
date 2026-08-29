@@ -34,6 +34,7 @@ import { GrupoDetalleComponent } from './grupo-detalle/grupo-detalle.component';
 import { SharedModule } from '../shared/shared.module';
 import { ProfesoresAdminComponent } from './administracion/profesores-admin.component';
 import { SoftSkillsAdminComponent } from './administracion/soft-skills-admin.component';
+import { GruposAdminComponent } from './administracion/grupos-admin.component';
 
 
 @NgModule({
@@ -49,7 +50,8 @@ import { SoftSkillsAdminComponent } from './administracion/soft-skills-admin.com
     WizardModalComponent,
     ValoracionPositivaNegativaComponent,
     ProfesoresAdminComponent,
-    SoftSkillsAdminComponent
+    SoftSkillsAdminComponent,
+    GruposAdminComponent
   ],
   imports: [
     CommonModule,

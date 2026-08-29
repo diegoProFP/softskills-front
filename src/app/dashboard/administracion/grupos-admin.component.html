@@ -1,0 +1,132 @@
+<section class="grupos-admin-page">
+  <button mat-button routerLink="/dashboard/administracion" class="back-button">
+    <mat-icon>arrow_back</mat-icon>
+    Administracion
+  </button>
+
+  <div class="page-header">
+    <div>
+      <p class="eyebrow">Administracion</p>
+      <h2>Gestion de grupos academicos</h2>
+    </div>
+    <button mat-button type="button" (click)="cargarGrupos()" [disabled]="loading || guardandoFilas.size > 0">
+      <mat-icon>refresh</mat-icon>
+      Actualizar
+    </button>
+  </div>
+
+  <section class="info-panel">
+    <mat-icon>info</mat-icon>
+    <div>
+      <h3>Curso Moodle del grupo</h3>
+      <p>
+        Asigna el ID del curso Moodle que representa al grupo academico completo.
+        Debes asegurarte de que el ID existe en Moodle y de que todos los profesores y alumnos del grupo estan matriculados en ese curso.
+      </p>
+    </div>
+  </section>
+
+  <mat-progress-bar *ngIf="loading" color="accent" mode="indeterminate"></mat-progress-bar>
+
+  <div *ngIf="errorCarga && !loading" class="state-message error-state">
+    <mat-icon>error_outline</mat-icon>
+    <span>{{ errorCarga }}</span>
+  </div>
+
+  <div class="list-tools" *ngIf="!loading && grupos.length > 0">
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Buscar grupo</mat-label>
+      <mat-icon matPrefix>search</mat-icon>
+      <input matInput type="text" [formControl]="filtroControl" placeholder="Nivel, ciclo, grupo, curso escolar o ID Moodle" />
+      <button
+        *ngIf="filtroControl.value"
+        mat-icon-button
+        matSuffix
+        type="button"
+        aria-label="Limpiar filtro"
+        (click)="limpiarFiltro()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+
+  <div *ngIf="!loading && !errorCarga && grupos.length === 0" class="state-message empty-state">
+    <mat-icon>groups</mat-icon>
+    <span>No hay grupos academicos.</span>
+  </div>
+
+  <div *ngIf="!loading && !errorCarga && grupos.length > 0" class="grupos-table-wrap">
+    <table class="grupos-table">
+      <thead>
+        <tr>
+          <th>Grupo</th>
+          <th>Curso escolar</th>
+          <th>ID curso Moodle grupo</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let grupo of gruposFiltrados">
+          <td>
+            <span class="group-title">{{ formatGrupoTitle(grupo) }}</span>
+            <span class="group-subtitle">ID interno {{ grupo.id }}</span>
+          </td>
+          <td class="school-year-cell">{{ getCursoEscolar(grupo) }}</td>
+          <td>
+            <mat-form-field appearance="outline" class="moodle-id-field">
+              <mat-label>ID Moodle</mat-label>
+              <input
+                matInput
+                type="number"
+                min="1"
+                [formControl]="getCursoMoodleControl(grupo)"
+                [disabled]="estaGuardandoFila(grupo.id)"
+                placeholder="Sin configurar" />
+              <button
+                *ngIf="getCursoMoodleControl(grupo).value"
+                mat-icon-button
+                matSuffix
+                type="button"
+                aria-label="Desasignar ID Moodle"
+                matTooltip="Desasignar"
+                (click)="limpiarCursoMoodleGrupo(grupo)"
+                [disabled]="estaGuardandoFila(grupo.id)">
+                <mat-icon>close</mat-icon>
+              </button>
+              <mat-error *ngIf="getCursoMoodleControl(grupo).hasError('min') || getCursoMoodleControl(grupo).hasError('integer')">
+                Introduce un ID positivo.
+              </mat-error>
+            </mat-form-field>
+          </td>
+          <td>
+            <span class="status-pill saving" *ngIf="estaGuardandoFila(grupo.id); else estadoGrupo">
+              Guardando
+            </span>
+            <ng-template #estadoGrupo>
+              <span class="status-pill" [class.configured]="grupo.cursoMoodleGrupoId">
+                {{ grupo.cursoMoodleGrupoId ? 'Configurado' : 'Sin configurar' }}
+              </span>
+            </ng-template>
+          </td>
+          <td>
+            <button
+              mat-raised-button
+              color="primary"
+              type="button"
+              (click)="guardarCursoMoodleGrupo(grupo)"
+              [disabled]="estaGuardandoFila(grupo.id) || getCursoMoodleControl(grupo).invalid || !tieneCambios(grupo)">
+              <mat-icon>save</mat-icon>
+              Guardar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div *ngIf="gruposFiltrados.length === 0" class="state-message empty-state">
+      <mat-icon>search_off</mat-icon>
+      <span>No hay grupos que coincidan con el filtro.</span>
+    </div>
+  </div>
+</section>
